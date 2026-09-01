@@ -1,27 +1,27 @@
 import type { Metadata } from "next";
-import { Orbitron, Share_Tech_Mono, Rajdhani } from "next/font/google";
+import { Inter, JetBrains_Mono, Manrope } from "next/font/google";
 import "./globals.css";
 
-const orbitron = Orbitron({
+const manrope = Manrope({
   subsets: ["latin"],
   variable: "--font-display",
-  weight: ["500", "700", "900"],
+  weight: ["600", "700", "800"],
 });
 
-const shareTechMono = Share_Tech_Mono({
+const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
-  weight: "400",
+  weight: ["400", "500"],
 });
 
-const rajdhani = Rajdhani({
+const inter = Inter({
   subsets: ["latin"],
   variable: "--font-body",
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600"],
 });
 
 export const metadata: Metadata = {
-  title: "JAE — Applied AI & Full-Stack Engineer",
+  title: "Jae — Applied AI & Full-Stack Engineer",
   description:
     "Final-year Computer Engineering student building production AI and full-stack systems — real-time crime detection, trading automation, and AI-powered tools, shipped end-to-end.",
 };
@@ -30,7 +30,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${orbitron.variable} ${shareTechMono.variable} ${rajdhani.variable}`}>
+    <html lang="en" className={`${manrope.variable} ${jetbrainsMono.variable} ${inter.variable}`}>
       <body>{children}</body>
     </html>
   );

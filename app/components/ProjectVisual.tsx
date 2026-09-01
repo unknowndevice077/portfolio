@@ -28,7 +28,7 @@ function Frame({
 
 export function EcoVisionVisual() {
   return (
-    <Frame url="ecovision-crime-detection-ai.app" accent="#ff2fd6">
+    <Frame url="ecovision-crime-detection-ai.app" accent="#f472b6">
       <svg viewBox="0 0 400 220" className="w-full h-full" preserveAspectRatio="xMidYMid slice">
         <defs>
           <linearGradient id="eco-bg" x1="0" y1="0" x2="1" y2="1">
@@ -36,7 +36,7 @@ export function EcoVisionVisual() {
             <stop offset="100%" stopColor="#160013" />
           </linearGradient>
           <pattern id="eco-grid" width="20" height="20" patternUnits="userSpaceOnUse">
-            <path d="M20 0 L0 0 0 20" fill="none" stroke="#ff2fd6" strokeOpacity="0.12" strokeWidth="1" />
+            <path d="M20 0 L0 0 0 20" fill="none" stroke="#f472b6" strokeOpacity="0.12" strokeWidth="1" />
           </pattern>
         </defs>
         <rect width="400" height="220" fill="url(#eco-bg)" />
@@ -44,34 +44,34 @@ export function EcoVisionVisual() {
         {/* CCTV feed panels */}
         {[0, 1, 2].map((i) => (
           <g key={i} transform={`translate(${16 + i * 132}, 16)`}>
-            <rect width="120" height="90" fill="#000" stroke="#ff2fd6" strokeOpacity="0.5" />
+            <rect width="120" height="90" fill="#000" stroke="#f472b6" strokeOpacity="0.5" />
             <circle cx="8" cy="8" r="3" fill="#ff2f2f">
               <animate attributeName="opacity" values="1;0.2;1" dur="1.2s" repeatCount="indefinite" />
             </circle>
-            <text x="60" y="50" textAnchor="middle" fontSize="9" fill="#ff2fd6" fontFamily="monospace" opacity="0.5">
+            <text x="60" y="50" textAnchor="middle" fontSize="9" fill="#f472b6" fontFamily="monospace" opacity="0.5">
               CAM {i + 1}
             </text>
           </g>
         ))}
         {/* target reticle */}
         <g transform="translate(148,90)">
-          <circle r="26" fill="none" stroke="#00fff2" strokeWidth="1.5">
+          <circle r="26" fill="none" stroke="#5eead4" strokeWidth="1.5">
             <animate attributeName="r" values="20;28;20" dur="2s" repeatCount="indefinite" />
           </circle>
-          <line x1="-34" y1="0" x2="-18" y2="0" stroke="#00fff2" strokeWidth="1.5" />
-          <line x1="18" y1="0" x2="34" y2="0" stroke="#00fff2" strokeWidth="1.5" />
-          <line x1="0" y1="-34" x2="0" y2="-18" stroke="#00fff2" strokeWidth="1.5" />
-          <line x1="0" y1="18" x2="0" y2="34" stroke="#00fff2" strokeWidth="1.5" />
+          <line x1="-34" y1="0" x2="-18" y2="0" stroke="#5eead4" strokeWidth="1.5" />
+          <line x1="18" y1="0" x2="34" y2="0" stroke="#5eead4" strokeWidth="1.5" />
+          <line x1="0" y1="-34" x2="0" y2="-18" stroke="#5eead4" strokeWidth="1.5" />
+          <line x1="0" y1="18" x2="0" y2="34" stroke="#5eead4" strokeWidth="1.5" />
         </g>
         {/* HUD text */}
-        <text x="16" y="145" fontSize="10" fill="#00fff2" fontFamily="monospace">
+        <text x="16" y="145" fontSize="10" fill="#5eead4" fontFamily="monospace">
           THREAT: WEAPON DETECTED
         </text>
-        <text x="16" y="160" fontSize="10" fill="#ff2fd6" fontFamily="monospace">
+        <text x="16" y="160" fontSize="10" fill="#f472b6" fontFamily="monospace">
           mAP@50: 94.1%  RECALL: 90.3%
         </text>
         <rect x="16" y="175" width="200" height="6" fill="#1a0010" />
-        <rect x="16" y="175" width="188" height="6" fill="#ff2fd6" />
+        <rect x="16" y="175" width="188" height="6" fill="#f472b6" />
         <text x="16" y="205" fontSize="9" fill="#7a7a8a" fontFamily="monospace">
           YOLOv11 · X3D-XS · role-based alert review
         </text>
@@ -82,7 +82,7 @@ export function EcoVisionVisual() {
 
 export function StudiaVisual() {
   return (
-    <Frame url="studia.app/home" accent="#00fff2">
+    <Frame url="studia.app/home" accent="#5eead4">
       <svg viewBox="0 0 400 220" className="w-full h-full" preserveAspectRatio="xMidYMid slice">
         <rect width="400" height="220" fill="#f7f7f9" />
         <text x="16" y="26" fontSize="13" fill="#111" fontFamily="sans-serif" fontWeight="700">
@@ -118,8 +118,8 @@ export function StudiaVisual() {
               width="36"
               height="36"
               rx="8"
-              fill={i === 2 ? "#00fff2" : "#fff"}
-              stroke={i === 2 ? "#00fff2" : "#e7e7ec"}
+              fill={i === 2 ? "#5eead4" : "#fff"}
+              stroke={i === 2 ? "#5eead4" : "#e7e7ec"}
             />
             <text x="18" y="22" textAnchor="middle" fontSize="11" fill={i === 2 ? "#000" : "#111"} fontFamily="sans-serif">
               {d}
@@ -133,7 +133,7 @@ export function StudiaVisual() {
 
 export function QuestScribeVisual() {
   return (
-    <Frame url="isite.app/adventure" accent="#f2ff00">
+    <Frame url="isite.app/adventure" accent="#fbbf24">
       <svg viewBox="0 0 400 220" className="w-full h-full" preserveAspectRatio="xMidYMid slice">
         <defs>
           <radialGradient id="qs-bg" cx="50%" cy="40%" r="80%">
@@ -146,7 +146,7 @@ export function QuestScribeVisual() {
         <path
           d="M40,170 Q100,100 180,120 T340,50"
           fill="none"
-          stroke="#f2ff00"
+          stroke="#fbbf24"
           strokeOpacity="0.35"
           strokeWidth="2"
           strokeDasharray="4 4"
@@ -158,18 +158,18 @@ export function QuestScribeVisual() {
           { x: 340, y: 50, r: 18, label: "Evolution Peak" },
         ].map((n) => (
           <g key={n.label} transform={`translate(${n.x},${n.y})`}>
-            <circle r={n.r} fill="#f2ff00" opacity="0.12" />
-            <circle r={n.r * 0.5} fill="#f2ff00" opacity="0.6">
+            <circle r={n.r} fill="#fbbf24" opacity="0.12" />
+            <circle r={n.r * 0.5} fill="#fbbf24" opacity="0.6">
               <animate attributeName="opacity" values="0.4;0.9;0.4" dur="2.4s" repeatCount="indefinite" />
             </circle>
           </g>
         ))}
-        <text x="16" y="20" fontSize="10" fill="#f2ff00" fontFamily="serif" fontStyle="italic">
+        <text x="16" y="20" fontSize="10" fill="#fbbf24" fontFamily="serif" fontStyle="italic">
           &quot;The Dungeon Master awaits your answer...&quot;
         </text>
         <rect x="16" y="190" width="160" height="8" rx="4" fill="#241f10" />
-        <rect x="16" y="190" width="112" height="8" rx="4" fill="#f2ff00" />
-        <text x="182" y="197" fontSize="9" fill="#f2ff00" fontFamily="monospace">
+        <rect x="16" y="190" width="112" height="8" rx="4" fill="#fbbf24" />
+        <text x="182" y="197" fontSize="9" fill="#fbbf24" fontFamily="monospace">
           XP 1120 / 1600
         </text>
       </svg>
@@ -184,7 +184,7 @@ export function AurumVisual() {
     [240, 28, 1], [260, 40, 1], [280, 18, 1], [300, 48, -1], [320, 32, 1],
   ];
   return (
-    <Frame url="aurum-xauusd-auto-trader.app" accent="#00fff2">
+    <Frame url="aurum-xauusd-auto-trader.app" accent="#5eead4">
       <svg viewBox="0 0 400 220" className="w-full h-full" preserveAspectRatio="xMidYMid slice">
         <rect width="400" height="220" fill="#050a08" />
         <g stroke="#12241e" strokeWidth="1">
@@ -194,13 +194,13 @@ export function AurumVisual() {
         </g>
         {candles.map(([x, h, dir], i) => (
           <g key={i} transform={`translate(${x},${110 - h / 2})`}>
-            <line x1="0" y1={-h / 2 - 8} x2="0" y2={h / 2 + 8} stroke={dir > 0 ? "#00ffa2" : "#ff3b5c"} strokeWidth="1" />
+            <line x1="0" y1={-h / 2 - 8} x2="0" y2={h / 2 + 8} stroke={dir > 0 ? "#34d399" : "#ff3b5c"} strokeWidth="1" />
             <rect
               x="-5"
               y={-h / 2}
               width="10"
               height={h}
-              fill={dir > 0 ? "#00ffa2" : "#ff3b5c"}
+              fill={dir > 0 ? "#34d399" : "#ff3b5c"}
               opacity="0.85"
             />
           </g>
@@ -208,14 +208,14 @@ export function AurumVisual() {
         <path
           d="M40,100 L60,115 80,92 100,130 120,88 140,140 160,95 180,110 200,80 220,135 240,90 260,105 280,75 300,120 320,85"
           fill="none"
-          stroke="#00fff2"
+          stroke="#5eead4"
           strokeWidth="1.5"
           opacity="0.6"
         />
-        <text x="16" y="20" fontSize="11" fill="#00fff2" fontFamily="monospace">
+        <text x="16" y="20" fontSize="11" fill="#5eead4" fontFamily="monospace">
           XAU/USD
         </text>
-        <text x="16" y="34" fontSize="14" fill="#00ffa2" fontFamily="monospace" fontWeight="700">
+        <text x="16" y="34" fontSize="14" fill="#34d399" fontFamily="monospace" fontWeight="700">
           $2,418.62 ▲ 0.84%
         </text>
         <text x="300" y="20" fontSize="8" fill="#7a7a8a" fontFamily="monospace">
@@ -231,26 +231,26 @@ export function AurumVisual() {
 
 export function NotionAIVisual() {
   return (
-    <Frame url="notion-ai-assistant.app" accent="#a855f7">
+    <Frame url="notion-ai-assistant.app" accent="#a78bfa">
       <svg viewBox="0 0 400 220" className="w-full h-full" preserveAspectRatio="xMidYMid slice">
         <rect width="400" height="220" fill="#0c0a12" />
         {/* chat bubble in */}
-        <rect x="16" y="16" width="220" height="34" rx="8" fill="#a855f7" opacity="0.15" />
+        <rect x="16" y="16" width="220" height="34" rx="8" fill="#a78bfa" opacity="0.15" />
         <text x="26" y="37" fontSize="9" fill="#d8b4fe" fontFamily="monospace">
           &gt; &quot;organize my launch week tasks&quot;
         </text>
         {/* arrow */}
-        <path d="M120,58 L120,76" stroke="#a855f7" strokeWidth="1.5" markerEnd="url(#arrow)" />
+        <path d="M120,58 L120,76" stroke="#a78bfa" strokeWidth="1.5" markerEnd="url(#arrow)" />
         <defs>
           <marker id="arrow" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
-            <path d="M0,0 L6,3 L0,6 Z" fill="#a855f7" />
+            <path d="M0,0 L6,3 L0,6 Z" fill="#a78bfa" />
           </marker>
         </defs>
         {/* generated notion blocks */}
         {["Design review", "Ship landing page", "Notify beta users"].map((t, i) => (
           <g key={t} transform={`translate(16,${90 + i * 34})`}>
-            <rect width="14" height="14" rx="3" fill="none" stroke="#a855f7" />
-            {i === 0 && <path d="M3,7 L6,10 L11,4" stroke="#a855f7" strokeWidth="1.5" fill="none" />}
+            <rect width="14" height="14" rx="3" fill="none" stroke="#a78bfa" />
+            {i === 0 && <path d="M3,7 L6,10 L11,4" stroke="#a78bfa" strokeWidth="1.5" fill="none" />}
             <text x="22" y="11" fontSize="10" fill="#e8e8f0" fontFamily="sans-serif">
               {t}
             </text>

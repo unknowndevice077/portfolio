@@ -1,17 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #050507;
-  --bg-elev: #0c0c11;
-  --border: #23232f;
-  --border-glow: rgba(0, 255, 242, 0.35);
-  --text: #e8e8f0;
-  --text-dim: #9494a8;
-  --text-faint: #55556a;
-  --cyan: #00fff2;
-  --pink: #ff2fd6;
-  --purple: #a855f7;
-  --yellow: #f2ff00;
+  --bg: #08090c;
+  --bg-elev: #0f1116;
+  --glass: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-border-hover: rgba(255, 255, 255, 0.16);
+  --border: #1c1e26;
+  --text: #f2f3f5;
+  --text-dim: #9a9ca8;
+  --text-faint: #5c5e6b;
+  --accent: #6ee7d8;
+  --accent-2: #818cf8;
+  --accent-rgb: 110, 231, 216;
 }
 
 * {
@@ -40,118 +41,35 @@ body {
 }
 
 ::selection {
-  background: var(--pink);
-  color: #000;
+  background: var(--accent);
+  color: #06070a;
 }
 
-/* Scanline overlay across the whole page */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  pointer-events: none;
-  background: repeating-linear-gradient(
-    0deg,
-    rgba(255, 255, 255, 0.015) 0px,
-    rgba(255, 255, 255, 0.015) 1px,
-    transparent 1px,
-    transparent 3px
-  );
-  mix-blend-mode: overlay;
-}
-
-/* Vignette */
+/* Very subtle vignette only — no scanlines, no harsh overlays */
 body::after {
   content: "";
   position: fixed;
   inset: 0;
-  z-index: 99;
+  z-index: 5;
   pointer-events: none;
-  background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.65) 100%);
+  background: radial-gradient(ellipse at 50% 0%, transparent 50%, rgba(0, 0, 0, 0.4) 100%);
 }
 
-@keyframes glitch-anim-1 {
-  0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
-  20% { clip-path: inset(20% 0 60% 0); transform: translate(-3px, 1px); }
-  40% { clip-path: inset(60% 0 10% 0); transform: translate(3px, -1px); }
-  60% { clip-path: inset(10% 0 70% 0); transform: translate(-2px, 2px); }
-  80% { clip-path: inset(80% 0 5% 0); transform: translate(2px, -2px); }
+.glass {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition: border-color 0.35s ease, transform 0.35s ease, background 0.35s ease;
 }
 
-@keyframes glitch-anim-2 {
-  0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
-  25% { clip-path: inset(70% 0 5% 0); transform: translate(2px, -1px); }
-  50% { clip-path: inset(15% 0 65% 0); transform: translate(-3px, 1px); }
-  75% { clip-path: inset(45% 0 25% 0); transform: translate(2px, 2px); }
-}
-
-.glitch-wrap {
-  position: relative;
-  display: inline-block;
-}
-
-.glitch-wrap .glitch-layer {
-  position: absolute;
-  inset: 0;
-  opacity: 0.85;
-}
-
-.glitch-wrap .glitch-layer-cyan {
-  color: var(--cyan);
-  animation: glitch-anim-1 4s infinite steps(2, jump-none);
-  mix-blend-mode: screen;
-}
-
-.glitch-wrap .glitch-layer-pink {
-  color: var(--pink);
-  animation: glitch-anim-2 4.5s infinite steps(2, jump-none);
-  mix-blend-mode: screen;
-}
-
-@keyframes flicker {
-  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
-  20%, 22%, 24%, 55% { opacity: 0.6; }
-}
-
-.flicker {
-  animation: flicker 6s infinite;
-}
-
-@keyframes scan-sweep {
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(100%); }
-}
-
-.neon-text-cyan {
-  color: var(--cyan);
-  text-shadow: 0 0 4px var(--cyan), 0 0 14px var(--cyan), 0 0 30px rgba(0, 255, 242, 0.5);
-}
-
-.neon-text-pink {
-  color: var(--pink);
-  text-shadow: 0 0 4px var(--pink), 0 0 14px var(--pink), 0 0 30px rgba(255, 47, 214, 0.5);
-}
-
-.neon-border {
-  border: 1px solid var(--border);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.neon-border:hover {
-  border-color: var(--cyan);
-  box-shadow: 0 0 10px rgba(0, 255, 242, 0.25), 0 0 40px rgba(0, 255, 242, 0.08), inset 0 0 20px rgba(0, 255, 242, 0.03);
-}
-
-.grid-bg {
-  background-image:
-    linear-gradient(rgba(0, 255, 242, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 255, 242, 0.06) 1px, transparent 1px);
-  background-size: 40px 40px;
+.glass:hover {
+  border-color: var(--glass-border-hover);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 @keyframes fade-up {
-  from { opacity: 0; transform: translateY(24px); }
+  from { opacity: 0; transform: translateY(28px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -160,14 +78,21 @@ body::after {
 }
 
 .reveal.in-view {
-  animation: fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-@keyframes pulse-glow {
-  0%, 100% { opacity: 0.5; }
+@keyframes soft-pulse {
+  0%, 100% { opacity: 0.7; }
   50% { opacity: 1; }
 }
 
-.pulse-glow {
-  animation: pulse-glow 2.5s ease-in-out infinite;
+.soft-pulse {
+  animation: soft-pulse 3s ease-in-out infinite;
+}
+
+.text-gradient {
+  background: linear-gradient(120deg, var(--text) 30%, var(--accent) 70%, var(--accent-2) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }

@@ -4,8 +4,8 @@ import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
 export default function SceneBackground({
-  accent1 = "#00fff2",
-  accent2 = "#ff2fd6",
+  accent1 = "#6ee7d8",
+  accent2 = "#818cf8",
 }: {
   accent1?: string;
   accent2?: string;
@@ -14,7 +14,6 @@ export default function SceneBackground({
   const target1Ref = useRef(new THREE.Color(accent1));
   const target2Ref = useRef(new THREE.Color(accent2));
 
-  // Update targets without re-initializing the whole scene
   useEffect(() => {
     target1Ref.current.set(accent1);
   }, [accent1]);
@@ -29,12 +28,12 @@ export default function SceneBackground({
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(
-      60,
+      55,
       window.innerWidth / window.innerHeight,
       0.1,
       1000
     );
-    camera.position.set(0, 1.2, 6.5);
+    camera.position.set(0, 0, 8);
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -45,58 +44,58 @@ export default function SceneBackground({
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     mount.appendChild(renderer.domElement);
 
-    // --- Perspective grid floor (synthwave style) ---
-    const gridCyan = new THREE.GridHelper(40, 40, 0x00fff2, 0x14141c);
-    gridCyan.position.y = -1.6;
-    (gridCyan.material as THREE.Material).transparent = true;
-    (gridCyan.material as THREE.Material).opacity = 0.35;
-    scene.add(gridCyan);
-
-    // --- Wireframe icosahedron centerpiece (tracks accent1) ---
-    const icoGeo = new THREE.IcosahedronGeometry(1.6, 1);
-    const icoMat = new THREE.MeshBasicMaterial({
+    // --- Soft floating orbs (blurred via CSS on the canvas wrapper) ---
+    const orbGeo = new THREE.SphereGeometry(1, 32, 32);
+    const orbMat1 = new THREE.MeshBasicMaterial({
       color: target1Ref.current.clone(),
-      wireframe: true,
       transparent: true,
-      opacity: 0.55,
+      opacity: 0.15,
     });
-    const ico = new THREE.Mesh(icoGeo, icoMat);
-    ico.position.set(2.2, 0.6, -1.5);
-    scene.add(ico);
+    const orb1 = new THREE.Mesh(orbGeo, orbMat1);
+    orb1.position.set(-3, 1.5, -3);
+    orb1.scale.setScalar(2.6);
+    scene.add(orb1);
 
-    // --- Octahedron (tracks accent2) ---
-    const icoGeo2 = new THREE.OctahedronGeometry(1, 0);
-    const icoMat2 = new THREE.MeshBasicMaterial({
+    const orbMat2 = new THREE.MeshBasicMaterial({
       color: target2Ref.current.clone(),
-      wireframe: true,
       transparent: true,
-      opacity: 0.4,
+      opacity: 0.12,
     });
-    const ico2 = new THREE.Mesh(icoGeo2, icoMat2);
-    ico2.position.set(-2.6, -0.2, -1);
-    scene.add(ico2);
+    const orb2 = new THREE.Mesh(orbGeo, orbMat2);
+    orb2.position.set(3.5, -1, -4);
+    orb2.scale.setScalar(3.2);
+    scene.add(orb2);
 
-    // --- Particle field (tracks accent1) ---
-    const particleCount = 400;
+    // --- Fine particle drift, low opacity, subtle ---
+    const particleCount = 220;
     const positions = new Float32Array(particleCount * 3);
     for (let i = 0; i < particleCount; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 30;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 15;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 20 - 5;
+      positions[i * 3] = (Math.random() - 0.5) * 24;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 14;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 12 - 3;
     }
     const particleGeo = new THREE.BufferGeometry();
     particleGeo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
     const particleMat = new THREE.PointsMaterial({
-      color: target1Ref.current.clone(),
-      size: 0.03,
+      color: 0xffffff,
+      size: 0.02,
       transparent: true,
-      opacity: 0.6,
+      opacity: 0.25,
     });
     const particles = new THREE.Points(particleGeo, particleMat);
     scene.add(particles);
 
-    // grid also tracks accent2 subtly
-    const gridMat = gridCyan.material as THREE.LineBasicMaterial;
+    // --- Thin wireframe accent shape, very subtle ---
+    const wireGeo = new THREE.IcosahedronGeometry(2.2, 1);
+    const wireMat = new THREE.MeshBasicMaterial({
+      color: target1Ref.current.clone(),
+      wireframe: true,
+      transparent: true,
+      opacity: 0.08,
+    });
+    const wire = new THREE.Mesh(wireGeo, wireMat);
+    wire.position.set(2, 0.5, -5);
+    scene.add(wire);
 
     let raf = 0;
     let mouseX = 0;
@@ -112,24 +111,23 @@ export default function SceneBackground({
     const animate = () => {
       const t = clock.getElapsedTime();
 
-      // Smoothly lerp live colors toward whatever the current section wants
-      icoMat.color.lerp(target1Ref.current, 0.04);
-      particleMat.color.lerp(target1Ref.current, 0.04);
-      icoMat2.color.lerp(target2Ref.current, 0.04);
-      if ("color" in gridMat) {
-        (gridMat as unknown as { color: THREE.Color }).color.lerp(target2Ref.current, 0.02);
-      }
+      orbMat1.color.lerp(target1Ref.current, 0.02);
+      orbMat2.color.lerp(target2Ref.current, 0.02);
+      wireMat.color.lerp(target1Ref.current, 0.02);
 
-      ico.rotation.x = t * 0.15;
-      ico.rotation.y = t * 0.22;
-      ico2.rotation.x = -t * 0.12;
-      ico2.rotation.y = t * 0.18;
+      orb1.position.x = -3 + Math.sin(t * 0.15) * 0.6;
+      orb1.position.y = 1.5 + Math.cos(t * 0.12) * 0.4;
+      orb2.position.x = 3.5 + Math.cos(t * 0.1) * 0.5;
+      orb2.position.y = -1 + Math.sin(t * 0.13) * 0.5;
 
-      particles.rotation.y = t * 0.01;
+      wire.rotation.x = t * 0.03;
+      wire.rotation.y = t * 0.05;
 
-      camera.position.x += (mouseX * 0.8 - camera.position.x) * 0.02;
-      camera.position.y += (1.2 - mouseY * 0.4 - camera.position.y) * 0.02;
-      camera.lookAt(0, 0, -1);
+      particles.rotation.y = t * 0.005;
+
+      camera.position.x += (mouseX * 0.4 - camera.position.x) * 0.015;
+      camera.position.y += (-mouseY * 0.25 - camera.position.y) * 0.015;
+      camera.lookAt(0, 0, -2);
 
       renderer.render(scene, camera);
       raf = requestAnimationFrame(animate);
@@ -148,10 +146,11 @@ export default function SceneBackground({
       window.removeEventListener("resize", onResize);
       window.removeEventListener("mousemove", onMouseMove);
       renderer.dispose();
-      icoGeo.dispose();
-      icoMat.dispose();
-      icoGeo2.dispose();
-      icoMat2.dispose();
+      orbGeo.dispose();
+      orbMat1.dispose();
+      orbMat2.dispose();
+      wireGeo.dispose();
+      wireMat.dispose();
       particleGeo.dispose();
       particleMat.dispose();
       if (mount.contains(renderer.domElement)) {
@@ -164,6 +163,7 @@ export default function SceneBackground({
     <div
       ref={mountRef}
       className="fixed inset-0 z-0 pointer-events-none"
+      style={{ filter: "blur(40px)" }}
       aria-hidden="true"
     />
   );

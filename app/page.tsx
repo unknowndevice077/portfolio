@@ -1,10 +1,9 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import SceneBackground from "./components/SceneBackground";
-import GlitchText from "./components/GlitchText";
 import Reveal from "./components/Reveal";
-import ProjectSection from "./components/ProjectSection";
+import ProjectTile from "./components/ProjectSection";
 import { projects } from "./data/projects";
 
 const skillGroups: [string, string[]][] = [
@@ -17,79 +16,84 @@ const skillGroups: [string, string[]][] = [
 
 function Tag({ children }: { children: React.ReactNode }) {
   return (
-    <span className="mono text-[11px] px-2 py-1 rounded-full border border-[#23232f] text-[var(--text-dim)]">
+    <span className="mono text-xs px-3 py-1.5 rounded-full border border-[var(--glass-border)] text-[var(--text-dim)]">
       {children}
     </span>
   );
 }
 
 export default function Home() {
-  const [accent1, setAccent1] = useState("#00fff2");
-  const nextAccentIndexRef = useRef(0);
-  const [accent2, setAccent2] = useState("#ff2fd6");
+  const [accent1, setAccent1] = useState("#6ee7d8");
+  const [accent2, setAccent2] = useState("#818cf8");
 
   const handleActive = useCallback((accent: string) => {
     setAccent1(accent);
-    // pick a complementary second color from the palette for variety
-    const palette = ["#ff2fd6", "#00fff2", "#f2ff00", "#00ffa2", "#a855f7"];
-    const idx = nextAccentIndexRef.current % palette.length;
-    nextAccentIndexRef.current += 1;
-    setAccent2(palette[idx]);
+    setAccent2((prev) => (prev === accent ? "#818cf8" : prev));
+  }, []);
+
+  // Restore scroll position after coming back from a project detail page
+  // (see the onClick handoff in ProjectTile) — Next.js's own scroll
+  // restoration doesn't reliably fire here, so we do it ourselves.
+  useEffect(() => {
+    const saved = sessionStorage.getItem("portfolio-scroll-y");
+    if (saved) {
+      sessionStorage.removeItem("portfolio-scroll-y");
+      // Wait a frame so the page has laid out before jumping.
+      requestAnimationFrame(() => {
+        window.scrollTo(0, Number(saved));
+      });
+    }
   }, []);
 
   return (
     <>
       <SceneBackground accent1={accent1} accent2={accent2} />
-      <main className="relative z-10 max-w-4xl mx-auto px-6 sm:px-8">
+      <main className="relative z-10 max-w-7xl mx-auto px-6 sm:px-12">
         {/* Hero */}
-        <header className="pt-28 pb-24 sm:pt-40 sm:pb-32 min-h-[90vh] flex flex-col justify-center">
-          <p className="mono text-sm neon-text-cyan mb-4 flicker">
-            &gt; SYSTEM_ONLINE // IDENTITY_LOADED
+        <header className="pt-24 pb-20 sm:pt-36 sm:pb-28 min-h-[85vh] flex flex-col justify-center">
+          <p className="mono text-sm text-[var(--accent)] mb-6 tracking-wide">
+            Hi, I&apos;m
           </p>
-          <h1 className="font-display text-6xl sm:text-8xl font-900 tracking-tight mb-6 leading-none">
-            <GlitchText text="JAE" />
+          <h1 className="font-display text-7xl sm:text-9xl font-800 tracking-tight mb-8 leading-[0.95] text-gradient">
+            Jae
           </h1>
-          <p className="text-lg sm:text-xl text-[var(--text-dim)] leading-relaxed max-w-xl mb-8 font-display font-500">
-            Final-year Computer Engineering student specializing in{" "}
-            <span className="neon-text-cyan">applied AI</span> and{" "}
-            <span className="neon-text-pink">full-stack/embedded</span> development.
-            Ships production systems independently, end-to-end — including a
-            real-time crime-detection platform live in production.
+          <p className="text-xl sm:text-2xl text-[var(--text-dim)] leading-relaxed max-w-2xl mb-10 font-body">
+            Final-year Computer Engineering student specializing in applied AI
+            and full-stack/embedded development. I ship production systems
+            independently, end-to-end — including a real-time crime-detection
+            platform live in production.
           </p>
           <div className="flex flex-wrap gap-4">
             <a
               href="https://github.com/unknowndevice077"
               target="_blank"
               rel="noopener noreferrer"
-              className="mono text-sm px-5 py-3 bg-[var(--cyan)] text-black font-bold hover:shadow-[0_0_25px_rgba(0,255,242,0.6)] transition-shadow"
+              className="text-sm px-6 py-3.5 rounded-full bg-[var(--text)] text-[#08090c] font-semibold hover:opacity-90 transition-opacity"
             >
-              github.com/unknowndevice077
+              GitHub ↗
             </a>
             <a
               href="mailto:frjhay.delacruz@gmail.com"
-              className="mono text-sm px-5 py-3 neon-border hover:shadow-[0_0_25px_rgba(0,255,242,0.25)]"
+              className="text-sm px-6 py-3.5 rounded-full glass font-semibold"
             >
-              CONTACT_ME
+              Get in touch
             </a>
           </div>
-          <p className="mono text-[11px] text-[var(--text-faint)] mt-10 animate-pulse">
-            ↓ scroll — background reacts to what you're viewing
-          </p>
         </header>
 
         {/* Skills */}
         <Reveal>
-          <section className="py-16 border-t border-[var(--border)]">
-            <h2 className="font-display text-sm neon-text-pink mb-8 uppercase tracking-[0.3em]">
-              // Skills
+          <section className="py-16 sm:py-20 border-t border-[var(--border)]">
+            <h2 className="font-display text-sm text-[var(--text-faint)] mb-10 uppercase tracking-[0.25em]">
+              Skills
             </h2>
-            <div className="space-y-5">
+            <div className="space-y-6">
               {skillGroups.map(([group, items]) => (
-                <div key={group} className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-4">
-                  <span className="mono text-xs text-[var(--text-faint)] sm:w-44 shrink-0">
+                <div key={group} className="flex flex-col sm:flex-row sm:items-baseline gap-3 sm:gap-6">
+                  <span className="text-sm text-[var(--text-dim)] sm:w-48 shrink-0 font-medium">
                     {group}
                   </span>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2.5">
                     {items.map((item) => (
                       <Tag key={item}>{item}</Tag>
                     ))}
@@ -100,40 +104,53 @@ export default function Home() {
           </section>
         </Reveal>
 
-        {/* Projects — full immersive sections, background reacts as each scrolls into view */}
-        <div>
+        {/* Projects — bento grid, full width, varied sizes */}
+        <section className="py-16 sm:py-20 border-t border-[var(--border)]">
           <Reveal>
-            <h2 className="font-display text-sm neon-text-cyan pt-16 uppercase tracking-[0.3em]">
-              // Featured Builds
+            <h2 className="font-display text-sm text-[var(--text-faint)] mb-10 uppercase tracking-[0.25em]">
+              Featured builds
             </h2>
           </Reveal>
-          {projects.map((p, i) => (
-            <ProjectSection key={p.slug} project={p} index={i} onActive={handleActive} />
-          ))}
-        </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
+            {projects.map((p, i) => (
+              <Reveal key={p.slug} delay={i * 60}>
+                <ProjectTile project={p} onActive={handleActive} large={i === 0} />
+              </Reveal>
+            ))}
+          </div>
+          <Reveal>
+            <p className="text-sm text-[var(--text-faint)] mt-8">
+              Plus 12+ additional repos: EcoVision Smartpole, a line-following
+              robot, LeadPilot (job-board matching), and embedded builds (fire
+              alarms, toll gates, energy harvesting).
+            </p>
+          </Reveal>
+        </section>
 
         {/* Experience */}
         <Reveal>
-          <section className="py-16 border-t border-[var(--border)]">
-            <h2 className="font-display text-sm neon-text-pink mb-8 uppercase tracking-[0.3em]">
-              // Experience
+          <section className="py-16 sm:py-20 border-t border-[var(--border)]">
+            <h2 className="font-display text-sm text-[var(--text-faint)] mb-10 uppercase tracking-[0.25em]">
+              Experience
             </h2>
-            <div className="space-y-6">
-              <div>
-                <div className="flex items-baseline justify-between">
-                  <h3 className="font-display font-600">Freelance Video Editor — Remote</h3>
-                  <span className="mono text-xs text-[var(--text-faint)]">Apr 2023 – Nov 2023</span>
+            <div className="grid sm:grid-cols-2 gap-8">
+              <div className="glass rounded-2xl p-6">
+                <div className="flex items-baseline justify-between mb-2">
+                  <h3 className="font-display font-700 text-lg">Freelance Video Editor</h3>
+                  <span className="mono text-xs text-[var(--text-faint)]">2023</span>
                 </div>
-                <p className="text-sm text-[var(--text-dim)] mt-1">
+                <p className="text-sm text-[var(--text-dim)]">Remote</p>
+                <p className="text-sm text-[var(--text-dim)] mt-3">
                   Edited gaming and tutorial content for YouTube channels, improving viewership and live-stream engagement.
                 </p>
               </div>
-              <div>
-                <div className="flex items-baseline justify-between">
-                  <h3 className="font-display font-600">IT & Marketing Assistant (OJT) — Carlosta Hotel</h3>
-                  <span className="mono text-xs text-[var(--text-faint)]">Jun 2021 – Jul 2021</span>
+              <div className="glass rounded-2xl p-6">
+                <div className="flex items-baseline justify-between mb-2">
+                  <h3 className="font-display font-700 text-lg">IT & Marketing Assistant</h3>
+                  <span className="mono text-xs text-[var(--text-faint)]">2021</span>
                 </div>
-                <p className="text-sm text-[var(--text-dim)] mt-1">
+                <p className="text-sm text-[var(--text-dim)]">Carlosta Hotel (OJT)</p>
+                <p className="text-sm text-[var(--text-dim)] mt-3">
                   Maintained hotel IT systems and network devices; designed promotional materials for marketing campaigns.
                 </p>
               </div>
@@ -143,34 +160,34 @@ export default function Home() {
 
         {/* Education & Competitions */}
         <Reveal>
-          <section className="py-16 border-t border-[var(--border)] grid sm:grid-cols-2 gap-10">
+          <section className="py-16 sm:py-20 border-t border-[var(--border)] grid sm:grid-cols-2 gap-12">
             <div>
-              <h2 className="font-display text-sm neon-text-cyan mb-6 uppercase tracking-[0.3em]">
-                // Education
+              <h2 className="font-display text-sm text-[var(--text-faint)] mb-6 uppercase tracking-[0.25em]">
+                Education
               </h2>
-              <h3 className="font-display font-600">Western Leyte College</h3>
+              <h3 className="font-display font-700 text-xl">Western Leyte College</h3>
               <p className="text-sm text-[var(--text-dim)] mb-2">Ormoc City, Philippines</p>
               <p className="text-sm text-[var(--text-dim)]">B.S. Computer Engineering — In Progress</p>
-              <p className="mono text-xs text-[var(--text-faint)] mt-3 leading-relaxed">
+              <p className="text-sm text-[var(--text-faint)] mt-3 leading-relaxed">
                 Embedded Systems Design · Computer Vision & Object Detection · Robotics Kinematics ·
                 Microprocessor Systems (PIC16F84A Assembly) · Cloud Frameworks & Database Management.
                 Senior High (ICT), graduated with honors — Outstanding Awardee in Technical-Vocational Education.
               </p>
             </div>
             <div>
-              <h2 className="font-display text-sm neon-text-cyan mb-6 uppercase tracking-[0.3em]">
-                // Competitions
+              <h2 className="font-display text-sm text-[var(--text-faint)] mb-6 uppercase tracking-[0.25em]">
+                Competitions
               </h2>
-              <div className="space-y-4">
+              <div className="space-y-5">
                 <div>
-                  <h3 className="font-display text-sm font-600">CodeChum National Programming Challenge 2024</h3>
-                  <p className="mono text-xs text-[var(--text-faint)] mt-1">
+                  <h3 className="font-display font-700">CodeChum National Programming Challenge 2024</h3>
+                  <p className="text-sm text-[var(--text-faint)] mt-1">
                     Certificate of Participation — trees, graphs, hash maps, DP, greedy.
                   </p>
                 </div>
                 <div>
-                  <h3 className="font-display text-sm font-600">ISITE AI Hackathon 2026 — HexCorePH Labs</h3>
-                  <p className="mono text-xs text-[var(--text-faint)] mt-1">
+                  <h3 className="font-display font-700">ISITE AI Hackathon 2026 — HexCorePH Labs</h3>
+                  <p className="text-sm text-[var(--text-faint)] mt-1">
                     Built QuestScribe, an n8n-automated gamified learning platform with an AI chatbot tutor.
                   </p>
                 </div>
@@ -180,18 +197,15 @@ export default function Home() {
         </Reveal>
 
         {/* Footer */}
-        <footer className="py-20 border-t border-[var(--border)] flex flex-col items-start gap-4">
-          <p className="font-display text-2xl neon-text-pink">
-            LET&apos;S BUILD SOMETHING.
+        <footer className="py-20 sm:py-28 border-t border-[var(--border)] flex flex-col items-start gap-5">
+          <p className="font-display text-3xl sm:text-4xl font-800 text-gradient">
+            Let&apos;s build something.
           </p>
-          <p className="text-sm text-[var(--text-dim)]">
+          <p className="text-[var(--text-dim)]">
             Open to remote full-time or contract work.
           </p>
-          <div className="flex flex-wrap gap-3">
-            <a
-              href="mailto:frjhay.delacruz@gmail.com"
-              className="mono text-sm neon-text-cyan hover:underline"
-            >
+          <div className="flex flex-wrap gap-3 text-sm">
+            <a href="mailto:frjhay.delacruz@gmail.com" className="text-[var(--accent)] hover:underline">
               frjhay.delacruz@gmail.com
             </a>
             <span className="text-[var(--text-faint)]">·</span>
@@ -199,7 +213,7 @@ export default function Home() {
               href="https://github.com/unknowndevice077"
               target="_blank"
               rel="noopener noreferrer"
-              className="mono text-sm neon-text-cyan hover:underline"
+              className="text-[var(--accent)] hover:underline"
             >
               github.com/unknowndevice077
             </a>

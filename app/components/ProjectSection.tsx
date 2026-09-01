@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
-import TiltCard from "./TiltCard";
 import type { Project } from "../data/projects";
 import {
   EcoVisionVisual,
@@ -20,18 +19,17 @@ const visualMap = {
   notion: NotionAIVisual,
 };
 
-export default function ProjectSection({
+export default function ProjectTile({
   project,
-  index,
   onActive,
+  large = false,
 }: {
   project: Project;
-  index: number;
   onActive: (accent: string) => void;
+  large?: boolean;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLAnchorElement>(null);
   const Visual = visualMap[project.visual];
-  const reversed = index % 2 === 1;
 
   useEffect(() => {
     const el = ref.current;
@@ -39,12 +37,10 @@ export default function ProjectSection({
     const obs = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          if (entry.isIntersecting) {
-            onActive(project.accent);
-          }
+          if (entry.isIntersecting) onActive(project.accent);
         }
       },
-      { threshold: 0.4, rootMargin: "-10% 0px -10% 0px" }
+      { threshold: 0.3, rootMargin: "-15% 0px -15% 0px" }
     );
     obs.observe(el);
     return () => obs.disconnect();
@@ -52,95 +48,55 @@ export default function ProjectSection({
   }, [project.accent]);
 
   return (
-    <div
+    <Link
+      href={`/projects/${project.slug}`}
       ref={ref}
-      className="min-h-[85vh] flex items-center py-16 border-t border-[var(--border)]"
+      onClick={() => {
+        // Manual scroll-position handoff: Next.js's automatic scroll
+        // restoration doesn't reliably fire when leaving via a client-side
+        // Link click here, so we save it ourselves and restore it when the
+        // home page remounts after the user hits Back.
+        sessionStorage.setItem("portfolio-scroll-y", String(window.scrollY));
+      }}
+      className={`glass group relative flex flex-col overflow-hidden rounded-2xl p-1 transition-transform duration-500 hover:-translate-y-1 ${
+        large ? "lg:col-span-2 lg:row-span-2" : ""
+      }`}
     >
-      <div
-        className={`grid sm:grid-cols-2 gap-10 items-center w-full ${
-          reversed ? "sm:[&>*:first-child]:order-2" : ""
-        }`}
-      >
-        <div>
-          <p
-            className="mono text-xs mb-3 tracking-[0.3em]"
-            style={{ color: project.accent }}
-          >
-            0{index + 1} // {project.visual.toUpperCase()}
-          </p>
-          <div className="flex items-center gap-2 mb-3">
-            <h3 className="font-display text-3xl sm:text-4xl font-700 leading-tight">
-              {project.name}
-            </h3>
-            {project.flagship && (
-              <span
-                className="mono text-[10px] px-2 py-0.5 rounded-full font-bold pulse-glow shrink-0"
-                style={{ background: project.accent, color: "#000" }}
-              >
-                LIVE
-              </span>
-            )}
-          </div>
-          <p className="text-base text-[var(--text-dim)] mb-5">{project.tagline}</p>
-          <div className="flex flex-wrap gap-2 mb-5">
-            {project.tech.map((t) => (
-              <span
-                key={t}
-                className="mono text-[11px] px-2 py-1 rounded-full border"
-                style={{ borderColor: `${project.accent}55`, color: project.accent }}
-              >
-                {t}
-              </span>
-            ))}
-          </div>
-          <ul className="space-y-2 mb-7">
-            {project.bullets.map((b, bi) => (
-              <li
-                key={bi}
-                className="text-sm text-[var(--text-dim)] leading-relaxed pl-4 relative"
-              >
-                <span className="absolute left-0" style={{ color: project.accent }}>
-                  ▸
-                </span>
-                {b}
-              </li>
-            ))}
-          </ul>
-          <div className="flex flex-wrap gap-3">
-            <Link
-              href={`/projects/${project.slug}`}
-              className="mono text-xs font-bold px-5 py-3 transition-shadow"
-              style={{
-                background: project.accent,
-                color: "#000",
-                boxShadow: `0 0 0 rgba(${project.accentRgb},0)`,
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.boxShadow = `0 0 25px rgba(${project.accentRgb},0.6)`;
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.boxShadow = `0 0 0 rgba(${project.accentRgb},0)`;
-              }}
-            >
-              VIEW PROJECT →
-            </Link>
-            <a
-              href={project.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mono text-xs font-bold px-5 py-3 border"
-              style={{ borderColor: `${project.accent}55`, color: project.accent }}
-            >
-              SOURCE ↗
-            </a>
-          </div>
-        </div>
-        <TiltCard>
-          <Link href={`/projects/${project.slug}`} className="block">
-            <Visual />
-          </Link>
-        </TiltCard>
+      <div className="rounded-xl overflow-hidden">
+        <Visual />
       </div>
-    </div>
+      <div className="p-6 sm:p-8 flex flex-col flex-1">
+        <div className="flex items-center gap-3 mb-2">
+          <h3 className={`font-display font-800 ${large ? "text-2xl sm:text-3xl" : "text-xl"}`}>
+            {project.name}
+          </h3>
+          {project.flagship && (
+            <span
+              className="mono text-[10px] px-2 py-0.5 rounded-full font-semibold soft-pulse shrink-0"
+              style={{ background: `${project.accent}20`, color: project.accent, border: `1px solid ${project.accent}50` }}
+            >
+              LIVE
+            </span>
+          )}
+        </div>
+        <p className={`text-[var(--text-dim)] mb-4 ${large ? "text-base" : "text-sm"}`}>
+          {project.tagline}
+        </p>
+        <div className="flex flex-wrap gap-2 mb-5">
+          {project.tech.slice(0, large ? 6 : 3).map((t) => (
+            <span
+              key={t}
+              className="mono text-[11px] px-2.5 py-1 rounded-full border border-[var(--glass-border)] text-[var(--text-faint)]"
+            >
+              {t}
+            </span>
+          ))}
+        </div>
+        <div className="mt-auto flex items-center gap-2 text-sm font-semibold" style={{ color: project.accent }}>
+          View project
+          <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+        </div>
+      </div>
+    </Link>
   );
 }
