@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #08090c;
+  --bg: #000000;
   --bg-elev: #0f1116;
   --glass: rgba(255, 255, 255, 0.03);
   --glass-border: rgba(255, 255, 255, 0.08);
@@ -21,10 +21,10 @@
 
 html {
   scroll-behavior: smooth;
-  /* proximity, not mandatory: centers each section as you scroll without
-     fighting clicks/scrolling inside the embedded live demo iframes
-     (mandatory snap can trap you fighting the page to reach a button
-     inside an iframe). */
+  /* mandatory fought programmatic navigation and blocked moderate scrolls
+     outright when tested against sections taller than one viewport (the
+     demo blocks, once they include a ~600px iframe, run well past 100vh).
+     proximity is the reliable choice once section heights vary this much. */
   scroll-snap-type: y proximity;
 }
 
@@ -33,8 +33,21 @@ html {
   scroll-snap-stop: normal;
 }
 
+/* For sections taller than the viewport (project blocks with a live demo
+   iframe stacked below the intro text): align to the top instead of
+   center, so the intro is fully visible first rather than the block's
+   vertical midpoint (which could cut the demo off-screen). */
+.snap-section-start {
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;
+}
+
 body {
-  background: var(--bg);
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    var(--bg);
+  background-size: 56px 56px, 56px 56px, auto;
   color: var(--text);
   font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;

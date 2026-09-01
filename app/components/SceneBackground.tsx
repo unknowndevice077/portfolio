@@ -3,84 +3,34 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
-const vertexShader = /* glsl */ `
-  varying vec2 vUv;
-  void main() {
-    vUv = uv;
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+type Ring = {
+  mesh: THREE.LineLoop;
+  mat: THREE.LineBasicMaterial;
+  target: THREE.Color;
+  baseX: number;
+  baseY: number;
+  z: number;
+  speed: number;
+  phase: number;
+};
+
+function makeRing(radius: number, segments: number): THREE.BufferGeometry {
+  const points: THREE.Vector3[] = [];
+  for (let i = 0; i <= segments; i++) {
+    const a = (i / segments) * Math.PI * 2;
+    points.push(new THREE.Vector3(Math.cos(a) * radius, Math.sin(a) * radius, 0));
   }
-`;
+  return new THREE.BufferGeometry().setFromPoints(points);
+}
 
-// Classic Ashima Arts simplex noise (public domain / MIT) — standard,
-// widely-used GLSL noise implementation.
-const noiseGlsl = /* glsl */ `
-  vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-  vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-  vec3 permute(vec3 x) { return mod289(((x*34.0)+1.0)*x); }
-
-  float snoise(vec2 v) {
-    const vec4 C = vec4(0.211324865405187, 0.366025403784439,
-                        -0.577350269189626, 0.024390243902439);
-    vec2 i  = floor(v + dot(v, C.yy));
-    vec2 x0 = v -   i + dot(i, C.xx);
-    vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
-    vec4 x12 = x0.xyxy + C.xxzz;
-    x12.xy -= i1;
-    i = mod289(i);
-    vec3 p = permute(permute(i.y + vec3(0.0, i1.y, 1.0))
-      + i.x + vec3(0.0, i1.x, 1.0));
-    vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);
-    m = m*m;
-    m = m*m;
-    vec3 x = 2.0 * fract(p * C.www) - 1.0;
-    vec3 h = abs(x) - 0.5;
-    vec3 ox = floor(x + 0.5);
-    vec3 a0 = x - ox;
-    m *= 1.79284291400159 - 0.85373472095314 * (a0*a0 + h*h);
-    vec3 g;
-    g.x  = a0.x  * x0.x  + h.x  * x0.y;
-    g.yz = a0.yz * x12.xz + h.yz * x12.yw;
-    return 130.0 * dot(m, g);
+function makePolygon(radius: number, sides: number): THREE.BufferGeometry {
+  const points: THREE.Vector3[] = [];
+  for (let i = 0; i <= sides; i++) {
+    const a = (i / sides) * Math.PI * 2 + Math.PI / sides;
+    points.push(new THREE.Vector3(Math.cos(a) * radius, Math.sin(a) * radius, 0));
   }
-`;
-
-const fragmentShader = /* glsl */ `
-  varying vec2 vUv;
-  uniform float uTime;
-  uniform vec2 uResolution;
-  uniform vec3 uColorA;
-  uniform vec3 uColorB;
-  uniform vec3 uColorBase;
-
-  ${noiseGlsl}
-
-  void main() {
-    vec2 uv = vUv;
-    vec2 aspectUv = (uv - 0.5) * vec2(uResolution.x / uResolution.y, 1.0);
-
-    float t = uTime * 0.045;
-
-    // Layered flow-field noise — slow, large-scale bands drifting diagonally,
-    // like an aurora rather than static blobs.
-    float n1 = snoise(aspectUv * 1.4 + vec2(t, t * 0.6));
-    float n2 = snoise(aspectUv * 2.2 - vec2(t * 0.7, t * 0.3) + 4.2);
-    float n3 = snoise(aspectUv * 3.1 + vec2(t * 0.35, -t * 0.5) + 9.1);
-
-    float flow = n1 * 0.5 + n2 * 0.3 + n3 * 0.2;
-    flow = flow * 0.5 + 0.5; // normalize to 0..1
-
-    // Mix base navy with two accent colors based on flow value and position
-    vec3 col = mix(uColorBase, uColorA, smoothstep(0.35, 0.85, flow));
-    float mixB = smoothstep(0.55, 1.0, n2 * 0.5 + 0.5);
-    col = mix(col, uColorB, mixB * 0.6);
-
-    // Soft radial vignette
-    float dist = length(aspectUv);
-    col *= smoothstep(1.3, 0.1, dist) * 0.7 + 0.3;
-
-    gl_FragColor = vec4(col, 1.0);
-  }
-`;
+  return new THREE.BufferGeometry().setFromPoints(points);
+}
 
 export default function SceneBackground({
   accent1 = "#6ee7d8",
@@ -106,61 +56,121 @@ export default function SceneBackground({
     if (!mount) return;
 
     const scene = new THREE.Scene();
-    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    const camera = new THREE.PerspectiveCamera(
+      50,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    );
+    camera.position.set(0, 0, 10);
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
+      alpha: true,
       preserveDrawingBuffer: true,
     });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     mount.appendChild(renderer.domElement);
 
-    const liveColorA = target1Ref.current.clone();
-    const liveColorB = target2Ref.current.clone();
-    const baseColor = new THREE.Color("#0a0a14");
+    // --- Sparse geometric line-art: a handful of thin outlined shapes
+    // drifting slowly on pure black, colored by the active project accent. ---
+    const shapeDefs = [
+      { geo: makeRing(2.6, 64), pos: [-4.5, 1.8], z: -4, speed: 0.03, opacity: 0.5, useAccent2: false },
+      { geo: makeRing(1.4, 64), pos: [-4.2, 1.5], z: -3.9, speed: 0.04, opacity: 0.3, useAccent2: false },
+      { geo: makePolygon(2.1, 6), pos: [4.8, -1.5], z: -5, speed: -0.025, opacity: 0.45, useAccent2: true },
+      { geo: makeRing(3.4, 80), pos: [3.5, 2.6], z: -6, speed: 0.018, opacity: 0.22, useAccent2: true },
+      { geo: makePolygon(1.5, 3), pos: [-2.5, -2.8], z: -4.5, speed: 0.05, opacity: 0.35, useAccent2: false },
+    ];
 
-    const uniforms = {
-      uTime: { value: 0 },
-      uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
-      uColorA: { value: liveColorA },
-      uColorB: { value: liveColorB },
-      uColorBase: { value: baseColor },
-    };
-
-    const material = new THREE.ShaderMaterial({
-      vertexShader,
-      fragmentShader,
-      uniforms,
+    const rings: Ring[] = shapeDefs.map((d, i) => {
+      const mat = new THREE.LineBasicMaterial({
+        color: (d.useAccent2 ? target2Ref.current : target1Ref.current).clone(),
+        transparent: true,
+        opacity: d.opacity,
+      });
+      const mesh = new THREE.LineLoop(d.geo, mat);
+      mesh.position.set(d.pos[0], d.pos[1], d.z);
+      scene.add(mesh);
+      return {
+        mesh,
+        mat,
+        target: d.useAccent2 ? target2Ref.current : target1Ref.current,
+        baseX: d.pos[0],
+        baseY: d.pos[1],
+        z: d.z,
+        speed: d.speed,
+        phase: i * 1.7,
+      };
     });
 
-    const geometry = new THREE.PlaneGeometry(2, 2);
-    const mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
+    // --- Fine dot grid, very subtle, gives texture without color noise ---
+    const dotCount = 260;
+    const positions = new Float32Array(dotCount * 3);
+    for (let i = 0; i < dotCount; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 28;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 18;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 10 - 3;
+    }
+    const dotGeo = new THREE.BufferGeometry();
+    dotGeo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    const dotMat = new THREE.PointsMaterial({
+      color: 0xffffff,
+      size: 0.018,
+      transparent: true,
+      opacity: 0.35,
+    });
+    const dots = new THREE.Points(dotGeo, dotMat);
+    scene.add(dots);
 
     let raf = 0;
+    let mouseX = 0;
+    let mouseY = 0;
+
+    const onMouseMove = (e: MouseEvent) => {
+      mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+      mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+    };
+    window.addEventListener("mousemove", onMouseMove);
+
     const clock = new THREE.Clock();
     const animate = () => {
-      uniforms.uTime.value = clock.getElapsedTime();
-      liveColorA.lerp(target1Ref.current, 0.008);
-      liveColorB.lerp(target2Ref.current, 0.008);
+      const t = clock.getElapsedTime();
+
+      rings.forEach((r) => {
+        r.mat.color.lerp(r.target, 0.015);
+        r.mesh.rotation.z = t * r.speed;
+        r.mesh.position.x = r.baseX + Math.sin(t * 0.05 + r.phase) * 0.3;
+        r.mesh.position.y = r.baseY + Math.cos(t * 0.04 + r.phase) * 0.25;
+      });
+
+      dots.rotation.y = t * 0.003;
+
+      camera.position.x += (mouseX * 0.5 - camera.position.x) * 0.02;
+      camera.position.y += (-mouseY * 0.3 - camera.position.y) * 0.02;
+      camera.lookAt(0, 0, -2);
+
       renderer.render(scene, camera);
       raf = requestAnimationFrame(animate);
     };
     animate();
 
     const onResize = () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
-      uniforms.uResolution.value.set(window.innerWidth, window.innerHeight);
     };
     window.addEventListener("resize", onResize);
 
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", onResize);
+      window.removeEventListener("mousemove", onMouseMove);
       renderer.dispose();
-      geometry.dispose();
-      material.dispose();
+      shapeDefs.forEach((d) => d.geo.dispose());
+      rings.forEach((r) => r.mat.dispose());
+      dotGeo.dispose();
+      dotMat.dispose();
       if (mount.contains(renderer.domElement)) {
         mount.removeChild(renderer.domElement);
       }
@@ -171,7 +181,6 @@ export default function SceneBackground({
     <div
       ref={mountRef}
       className="fixed inset-0 z-0 pointer-events-none"
-      style={{ filter: "blur(60px) saturate(1.3)" }}
       aria-hidden="true"
     />
   );

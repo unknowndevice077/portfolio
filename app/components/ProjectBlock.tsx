@@ -42,7 +42,7 @@ function DemoFrame({ project }: { project: Project }) {
         </div>
         <iframe
           src={project.demoUrl}
-          className="w-full aspect-video bg-white"
+          className="w-full h-[520px] sm:h-[640px] bg-white"
           title={`${project.name} live demo`}
         />
       </div>
@@ -85,12 +85,20 @@ export default function ProjectBlock({
   return (
     <div
       ref={ref}
-      className="snap-section min-h-screen flex items-center py-16 border-t border-[var(--border)]"
+      className={`${
+        project.demoUrl
+          ? "snap-section-start min-h-screen flex items-start pt-20"
+          : "snap-section min-h-screen flex items-center"
+      } py-16 border-t border-[var(--border)]`}
     >
       <div
-        className={`grid lg:grid-cols-2 gap-10 items-center w-full ${
-          reversed ? "lg:[&>*:first-child]:order-2" : ""
-        }`}
+        className={
+          project.demoUrl
+            ? "flex flex-col gap-8 w-full"
+            : `grid lg:grid-cols-2 gap-10 items-center w-full ${
+                reversed ? "lg:[&>*:first-child]:order-2" : ""
+              }`
+        }
       >
         <div>
           <p className="mono text-xs mb-3 tracking-[0.25em]" style={{ color: project.accent }}>
