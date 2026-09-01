@@ -65,9 +65,9 @@ export default function ProjectTile({
       <div className="rounded-xl overflow-hidden">
         <Visual />
       </div>
-      <div className="p-6 sm:p-8 flex flex-col flex-1">
+      <div className="p-5 sm:p-6 flex flex-col flex-1">
         <div className="flex items-center gap-3 mb-2">
-          <h3 className={`font-display font-800 ${large ? "text-2xl sm:text-3xl" : "text-xl"}`}>
+          <h3 className={`font-display font-800 ${large ? "text-xl sm:text-2xl" : "text-lg"}`}>
             {project.name}
           </h3>
           {project.flagship && (

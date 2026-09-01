@@ -55,12 +55,12 @@ export default function ProjectDetailClient({
         >
           {project.visual}
         </p>
-        <h1 className="font-display text-5xl sm:text-7xl font-800 mb-6 leading-[1.02]">
+        <h1 className="font-display text-3xl sm:text-5xl font-800 mb-5 leading-[1.05]">
           {project.name}
         </h1>
-        <p className="text-xl text-[var(--text-dim)] mb-12 max-w-2xl">{project.tagline}</p>
+        <p className="text-lg text-[var(--text-dim)] mb-10 max-w-2xl">{project.tagline}</p>
 
-        <div className="mb-12 rounded-2xl overflow-hidden glass p-1">
+        <div className="mb-10 rounded-2xl overflow-hidden glass p-1">
           <Visual />
         </div>
 

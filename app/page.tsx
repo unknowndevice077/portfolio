@@ -70,31 +70,31 @@ export default function Home() {
       <SceneBackground accent1={accent1} accent2={accent2} />
       <main className="relative z-10 max-w-7xl mx-auto px-6 sm:px-12">
         {/* Hero */}
-        <header className="pt-24 pb-20 sm:pt-36 sm:pb-28 min-h-[85vh] flex flex-col justify-center">
-          <p className="mono text-sm text-[var(--accent)] mb-6 tracking-wide">
+        <header className="pt-20 pb-16 sm:pt-28 sm:pb-20 min-h-[70vh] flex flex-col justify-center">
+          <p className="mono text-sm text-[var(--accent)] mb-5 tracking-wide">
             Hi, I&apos;m
           </p>
-          <h1 className="font-display text-7xl sm:text-9xl font-800 tracking-tight mb-8 leading-[0.95] text-gradient">
+          <h1 className="font-display text-5xl sm:text-7xl font-800 tracking-tight mb-6 leading-[0.95] text-gradient">
             Jae
           </h1>
-          <p className="text-xl sm:text-2xl text-[var(--text-dim)] leading-relaxed max-w-2xl mb-10 font-body">
+          <p className="text-lg sm:text-xl text-[var(--text-dim)] leading-relaxed max-w-xl mb-8 font-body">
             Final-year Computer Engineering student specializing in applied AI
             and full-stack/embedded development. I ship production systems
             independently, end-to-end — including a real-time crime-detection
             platform live in production.
           </p>
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-wrap gap-3">
             <a
               href="https://github.com/unknowndevice077"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm px-6 py-3.5 rounded-full bg-[var(--text)] text-[#08090c] font-semibold hover:opacity-90 transition-opacity"
+              className="text-sm px-5 py-3 rounded-full bg-[var(--text)] text-[#08090c] font-semibold hover:opacity-90 transition-opacity"
             >
               GitHub ↗
             </a>
             <a
               href="mailto:frjhay.delacruz@gmail.com"
-              className="text-sm px-6 py-3.5 rounded-full glass font-semibold"
+              className="text-sm px-5 py-3 rounded-full glass font-semibold"
             >
               Get in touch
             </a>
@@ -103,7 +103,7 @@ export default function Home() {
 
         {/* Skills */}
         <Reveal>
-          <section className="py-16 sm:py-20 border-t border-[var(--border)]">
+          <section className="py-12 sm:py-16 border-t border-[var(--border)]">
             <h2 className="font-display text-sm text-[var(--text-faint)] mb-10 uppercase tracking-[0.25em]">
               Skills
             </h2>
@@ -125,7 +125,7 @@ export default function Home() {
         </Reveal>
 
         {/* Projects — bento grid, full width, varied sizes */}
-        <section className="py-16 sm:py-20 border-t border-[var(--border)]">
+        <section className="py-12 sm:py-16 border-t border-[var(--border)]">
           <Reveal>
             <h2 className="font-display text-sm text-[var(--text-faint)] mb-10 uppercase tracking-[0.25em]">
               Featured builds
@@ -149,7 +149,7 @@ export default function Home() {
 
         {/* Competitions — the highlight section */}
         <Reveal>
-          <section className="py-16 sm:py-20 border-t border-[var(--border)]">
+          <section className="py-12 sm:py-16 border-t border-[var(--border)]">
             <h2 className="font-display text-sm text-[var(--text-faint)] mb-10 uppercase tracking-[0.25em]">
               Competitions
             </h2>
@@ -157,7 +157,7 @@ export default function Home() {
               {competitions.map((c) => (
                 <div
                   key={c.title}
-                  className="glass rounded-2xl p-8 sm:p-10 relative overflow-hidden"
+                  className="glass rounded-2xl p-6 sm:p-8 relative overflow-hidden"
                 >
                   <div
                     className="absolute top-0 left-0 right-0 h-1"
@@ -169,7 +169,7 @@ export default function Home() {
                   >
                     {c.result}
                   </p>
-                  <h3 className="font-display text-2xl sm:text-3xl font-800 mb-2 leading-tight">
+                  <h3 className="font-display text-xl sm:text-2xl font-800 mb-2 leading-tight">
                     {c.title}
                   </h3>
                   <p className="text-sm text-[var(--text-faint)] mb-5">{c.org}</p>
@@ -184,7 +184,7 @@ export default function Home() {
 
         {/* Footer */}
         <footer className="py-20 sm:py-28 border-t border-[var(--border)] flex flex-col items-start gap-5">
-          <p className="font-display text-3xl sm:text-4xl font-800 text-gradient">
+          <p className="font-display text-2xl sm:text-3xl font-800 text-gradient">
             Let&apos;s build something.
           </p>
           <p className="text-[var(--text-dim)]">

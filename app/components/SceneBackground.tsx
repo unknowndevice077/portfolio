@@ -3,15 +3,84 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
-type Blob = {
-  mesh: THREE.Mesh;
-  mat: THREE.MeshBasicMaterial;
-  baseX: number;
-  baseY: number;
-  speed: number;
-  phase: number;
-  targetColor: THREE.Color;
-};
+const vertexShader = /* glsl */ `
+  varying vec2 vUv;
+  void main() {
+    vUv = uv;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }
+`;
+
+// Classic Ashima Arts simplex noise (public domain / MIT) — standard,
+// widely-used GLSL noise implementation.
+const noiseGlsl = /* glsl */ `
+  vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+  vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+  vec3 permute(vec3 x) { return mod289(((x*34.0)+1.0)*x); }
+
+  float snoise(vec2 v) {
+    const vec4 C = vec4(0.211324865405187, 0.366025403784439,
+                        -0.577350269189626, 0.024390243902439);
+    vec2 i  = floor(v + dot(v, C.yy));
+    vec2 x0 = v -   i + dot(i, C.xx);
+    vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+    vec4 x12 = x0.xyxy + C.xxzz;
+    x12.xy -= i1;
+    i = mod289(i);
+    vec3 p = permute(permute(i.y + vec3(0.0, i1.y, 1.0))
+      + i.x + vec3(0.0, i1.x, 1.0));
+    vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);
+    m = m*m;
+    m = m*m;
+    vec3 x = 2.0 * fract(p * C.www) - 1.0;
+    vec3 h = abs(x) - 0.5;
+    vec3 ox = floor(x + 0.5);
+    vec3 a0 = x - ox;
+    m *= 1.79284291400159 - 0.85373472095314 * (a0*a0 + h*h);
+    vec3 g;
+    g.x  = a0.x  * x0.x  + h.x  * x0.y;
+    g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+    return 130.0 * dot(m, g);
+  }
+`;
+
+const fragmentShader = /* glsl */ `
+  varying vec2 vUv;
+  uniform float uTime;
+  uniform vec2 uResolution;
+  uniform vec3 uColorA;
+  uniform vec3 uColorB;
+  uniform vec3 uColorBase;
+
+  ${noiseGlsl}
+
+  void main() {
+    vec2 uv = vUv;
+    vec2 aspectUv = (uv - 0.5) * vec2(uResolution.x / uResolution.y, 1.0);
+
+    float t = uTime * 0.045;
+
+    // Layered flow-field noise — slow, large-scale bands drifting diagonally,
+    // like an aurora rather than static blobs.
+    float n1 = snoise(aspectUv * 1.4 + vec2(t, t * 0.6));
+    float n2 = snoise(aspectUv * 2.2 - vec2(t * 0.7, t * 0.3) + 4.2);
+    float n3 = snoise(aspectUv * 3.1 + vec2(t * 0.35, -t * 0.5) + 9.1);
+
+    float flow = n1 * 0.5 + n2 * 0.3 + n3 * 0.2;
+    flow = flow * 0.5 + 0.5; // normalize to 0..1
+
+    // Mix base navy with two accent colors based on flow value and position
+    vec3 col = mix(uColorBase, uColorA, smoothstep(0.35, 0.85, flow));
+    float mixB = smoothstep(0.55, 1.0, n2 * 0.5 + 0.5);
+    col = mix(col, uColorB, mixB * 0.6);
+
+    // Soft radial vignette
+    float dist = length(aspectUv);
+    col *= smoothstep(1.3, 0.1, dist) * 0.7 + 0.3;
+
+    gl_FragColor = vec4(col, 1.0);
+  }
+`;
 
 export default function SceneBackground({
   accent1 = "#6ee7d8",
@@ -37,139 +106,61 @@ export default function SceneBackground({
     if (!mount) return;
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(
-      50,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      1000
-    );
-    camera.position.set(0, 0, 9);
+    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
-      alpha: true,
       preserveDrawingBuffer: true,
     });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
     mount.appendChild(renderer.domElement);
 
-    // --- Rich, layered gradient-mesh blobs: deep indigo/navy base with
-    // shifting accent color — inspired by a moody neon-lit city-at-night
-    // palette, drifting slowly for a premium "alive" feel. ---
-    const orbGeo = new THREE.SphereGeometry(1, 24, 24);
-    const palette = [
-      { color: new THREE.Color("#1e1b4b"), pos: [-4, 2, -4], scale: 3.4, opacity: 0.35, speed: 0.06 },
-      { color: new THREE.Color("#3730a3"), pos: [4, -1.5, -5], scale: 3.8, opacity: 0.28, speed: 0.05 },
-      { color: target1Ref.current.clone(), pos: [-2.5, -2, -3], scale: 2.2, opacity: 0.22, speed: 0.09 },
-      { color: target2Ref.current.clone(), pos: [3, 2.2, -3.5], scale: 2.4, opacity: 0.2, speed: 0.07 },
-      { color: new THREE.Color("#be185d"), pos: [0.5, -3, -6], scale: 3, opacity: 0.15, speed: 0.04 },
-    ];
+    const liveColorA = target1Ref.current.clone();
+    const liveColorB = target2Ref.current.clone();
+    const baseColor = new THREE.Color("#0a0a14");
 
-    const blobs: Blob[] = palette.map((p, i) => {
-      const mat = new THREE.MeshBasicMaterial({
-        color: p.color.clone(),
-        transparent: true,
-        opacity: p.opacity,
-      });
-      const mesh = new THREE.Mesh(orbGeo, mat);
-      mesh.position.set(p.pos[0], p.pos[1], p.pos[2]);
-      mesh.scale.setScalar(p.scale);
-      scene.add(mesh);
-      return {
-        mesh,
-        mat,
-        baseX: p.pos[0],
-        baseY: p.pos[1],
-        speed: p.speed,
-        phase: i * 1.3,
-        targetColor: i === 2 ? target1Ref.current : i === 3 ? target2Ref.current : p.color.clone(),
-      };
+    const uniforms = {
+      uTime: { value: 0 },
+      uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+      uColorA: { value: liveColorA },
+      uColorB: { value: liveColorB },
+      uColorBase: { value: baseColor },
+    };
+
+    const material = new THREE.ShaderMaterial({
+      vertexShader,
+      fragmentShader,
+      uniforms,
     });
 
-    // --- Faint vertical "skyline" lines, very subtle, evokes a city horizon ---
-    const skylineGroup = new THREE.Group();
-    const lineMat = new THREE.LineBasicMaterial({ color: 0x818cf8, transparent: true, opacity: 0.06 });
-    for (let i = 0; i < 14; i++) {
-      const x = (Math.random() - 0.5) * 22;
-      const h = 1 + Math.random() * 3.5;
-      const points = [
-        new THREE.Vector3(x, -4, -9 - Math.random() * 4),
-        new THREE.Vector3(x, -4 + h, -9 - Math.random() * 4),
-      ];
-      const geo = new THREE.BufferGeometry().setFromPoints(points);
-      skylineGroup.add(new THREE.Line(geo, lineMat));
-    }
-    scene.add(skylineGroup);
-
-    // --- Fine particle drift (like distant lights / grain) ---
-    const particleCount = 180;
-    const positions = new Float32Array(particleCount * 3);
-    for (let i = 0; i < particleCount; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 26;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 16;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 14 - 3;
-    }
-    const particleGeo = new THREE.BufferGeometry();
-    particleGeo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-    const particleMat = new THREE.PointsMaterial({
-      color: 0xffffff,
-      size: 0.025,
-      transparent: true,
-      opacity: 0.3,
-    });
-    const particles = new THREE.Points(particleGeo, particleMat);
-    scene.add(particles);
+    const geometry = new THREE.PlaneGeometry(2, 2);
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
 
     let raf = 0;
-    let mouseX = 0;
-    let mouseY = 0;
-
-    const onMouseMove = (e: MouseEvent) => {
-      mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-      mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-    };
-    window.addEventListener("mousemove", onMouseMove);
-
     const clock = new THREE.Clock();
     const animate = () => {
-      const t = clock.getElapsedTime();
-
-      blobs.forEach((b) => {
-        b.mat.color.lerp(b.targetColor, 0.015);
-        b.mesh.position.x = b.baseX + Math.sin(t * b.speed + b.phase) * 1.1;
-        b.mesh.position.y = b.baseY + Math.cos(t * b.speed * 0.8 + b.phase) * 0.8;
-      });
-
-      skylineGroup.position.x = Math.sin(t * 0.01) * 0.3;
-      particles.rotation.y = t * 0.004;
-
-      camera.position.x += (mouseX * 0.5 - camera.position.x) * 0.015;
-      camera.position.y += (-mouseY * 0.3 - camera.position.y) * 0.015;
-      camera.lookAt(0, 0, -2);
-
+      uniforms.uTime.value = clock.getElapsedTime();
+      liveColorA.lerp(target1Ref.current, 0.008);
+      liveColorB.lerp(target2Ref.current, 0.008);
       renderer.render(scene, camera);
       raf = requestAnimationFrame(animate);
     };
     animate();
 
     const onResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
+      uniforms.uResolution.value.set(window.innerWidth, window.innerHeight);
     };
     window.addEventListener("resize", onResize);
 
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", onResize);
-      window.removeEventListener("mousemove", onMouseMove);
       renderer.dispose();
-      orbGeo.dispose();
-      blobs.forEach((b) => b.mat.dispose());
-      lineMat.dispose();
-      particleGeo.dispose();
-      particleMat.dispose();
+      geometry.dispose();
+      material.dispose();
       if (mount.contains(renderer.domElement)) {
         mount.removeChild(renderer.domElement);
       }
@@ -180,7 +171,7 @@ export default function SceneBackground({
     <div
       ref={mountRef}
       className="fixed inset-0 z-0 pointer-events-none"
-      style={{ filter: "blur(50px)" }}
+      style={{ filter: "blur(60px) saturate(1.3)" }}
       aria-hidden="true"
     />
   );
