@@ -3,8 +3,25 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
-export default function SceneBackground() {
+export default function SceneBackground({
+  accent1 = "#00fff2",
+  accent2 = "#ff2fd6",
+}: {
+  accent1?: string;
+  accent2?: string;
+}) {
   const mountRef = useRef<HTMLDivElement>(null);
+  const target1Ref = useRef(new THREE.Color(accent1));
+  const target2Ref = useRef(new THREE.Color(accent2));
+
+  // Update targets without re-initializing the whole scene
+  useEffect(() => {
+    target1Ref.current.set(accent1);
+  }, [accent1]);
+
+  useEffect(() => {
+    target2Ref.current.set(accent2);
+  }, [accent2]);
 
   useEffect(() => {
     const mount = mountRef.current;
@@ -19,7 +36,11 @@ export default function SceneBackground() {
     );
     camera.position.set(0, 1.2, 6.5);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      alpha: true,
+      preserveDrawingBuffer: true,
+    });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     mount.appendChild(renderer.domElement);
@@ -31,10 +52,10 @@ export default function SceneBackground() {
     (gridCyan.material as THREE.Material).opacity = 0.35;
     scene.add(gridCyan);
 
-    // --- Wireframe icosahedron centerpiece ---
+    // --- Wireframe icosahedron centerpiece (tracks accent1) ---
     const icoGeo = new THREE.IcosahedronGeometry(1.6, 1);
     const icoMat = new THREE.MeshBasicMaterial({
-      color: 0x00fff2,
+      color: target1Ref.current.clone(),
       wireframe: true,
       transparent: true,
       opacity: 0.55,
@@ -43,9 +64,10 @@ export default function SceneBackground() {
     ico.position.set(2.2, 0.6, -1.5);
     scene.add(ico);
 
+    // --- Octahedron (tracks accent2) ---
     const icoGeo2 = new THREE.OctahedronGeometry(1, 0);
     const icoMat2 = new THREE.MeshBasicMaterial({
-      color: 0xff2fd6,
+      color: target2Ref.current.clone(),
       wireframe: true,
       transparent: true,
       opacity: 0.4,
@@ -54,7 +76,7 @@ export default function SceneBackground() {
     ico2.position.set(-2.6, -0.2, -1);
     scene.add(ico2);
 
-    // --- Particle field ---
+    // --- Particle field (tracks accent1) ---
     const particleCount = 400;
     const positions = new Float32Array(particleCount * 3);
     for (let i = 0; i < particleCount; i++) {
@@ -65,13 +87,16 @@ export default function SceneBackground() {
     const particleGeo = new THREE.BufferGeometry();
     particleGeo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
     const particleMat = new THREE.PointsMaterial({
-      color: 0x00fff2,
+      color: target1Ref.current.clone(),
       size: 0.03,
       transparent: true,
       opacity: 0.6,
     });
     const particles = new THREE.Points(particleGeo, particleMat);
     scene.add(particles);
+
+    // grid also tracks accent2 subtly
+    const gridMat = gridCyan.material as THREE.LineBasicMaterial;
 
     let raf = 0;
     let mouseX = 0;
@@ -86,6 +111,14 @@ export default function SceneBackground() {
     const clock = new THREE.Clock();
     const animate = () => {
       const t = clock.getElapsedTime();
+
+      // Smoothly lerp live colors toward whatever the current section wants
+      icoMat.color.lerp(target1Ref.current, 0.04);
+      particleMat.color.lerp(target1Ref.current, 0.04);
+      icoMat2.color.lerp(target2Ref.current, 0.04);
+      if ("color" in gridMat) {
+        (gridMat as unknown as { color: THREE.Color }).color.lerp(target2Ref.current, 0.02);
+      }
 
       ico.rotation.x = t * 0.15;
       ico.rotation.y = t * 0.22;
