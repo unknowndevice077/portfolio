@@ -28,7 +28,11 @@ body {
   color: var(--text);
   font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  /* clip, not hidden: "overflow-x: hidden" with no overflow-y set forces
+     overflow-y's computed value to 'auto' per spec, which can turn body
+     into its own scroll container and break window scrolling. clip
+     avoids that entirely. */
+  overflow-x: clip;
   position: relative;
 }
 
@@ -45,14 +49,27 @@ body {
   color: #06070a;
 }
 
-/* Very subtle vignette only — no scanlines, no harsh overlays */
+/* Subtle vignette */
 body::after {
   content: "";
   position: fixed;
   inset: 0;
   z-index: 5;
   pointer-events: none;
-  background: radial-gradient(ellipse at 50% 0%, transparent 50%, rgba(0, 0, 0, 0.4) 100%);
+  background: radial-gradient(ellipse at 50% 0%, transparent 45%, rgba(0, 0, 0, 0.45) 100%);
+}
+
+/* Fine grain texture — the tactile, premium touch most polished dark sites
+   use so a blurred gradient doesn't read as flat/plasticky. Pure CSS,
+   no image asset. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 .glass {

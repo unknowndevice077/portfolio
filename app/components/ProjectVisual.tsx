@@ -28,7 +28,7 @@ function Frame({
 
 export function EcoVisionVisual() {
   return (
-    <Frame url="ecovision-crime-detection-ai.app" accent="#f472b6">
+    <Frame url="ecovision-crime-detection-ai.app" accent="#8fd400">
       <svg viewBox="0 0 400 220" className="w-full h-full" preserveAspectRatio="xMidYMid slice">
         <defs>
           <linearGradient id="eco-bg" x1="0" y1="0" x2="1" y2="1">
@@ -36,7 +36,7 @@ export function EcoVisionVisual() {
             <stop offset="100%" stopColor="#160013" />
           </linearGradient>
           <pattern id="eco-grid" width="20" height="20" patternUnits="userSpaceOnUse">
-            <path d="M20 0 L0 0 0 20" fill="none" stroke="#f472b6" strokeOpacity="0.12" strokeWidth="1" />
+            <path d="M20 0 L0 0 0 20" fill="none" stroke="#8fd400" strokeOpacity="0.12" strokeWidth="1" />
           </pattern>
         </defs>
         <rect width="400" height="220" fill="url(#eco-bg)" />
@@ -44,11 +44,11 @@ export function EcoVisionVisual() {
         {/* CCTV feed panels */}
         {[0, 1, 2].map((i) => (
           <g key={i} transform={`translate(${16 + i * 132}, 16)`}>
-            <rect width="120" height="90" fill="#000" stroke="#f472b6" strokeOpacity="0.5" />
+            <rect width="120" height="90" fill="#000" stroke="#8fd400" strokeOpacity="0.5" />
             <circle cx="8" cy="8" r="3" fill="#ff2f2f">
               <animate attributeName="opacity" values="1;0.2;1" dur="1.2s" repeatCount="indefinite" />
             </circle>
-            <text x="60" y="50" textAnchor="middle" fontSize="9" fill="#f472b6" fontFamily="monospace" opacity="0.5">
+            <text x="60" y="50" textAnchor="middle" fontSize="9" fill="#8fd400" fontFamily="monospace" opacity="0.5">
               CAM {i + 1}
             </text>
           </g>
@@ -67,11 +67,11 @@ export function EcoVisionVisual() {
         <text x="16" y="145" fontSize="10" fill="#5eead4" fontFamily="monospace">
           THREAT: WEAPON DETECTED
         </text>
-        <text x="16" y="160" fontSize="10" fill="#f472b6" fontFamily="monospace">
+        <text x="16" y="160" fontSize="10" fill="#8fd400" fontFamily="monospace">
           mAP@50: 94.1%  RECALL: 90.3%
         </text>
         <rect x="16" y="175" width="200" height="6" fill="#1a0010" />
-        <rect x="16" y="175" width="188" height="6" fill="#f472b6" />
+        <rect x="16" y="175" width="188" height="6" fill="#8fd400" />
         <text x="16" y="205" fontSize="9" fill="#7a7a8a" fontFamily="monospace">
           YOLOv11 · X3D-XS · role-based alert review
         </text>

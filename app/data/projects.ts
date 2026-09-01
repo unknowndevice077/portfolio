@@ -25,8 +25,8 @@ export const projects: Project[] = [
     ],
     href: "https://github.com/unknowndevice077/ecovision-crime-detection-ai",
     flagship: true,
-    accent: "#f472b6",
-    accentRgb: "244, 114, 182",
+    accent: "#8fd400",
+    accentRgb: "143, 212, 0",
     visual: "ecovision",
     longDescription:
       "A real-time crime-detection platform built and deployed as a live pilot for barangay-level security. It processes live CCTV feeds through a trained computer vision pipeline to flag weapons, violence, and unusual multi-person activity, routing every detection through a human-in-the-loop review step before any alert fires — because a false positive at 2am should never trigger a siren on its own. The YOLOv11 weapon detector was trained on a merged 24K-image dataset and tuned to 94.1% mAP@50 with 90.3% recall; the X3D-XS violence classifier was fine-tuned to 83.6% validation accuracy — both iterated against real footage, not just clean benchmark sets. Around the models sits a full incident-management system: a FastAPI/PostgreSQL backend, a Next.js review dashboard, an Electron desktop app for on-site operators, role-based access scoped per barangay, and an ESP32-triggered physical siren for confirmed alerts.",

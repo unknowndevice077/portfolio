@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import SceneBackground from "./components/SceneBackground";
 import Reveal from "./components/Reveal";
 import ProjectTile from "./components/ProjectSection";
+import { techIcons } from "./components/TechIcon";
 import { projects } from "./data/projects";
 
 const skillGroups: [string, string[]][] = [
@@ -14,9 +15,29 @@ const skillGroups: [string, string[]][] = [
   ["Embedded & Hardware", ["ESP32", "PIC16F84A (Assembly)", "AutoCAD", "Fusion 360", "Tinkercad"]],
 ];
 
-function Tag({ children }: { children: React.ReactNode }) {
+const competitions = [
+  {
+    title: "ISITE AI Hackathon 2026",
+    org: "HexCorePH Labs",
+    result: "Built QuestScribe",
+    description:
+      "An n8n-automated gamified learning platform with an AI chatbot tutor, built under the hackathon's automation brief across business, learning, and security tracks — chose the learning track.",
+    accent: "#6ee7d8",
+  },
+  {
+    title: "CodeChum National Programming Challenge 2024",
+    org: "National competition",
+    result: "Certificate of Participation",
+    description:
+      "Competed nationally in algorithmic problem-solving — trees, graphs, hash maps, dynamic programming, greedy algorithms.",
+    accent: "#818cf8",
+  },
+];
+
+function Tag({ children, icon: Icon }: { children: React.ReactNode; icon?: React.ComponentType<{ className?: string }> }) {
   return (
-    <span className="mono text-xs px-3 py-1.5 rounded-full border border-[var(--glass-border)] text-[var(--text-dim)]">
+    <span className="flex items-center gap-2 text-sm px-3.5 py-2 rounded-full border border-[var(--glass-border)] text-[var(--text-dim)] hover:border-[var(--glass-border-hover)] transition-colors">
+      {Icon && <Icon className="w-4 h-4 text-[var(--text)]" />}
       {children}
     </span>
   );
@@ -38,7 +59,6 @@ export default function Home() {
     const saved = sessionStorage.getItem("portfolio-scroll-y");
     if (saved) {
       sessionStorage.removeItem("portfolio-scroll-y");
-      // Wait a frame so the page has laid out before jumping.
       requestAnimationFrame(() => {
         window.scrollTo(0, Number(saved));
       });
@@ -87,7 +107,7 @@ export default function Home() {
             <h2 className="font-display text-sm text-[var(--text-faint)] mb-10 uppercase tracking-[0.25em]">
               Skills
             </h2>
-            <div className="space-y-6">
+            <div className="space-y-7">
               {skillGroups.map(([group, items]) => (
                 <div key={group} className="flex flex-col sm:flex-row sm:items-baseline gap-3 sm:gap-6">
                   <span className="text-sm text-[var(--text-dim)] sm:w-48 shrink-0 font-medium">
@@ -95,7 +115,7 @@ export default function Home() {
                   </span>
                   <div className="flex flex-wrap gap-2.5">
                     {items.map((item) => (
-                      <Tag key={item}>{item}</Tag>
+                      <Tag key={item} icon={techIcons[item]}>{item}</Tag>
                     ))}
                   </div>
                 </div>
@@ -127,71 +147,37 @@ export default function Home() {
           </Reveal>
         </section>
 
-        {/* Experience */}
+        {/* Competitions — the highlight section */}
         <Reveal>
           <section className="py-16 sm:py-20 border-t border-[var(--border)]">
             <h2 className="font-display text-sm text-[var(--text-faint)] mb-10 uppercase tracking-[0.25em]">
-              Experience
+              Competitions
             </h2>
-            <div className="grid sm:grid-cols-2 gap-8">
-              <div className="glass rounded-2xl p-6">
-                <div className="flex items-baseline justify-between mb-2">
-                  <h3 className="font-display font-700 text-lg">Freelance Video Editor</h3>
-                  <span className="mono text-xs text-[var(--text-faint)]">2023</span>
-                </div>
-                <p className="text-sm text-[var(--text-dim)]">Remote</p>
-                <p className="text-sm text-[var(--text-dim)] mt-3">
-                  Edited gaming and tutorial content for YouTube channels, improving viewership and live-stream engagement.
-                </p>
-              </div>
-              <div className="glass rounded-2xl p-6">
-                <div className="flex items-baseline justify-between mb-2">
-                  <h3 className="font-display font-700 text-lg">IT & Marketing Assistant</h3>
-                  <span className="mono text-xs text-[var(--text-faint)]">2021</span>
-                </div>
-                <p className="text-sm text-[var(--text-dim)]">Carlosta Hotel (OJT)</p>
-                <p className="text-sm text-[var(--text-dim)] mt-3">
-                  Maintained hotel IT systems and network devices; designed promotional materials for marketing campaigns.
-                </p>
-              </div>
-            </div>
-          </section>
-        </Reveal>
-
-        {/* Education & Competitions */}
-        <Reveal>
-          <section className="py-16 sm:py-20 border-t border-[var(--border)] grid sm:grid-cols-2 gap-12">
-            <div>
-              <h2 className="font-display text-sm text-[var(--text-faint)] mb-6 uppercase tracking-[0.25em]">
-                Education
-              </h2>
-              <h3 className="font-display font-700 text-xl">Western Leyte College</h3>
-              <p className="text-sm text-[var(--text-dim)] mb-2">Ormoc City, Philippines</p>
-              <p className="text-sm text-[var(--text-dim)]">B.S. Computer Engineering — In Progress</p>
-              <p className="text-sm text-[var(--text-faint)] mt-3 leading-relaxed">
-                Embedded Systems Design · Computer Vision & Object Detection · Robotics Kinematics ·
-                Microprocessor Systems (PIC16F84A Assembly) · Cloud Frameworks & Database Management.
-                Senior High (ICT), graduated with honors — Outstanding Awardee in Technical-Vocational Education.
-              </p>
-            </div>
-            <div>
-              <h2 className="font-display text-sm text-[var(--text-faint)] mb-6 uppercase tracking-[0.25em]">
-                Competitions
-              </h2>
-              <div className="space-y-5">
-                <div>
-                  <h3 className="font-display font-700">CodeChum National Programming Challenge 2024</h3>
-                  <p className="text-sm text-[var(--text-faint)] mt-1">
-                    Certificate of Participation — trees, graphs, hash maps, DP, greedy.
+            <div className="grid sm:grid-cols-2 gap-6">
+              {competitions.map((c) => (
+                <div
+                  key={c.title}
+                  className="glass rounded-2xl p-8 sm:p-10 relative overflow-hidden"
+                >
+                  <div
+                    className="absolute top-0 left-0 right-0 h-1"
+                    style={{ background: c.accent }}
+                  />
+                  <p
+                    className="mono text-xs uppercase tracking-[0.2em] mb-4"
+                    style={{ color: c.accent }}
+                  >
+                    {c.result}
+                  </p>
+                  <h3 className="font-display text-2xl sm:text-3xl font-800 mb-2 leading-tight">
+                    {c.title}
+                  </h3>
+                  <p className="text-sm text-[var(--text-faint)] mb-5">{c.org}</p>
+                  <p className="text-base text-[var(--text-dim)] leading-relaxed">
+                    {c.description}
                   </p>
                 </div>
-                <div>
-                  <h3 className="font-display font-700">ISITE AI Hackathon 2026 — HexCorePH Labs</h3>
-                  <p className="text-sm text-[var(--text-faint)] mt-1">
-                    Built QuestScribe, an n8n-automated gamified learning platform with an AI chatbot tutor.
-                  </p>
-                </div>
-              </div>
+              ))}
             </div>
           </section>
         </Reveal>
