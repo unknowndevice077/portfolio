@@ -10,6 +10,8 @@ export type Project = {
   accentRgb: string; // "r, g, b" for use in rgba()
   visual: "ecovision" | "studia" | "questscribe" | "aurum" | "notion";
   longDescription: string;
+  demoUrl?: string; // live, embeddable deployment - shown as a real iframe instead of the static mockup
+  showN8nWorkflow?: boolean; // renders the real n8n node graph powering this project
 };
 
 export const projects: Project[] = [
@@ -62,6 +64,7 @@ export const projects: Project[] = [
     accent: "#fbbf24",
     accentRgb: "251, 191, 36",
     visual: "questscribe",
+    showN8nWorkflow: true,
     longDescription:
       "Built in a hackathon sprint for the ISITE AI Hackathon (HexCorePH Labs) under the automation brief's learning track. QuestScribe turns study material into an interactive fantasy quest: an AI \"Dungeon Master\" narrates a story built around whatever concept you're learning, judges your answers in-character, and awards XP or HP penalties based on whether you actually understood the material. All of the AI logic — the narrative engine, answer evaluation, and world generation from source material — runs as orchestrated n8n workflows behind a Next.js front end, keeping the automation layer swappable independent of the UI.",
   },
@@ -76,6 +79,7 @@ export const projects: Project[] = [
       "Backtest engine reconstructs true equity curves for drawdown analysis on real historical gold price data.",
     ],
     href: "https://github.com/unknowndevice077/aurum-xauusd-auto-trader",
+    demoUrl: "https://aurum-app-ecru.vercel.app",
     accent: "#34d399",
     accentRgb: "52, 211, 153",
     visual: "aurum",

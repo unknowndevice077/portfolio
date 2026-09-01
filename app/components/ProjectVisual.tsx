@@ -26,7 +26,15 @@ function Frame({
   );
 }
 
-export function EcoVisionVisual() {
+export function EcoVisionVisual({ animated = false }: { animated?: boolean }) {
+  // 6s loop, 6 keyframe points shared by every animation below so they all
+  // stay in sync:
+  //   0.00 - 0.28  scanning (reticle sweeps left -> right)
+  //   0.28 - 0.33  lock-on transition
+  //   0.33 - 0.53  analyzing (reticle locked on cam 2, silhouette visible)
+  //   0.53 - 0.58  alert transition
+  //   0.58 - 1.00  threat detected (flash + red HUD text, holds till loop)
+  const kt = "0;0.28;0.33;0.53;0.58;1";
   return (
     <Frame url="ecovision-crime-detection-ai.app" accent="#8fd400">
       <svg viewBox="0 0 400 220" className="w-full h-full" preserveAspectRatio="xMidYMid slice">
@@ -41,6 +49,14 @@ export function EcoVisionVisual() {
         </defs>
         <rect width="400" height="220" fill="url(#eco-bg)" />
         <rect width="400" height="220" fill="url(#eco-grid)" />
+
+        {/* alert flash wash, only when animated */}
+        {animated && (
+          <rect width="400" height="220" fill="#8fd400" opacity="0">
+            <animate attributeName="opacity" values="0;0;0;0;0.08;0" keyTimes={kt} dur="6s" repeatCount="indefinite" />
+          </rect>
+        )}
+
         {/* CCTV feed panels */}
         {[0, 1, 2].map((i) => (
           <g key={i} transform={`translate(${16 + i * 132}, 16)`}>
@@ -51,10 +67,32 @@ export function EcoVisionVisual() {
             <text x="60" y="50" textAnchor="middle" fontSize="9" fill="#8fd400" fontFamily="monospace" opacity="0.5">
               CAM {i + 1}
             </text>
+            {/* a silhouette walks into frame on cam 2, only when animated */}
+            {animated && i === 1 && (
+              <g>
+                <rect opacity="0" x="45" y="30" width="30" height="50" rx="6" fill="#111" stroke="#ff3b3b" strokeWidth="1.5">
+                  <animate attributeName="opacity" values="0;0;1;1;1;0" keyTimes={kt} dur="6s" repeatCount="indefinite" />
+                  <animate attributeName="x" values="10;10;45;45;45;10" keyTimes={kt} dur="6s" repeatCount="indefinite" />
+                </rect>
+              </g>
+            )}
           </g>
         ))}
-        {/* target reticle */}
-        <g transform="translate(148,90)">
+
+        {/* target reticle: scans left-right, then locks onto cam 2's subject */}
+        <g>
+          {animated ? (
+            <animateTransform
+              attributeName="transform"
+              type="translate"
+              values="60,60;236,60;148,58;148,58;148,58;60,60"
+              keyTimes={kt}
+              dur="6s"
+              repeatCount="indefinite"
+            />
+          ) : (
+            <animateTransform attributeName="transform" type="translate" values="148,90" dur="1s" repeatCount="indefinite" />
+          )}
           <circle r="26" fill="none" stroke="#5eead4" strokeWidth="1.5">
             <animate attributeName="r" values="20;28;20" dur="2s" repeatCount="indefinite" />
           </circle>
@@ -63,10 +101,28 @@ export function EcoVisionVisual() {
           <line x1="0" y1="-34" x2="0" y2="-18" stroke="#5eead4" strokeWidth="1.5" />
           <line x1="0" y1="18" x2="0" y2="34" stroke="#5eead4" strokeWidth="1.5" />
         </g>
-        {/* HUD text */}
-        <text x="16" y="145" fontSize="10" fill="#5eead4" fontFamily="monospace">
-          THREAT: WEAPON DETECTED
-        </text>
+
+        {/* HUD status text - crossfades between states when animated */}
+        {animated ? (
+          <>
+            <text x="16" y="145" fontSize="10" fill="#5eead4" fontFamily="monospace" opacity="0">
+              SCANNING FEEDS...
+              <animate attributeName="opacity" values="1;1;0;0;0;0" keyTimes={kt} dur="6s" repeatCount="indefinite" />
+            </text>
+            <text x="16" y="145" fontSize="10" fill="#fbbf24" fontFamily="monospace" opacity="0">
+              ANALYZING SUBJECT...
+              <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes={kt} dur="6s" repeatCount="indefinite" />
+            </text>
+            <text x="16" y="145" fontSize="10" fill="#ff3b3b" fontFamily="monospace" opacity="0">
+              THREAT: WEAPON DETECTED
+              <animate attributeName="opacity" values="0;0;0;0;1;1" keyTimes={kt} dur="6s" repeatCount="indefinite" />
+            </text>
+          </>
+        ) : (
+          <text x="16" y="145" fontSize="10" fill="#5eead4" fontFamily="monospace">
+            THREAT: WEAPON DETECTED
+          </text>
+        )}
         <text x="16" y="160" fontSize="10" fill="#8fd400" fontFamily="monospace">
           mAP@50: 94.1%  RECALL: 90.3%
         </text>

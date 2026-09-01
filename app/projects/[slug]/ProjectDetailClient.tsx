@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import SceneBackground from "../../components/SceneBackground";
+import N8nWorkflowDiagram from "../../components/N8nWorkflowDiagram";
 import type { Project } from "../../data/projects";
 import {
   EcoVisionVisual,
@@ -60,9 +61,63 @@ export default function ProjectDetailClient({
         </h1>
         <p className="text-lg text-[var(--text-dim)] mb-10 max-w-2xl">{project.tagline}</p>
 
-        <div className="mb-10 rounded-2xl overflow-hidden glass p-1">
-          <Visual />
-        </div>
+        {project.demoUrl ? (
+          <div className="mb-10 rounded-2xl overflow-hidden glass p-1">
+            <div className="flex items-center gap-2 px-3 py-2 bg-[#0f0f16] border-b border-[#23232f] rounded-t-xl">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f56]" />
+              <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
+              <span className="w-2.5 h-2.5 rounded-full bg-[#27c93f]" />
+              <span className="mono text-[10px] ml-2 px-2 py-0.5 rounded bg-[#050507] truncate flex-1" style={{ color: project.accent }}>
+                {project.demoUrl.replace("https://", "")}
+              </span>
+              <span
+                className="mono text-[10px] px-2 py-0.5 rounded-full font-bold shrink-0"
+                style={{ background: project.accent, color: "#08090c" }}
+              >
+                LIVE DEMO
+              </span>
+            </div>
+            <iframe
+              src={project.demoUrl}
+              className="w-full aspect-video bg-white"
+              loading="lazy"
+              title={`${project.name} live demo`}
+            />
+            <div className="px-4 py-3 bg-[#0f0f16] rounded-b-xl">
+              <a
+                href={project.demoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mono text-xs font-semibold"
+                style={{ color: project.accent }}
+              >
+                Open in a new tab ↗
+              </a>
+            </div>
+          </div>
+        ) : (
+          <div className="mb-10 rounded-2xl overflow-hidden glass p-1">
+            {project.slug === "ecovision" ? <EcoVisionVisual animated /> : <Visual />}
+          </div>
+        )}
+
+        {project.showN8nWorkflow && (
+          <div className="mb-10">
+            <p className="mono text-xs mb-3 uppercase tracking-[0.25em]" style={{ color: project.accent }}>
+              Behind the scenes — the real workflow
+            </p>
+            <div className="rounded-2xl overflow-hidden glass p-1">
+              <N8nWorkflowDiagram accent={project.accent} />
+            </div>
+            <p className="text-xs text-[var(--text-faint)] mt-3">
+              This is the actual n8n graph powering the AI Dungeon Master: a webhook
+              receives the player&apos;s message, a Code node builds the prompt, an HTTP
+              Request node calls the model, another Code node parses and shapes the
+              JSON response, and Respond to Webhook sends it back — live, running on
+              a self-hosted n8n instance.
+            </p>
+          </div>
+        )}
 
         <div className="flex flex-wrap gap-2.5 mb-12">
           {project.tech.map((t) => (
