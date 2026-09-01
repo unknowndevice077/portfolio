@@ -44,6 +44,7 @@ export const projects: Project[] = [
       "Firebase Auth/Firestore sync with SQLite offline storage.",
     ],
     href: "https://github.com/unknowndevice077/Studia",
+    demoUrl: "https://studia-48762.web.app",
     accent: "#5eead4",
     accentRgb: "94, 234, 212",
     visual: "studia",

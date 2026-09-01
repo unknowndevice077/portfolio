@@ -80,7 +80,6 @@ export default function ProjectDetailClient({
             <iframe
               src={project.demoUrl}
               className="w-full aspect-video bg-white"
-              loading="lazy"
               title={`${project.name} live demo`}
             />
             <div className="px-4 py-3 bg-[#0f0f16] rounded-b-xl">
