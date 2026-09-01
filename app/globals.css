@@ -21,6 +21,16 @@
 
 html {
   scroll-behavior: smooth;
+  /* proximity, not mandatory: centers each section as you scroll without
+     fighting clicks/scrolling inside the embedded live demo iframes
+     (mandatory snap can trap you fighting the page to reach a button
+     inside an iframe). */
+  scroll-snap-type: y proximity;
+}
+
+.snap-section {
+  scroll-snap-align: center;
+  scroll-snap-stop: normal;
 }
 
 body {

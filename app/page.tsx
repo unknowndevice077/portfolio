@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import SceneBackground from "./components/SceneBackground";
 import Reveal from "./components/Reveal";
-import ProjectTile from "./components/ProjectSection";
+import ProjectBlock from "./components/ProjectBlock";
 import { techIcons } from "./components/TechIcon";
 import { projects } from "./data/projects";
 
@@ -53,7 +53,7 @@ export default function Home() {
   }, []);
 
   // Restore scroll position after coming back from a project detail page
-  // (see the onClick handoff in ProjectTile) — Next.js's own scroll
+  // (see the onClick handoff in ProjectBlock) — Next.js's own scroll
   // restoration doesn't reliably fire here, so we do it ourselves.
   useEffect(() => {
     const saved = sessionStorage.getItem("portfolio-scroll-y");
@@ -70,7 +70,7 @@ export default function Home() {
       <SceneBackground accent1={accent1} accent2={accent2} />
       <main className="relative z-10 max-w-7xl mx-auto px-6 sm:px-12">
         {/* Hero */}
-        <header className="pt-20 pb-16 sm:pt-28 sm:pb-20 min-h-[70vh] flex flex-col justify-center">
+        <header className="snap-section pt-20 pb-16 sm:pt-28 sm:pb-20 min-h-screen flex flex-col justify-center">
           <p className="mono text-sm text-[var(--accent)] mb-5 tracking-wide">
             Hi, I&apos;m
           </p>
@@ -103,7 +103,7 @@ export default function Home() {
 
         {/* Skills */}
         <Reveal>
-          <section className="py-12 sm:py-16 border-t border-[var(--border)]">
+          <section className="snap-section min-h-screen flex flex-col justify-center py-12 sm:py-16 border-t border-[var(--border)]">
             <h2 className="font-display text-sm text-[var(--text-faint)] mb-10 uppercase tracking-[0.25em]">
               Skills
             </h2>
@@ -124,32 +124,28 @@ export default function Home() {
           </section>
         </Reveal>
 
-        {/* Projects — bento grid, full width, varied sizes */}
-        <section className="py-12 sm:py-16 border-t border-[var(--border)]">
+        {/* Projects — one full block per project, introduced one at a time as you scroll */}
+        <div>
           <Reveal>
-            <h2 className="font-display text-sm text-[var(--text-faint)] mb-10 uppercase tracking-[0.25em]">
+            <h2 className="font-display text-sm text-[var(--text-faint)] pt-16 pb-8 uppercase tracking-[0.25em]">
               Featured builds
             </h2>
           </Reveal>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
-            {projects.map((p, i) => (
-              <Reveal key={p.slug} delay={i * 60}>
-                <ProjectTile project={p} onActive={handleActive} large={i === 0} />
-              </Reveal>
-            ))}
-          </div>
+          {projects.map((p, i) => (
+            <ProjectBlock key={p.slug} project={p} index={i} total={projects.length} onActive={handleActive} />
+          ))}
           <Reveal>
-            <p className="text-sm text-[var(--text-faint)] mt-8">
+            <p className="text-sm text-[var(--text-faint)] py-8">
               Plus 12+ additional repos: EcoVision Smartpole, a line-following
               robot, LeadPilot (job-board matching), and embedded builds (fire
               alarms, toll gates, energy harvesting).
             </p>
           </Reveal>
-        </section>
+        </div>
 
         {/* Competitions — the highlight section */}
         <Reveal>
-          <section className="py-12 sm:py-16 border-t border-[var(--border)]">
+          <section className="snap-section min-h-screen flex flex-col justify-center py-12 sm:py-16 border-t border-[var(--border)]">
             <h2 className="font-display text-sm text-[var(--text-faint)] mb-10 uppercase tracking-[0.25em]">
               Competitions
             </h2>
@@ -183,7 +179,7 @@ export default function Home() {
         </Reveal>
 
         {/* Footer */}
-        <footer className="py-20 sm:py-28 border-t border-[var(--border)] flex flex-col items-start gap-5">
+        <footer className="snap-section min-h-screen flex flex-col justify-center border-t border-[var(--border)] items-start gap-5">
           <p className="font-display text-2xl sm:text-3xl font-800 text-gradient">
             Let&apos;s build something.
           </p>
