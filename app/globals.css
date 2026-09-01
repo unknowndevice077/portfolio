@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #0a0a0c;
+  --bg-elev: #111114;
+  --border: #232328;
+  --text: #e8e8ea;
+  --text-dim: #8a8a92;
+  --text-faint: #58585f;
+  --accent: #7dd3a8;
+  --accent-dim: #4a7a63;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.mono {
+  font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace;
+}
+
+::selection {
+  background: var(--accent-dim);
+  color: #fff;
+}
