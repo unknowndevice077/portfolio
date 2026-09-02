@@ -81,10 +81,9 @@ export default function Home() {
                 Jae
               </h1>
               <p className="text-lg sm:text-xl text-[var(--text-dim)] leading-relaxed max-w-xl mb-8 font-body">
-                Final-year Computer Engineering student specializing in applied AI
-                and full-stack/embedded development. I ship production systems
-                independently, end-to-end — including a real-time crime-detection
-                platform live in production.
+                Computer Engineering student specializing in applied AI
+                and full-stack/embedded development. I design and ship production
+                systems independently, end-to-end — from model to deployment.
               </p>
               <div className="flex flex-wrap gap-3">
                 <a
