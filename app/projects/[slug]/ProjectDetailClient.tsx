@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import SceneBackground from "../../components/SceneBackground";
 import N8nWorkflowDiagram from "../../components/N8nWorkflowDiagram";
+import LanguageBar from "../../components/LanguageBar";
 import type { Project } from "../../data/projects";
 import {
   EcoVisionVisual,
@@ -118,7 +119,7 @@ export default function ProjectDetailClient({
           </div>
         )}
 
-        <div className="flex flex-wrap gap-2.5 mb-12">
+        <div className="flex flex-wrap gap-2.5 mb-6">
           {project.tech.map((t) => (
             <span
               key={t}
@@ -128,6 +129,12 @@ export default function ProjectDetailClient({
             </span>
           ))}
         </div>
+
+        {project.languages && (
+          <div className="mb-12 max-w-md">
+            <LanguageBar languages={project.languages} />
+          </div>
+        )}
 
         <p className="text-lg text-[var(--text-dim)] leading-relaxed mb-14 max-w-3xl">
           {project.longDescription}

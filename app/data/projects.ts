@@ -12,6 +12,29 @@ export type Project = {
   longDescription: string;
   demoUrl?: string; // live, embeddable deployment - shown as a real iframe instead of the static mockup
   showN8nWorkflow?: boolean; // renders the real n8n node graph powering this project
+  languages?: { name: string; percent: number; color: string }[]; // real GitHub language breakdown, by bytes
+};
+
+// Standard GitHub linguist colors, for the language bar to look native.
+export const LANGUAGE_COLORS: Record<string, string> = {
+  Python: "#3572A5",
+  TypeScript: "#3178c6",
+  JavaScript: "#f1e05a",
+  Dart: "#00B4AB",
+  Rust: "#dea584",
+  CSS: "#563d7c",
+  HTML: "#e34c26",
+  "C++": "#f34b7d",
+  CMake: "#DA3434",
+  Swift: "#F05138",
+  C: "#555555",
+  Kotlin: "#A97BFF",
+  "Objective-C": "#438eff",
+  Batchfile: "#C1F12E",
+  PowerShell: "#012456",
+  "Inno Setup": "#264b99",
+  Shell: "#89e051",
+  Other: "#6b7280",
 };
 
 export const projects: Project[] = [
@@ -26,6 +49,12 @@ export const projects: Project[] = [
       "Full incident-management system: FastAPI/PostgreSQL backend, Next.js dashboard, Electron desktop app, role-based access per barangay, ESP32-triggered siren.",
     ],
     href: "https://github.com/unknowndevice077/ecovision-crime-detection-ai",
+    languages: [
+      { name: "Python", percent: 54, color: LANGUAGE_COLORS.Python },
+      { name: "TypeScript", percent: 33, color: LANGUAGE_COLORS.TypeScript },
+      { name: "JavaScript", percent: 5, color: LANGUAGE_COLORS.JavaScript },
+      { name: "Other", percent: 8, color: LANGUAGE_COLORS.Other },
+    ],
     flagship: true,
     accent: "#8fd400",
     accentRgb: "143, 212, 0",
@@ -45,6 +74,10 @@ export const projects: Project[] = [
     ],
     href: "https://github.com/unknowndevice077/Studia",
     demoUrl: "https://studia-48762.web.app",
+    languages: [
+      { name: "Dart", percent: 94, color: LANGUAGE_COLORS.Dart },
+      { name: "Other", percent: 6, color: LANGUAGE_COLORS.Other },
+    ],
     accent: "#5eead4",
     accentRgb: "94, 234, 212",
     visual: "studia",
@@ -63,6 +96,11 @@ export const projects: Project[] = [
     ],
     href: "https://github.com/unknowndevice077/isite",
     demoUrl: "https://isite.vercel.app",
+    languages: [
+      { name: "TypeScript", percent: 90, color: LANGUAGE_COLORS.TypeScript },
+      { name: "CSS", percent: 9, color: LANGUAGE_COLORS.CSS },
+      { name: "Other", percent: 1, color: LANGUAGE_COLORS.Other },
+    ],
     accent: "#fbbf24",
     accentRgb: "251, 191, 36",
     visual: "questscribe",
@@ -82,6 +120,7 @@ export const projects: Project[] = [
     ],
     href: "https://github.com/unknowndevice077/aurum-xauusd-auto-trader",
     demoUrl: "https://aurum-app-ecru.vercel.app",
+    languages: [{ name: "TypeScript", percent: 100, color: LANGUAGE_COLORS.TypeScript }],
     accent: "#34d399",
     accentRgb: "52, 211, 153",
     visual: "aurum",
@@ -99,6 +138,11 @@ export const projects: Project[] = [
       "Cross-platform (Windows + macOS) builds via automated CI/CD.",
     ],
     href: "https://github.com/unknowndevice077/notion-ai-assistant",
+    languages: [
+      { name: "Rust", percent: 61, color: LANGUAGE_COLORS.Rust },
+      { name: "TypeScript", percent: 37, color: LANGUAGE_COLORS.TypeScript },
+      { name: "Other", percent: 2, color: LANGUAGE_COLORS.Other },
+    ],
     accent: "#a78bfa",
     accentRgb: "167, 139, 250",
     visual: "notion",

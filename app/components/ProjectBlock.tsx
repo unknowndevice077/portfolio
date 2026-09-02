@@ -10,6 +10,7 @@ import {
   AurumVisual,
   NotionAIVisual,
 } from "./ProjectVisual";
+import LanguageBar from "./LanguageBar";
 
 const visualMap = {
   ecovision: EcoVisionVisual,
@@ -124,6 +125,7 @@ export default function ProjectBlock({
               </span>
             ))}
           </div>
+          {project.languages && <LanguageBar languages={project.languages} />}
           <ul className="space-y-2.5 mb-7">
             {project.bullets.map((b, bi) => (
               <li key={bi} className="text-sm text-[var(--text-dim)] leading-relaxed pl-5 relative">
