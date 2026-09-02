@@ -85,11 +85,7 @@ export default function ProjectBlock({
   return (
     <div
       ref={ref}
-      className={`${
-        project.demoUrl
-          ? "snap-section-start min-h-screen flex items-start pt-20"
-          : "snap-section min-h-screen flex items-center"
-      } py-16 border-t border-[var(--border)]`}
+      className={`snap-section min-h-screen flex items-center py-16 border-t border-[var(--border)]`}
     >
       <div
         className={

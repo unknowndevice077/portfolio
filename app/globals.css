@@ -21,25 +21,14 @@
 
 html {
   scroll-behavior: smooth;
-  /* mandatory fought programmatic navigation and blocked moderate scrolls
-     outright when tested against sections taller than one viewport (the
-     demo blocks, once they include a ~600px iframe, run well past 100vh).
-     proximity is the reliable choice once section heights vary this much. */
-  scroll-snap-type: y proximity;
+  /* Mandatory: every scroll gesture lands centered on a block, so it
+     reads as deliberate auto-centering rather than an occasional nudge. */
+  scroll-snap-type: y mandatory;
 }
 
 .snap-section {
   scroll-snap-align: center;
-  scroll-snap-stop: normal;
-}
-
-/* For sections taller than the viewport (project blocks with a live demo
-   iframe stacked below the intro text): align to the top instead of
-   center, so the intro is fully visible first rather than the block's
-   vertical midpoint (which could cut the demo off-screen). */
-.snap-section-start {
-  scroll-snap-align: start;
-  scroll-snap-stop: normal;
+  scroll-snap-stop: always;
 }
 
 body {
