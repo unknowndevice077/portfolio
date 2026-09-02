@@ -79,13 +79,17 @@ export function EcoVisionVisual({ animated = false }: { animated?: boolean }) {
           </g>
         ))}
 
-        {/* target reticle: scans left-right, then locks onto cam 2's subject */}
+        {/* target reticle: scans left-right, then locks onto cam 2's subject.
+            Panel i is at translate(16+i*132, 16), 120x90, so its center is
+            (76+i*132, 61) — CAM1=(76,61) CAM2=(208,61) CAM3=(340,61). The
+            silhouette rect (locked x=45, y=30, 30x50, inside CAM2's group)
+            has local center (60,55) -> global (208,71). */}
         <g>
           {animated ? (
             <animateTransform
               attributeName="transform"
               type="translate"
-              values="60,60;236,60;148,58;148,58;148,58;60,60"
+              values="76,61;208,61;208,71;208,71;208,71;76,61"
               keyTimes={kt}
               dur="6s"
               repeatCount="indefinite"

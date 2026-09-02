@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import SceneBackground from "./components/SceneBackground";
 import Reveal from "./components/Reveal";
@@ -70,34 +71,50 @@ export default function Home() {
       <SceneBackground accent1={accent1} accent2={accent2} />
       <main className="relative z-10 max-w-7xl mx-auto px-6 sm:px-12">
         {/* Hero */}
-        <header className="snap-section pt-20 pb-16 sm:pt-28 sm:pb-20 min-h-screen flex flex-col justify-center">
-          <p className="mono text-sm text-[var(--accent)] mb-5 tracking-wide">
-            Hi, I&apos;m
-          </p>
-          <h1 className="font-display text-5xl sm:text-7xl font-800 tracking-tight mb-6 leading-[0.95] text-gradient">
-            Jae
-          </h1>
-          <p className="text-lg sm:text-xl text-[var(--text-dim)] leading-relaxed max-w-xl mb-8 font-body">
-            Final-year Computer Engineering student specializing in applied AI
-            and full-stack/embedded development. I ship production systems
-            independently, end-to-end — including a real-time crime-detection
-            platform live in production.
-          </p>
-          <div className="flex flex-wrap gap-3">
-            <a
-              href="https://github.com/unknowndevice077"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm px-5 py-3 rounded-full bg-[var(--text)] text-[#08090c] font-semibold hover:opacity-90 transition-opacity"
-            >
-              GitHub ↗
-            </a>
-            <a
-              href="mailto:frjhay.delacruz@gmail.com"
-              className="text-sm px-5 py-3 rounded-full glass font-semibold"
-            >
-              Get in touch
-            </a>
+        <header className="snap-section pt-20 pb-16 sm:pt-28 sm:pb-20 min-h-screen flex items-center">
+          <div className="grid lg:grid-cols-[1fr_auto] gap-12 lg:gap-20 items-center w-full">
+            <div>
+              <p className="mono text-sm text-[var(--accent)] mb-5 tracking-wide">
+                Hi, I&apos;m
+              </p>
+              <h1 className="font-display text-5xl sm:text-7xl font-800 tracking-tight mb-6 leading-[0.95] text-gradient">
+                Jae
+              </h1>
+              <p className="text-lg sm:text-xl text-[var(--text-dim)] leading-relaxed max-w-xl mb-8 font-body">
+                Final-year Computer Engineering student specializing in applied AI
+                and full-stack/embedded development. I ship production systems
+                independently, end-to-end — including a real-time crime-detection
+                platform live in production.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <a
+                  href="https://github.com/unknowndevice077"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm px-5 py-3 rounded-full bg-[var(--text)] text-[#08090c] font-semibold hover:opacity-90 transition-opacity"
+                >
+                  GitHub ↗
+                </a>
+                <a
+                  href="mailto:frjhay.delacruz@gmail.com"
+                  className="text-sm px-5 py-3 rounded-full glass font-semibold"
+                >
+                  Get in touch
+                </a>
+              </div>
+            </div>
+            <div className="flex justify-center lg:justify-end order-first lg:order-last">
+              <div className="relative w-40 h-40 sm:w-56 sm:h-56 lg:w-64 lg:h-64 rounded-full overflow-hidden glass shrink-0 ring-1 ring-[var(--glass-border)]">
+                <Image
+                  src="/images/avatar-placeholder.jpg"
+                  alt="Jae"
+                  fill
+                  sizes="(min-width: 1024px) 16rem, (min-width: 640px) 14rem, 10rem"
+                  className="object-cover"
+                  priority
+                />
+              </div>
+            </div>
           </div>
         </header>
 
