@@ -137,11 +137,12 @@ export default function ProjectBlock({
           <div className="flex flex-wrap gap-3">
             <Link
               href={`/projects/${project.slug}`}
-              onClick={() => sessionStorage.setItem("portfolio-scroll-y", String(window.scrollY))}
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-sm px-5 py-3 rounded-full font-semibold"
               style={{ background: project.accent, color: "#08090c" }}
             >
-              Full case study →
+              Project link →
             </Link>
             <a
               href={project.href}

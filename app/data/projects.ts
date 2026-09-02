@@ -54,20 +54,21 @@ export const projects: Project[] = [
   {
     slug: "questscribe",
     name: "QuestScribe (isite)",
-    tagline: "n8n-automated gamified learning platform — ISITE AI Hackathon 2026",
-    tech: ["Next.js", "n8n", "AI SDK", "TypeScript"],
+    tagline: "Gamified learning platform, born as an n8n workflow — ISITE AI Hackathon 2026",
+    tech: ["Next.js", "AI SDK", "Gemini", "TypeScript", "n8n"],
     bullets: [
       "Built for the ISITE AI Hackathon (HexCorePH Labs), automation brief, learning track.",
-      "An AI Dungeon Master turns study concepts into quest narratives — n8n-orchestrated chatbot tutor that evaluates answers and generates world content live.",
-      "Next.js front end bridged to n8n workflows for narrative, evaluation, and world-generation logic.",
+      "An AI Dungeon Master turns study concepts into quest narratives — an in-character tutor that evaluates answers and generates a whole quest world from source material.",
+      "Prototyped as orchestrated n8n workflows for the hackathon (diagrammed below); re-architected onto Next.js API routes calling Gemini directly for a demo that's reliably live, not tied to a workflow host staying up.",
     ],
     href: "https://github.com/unknowndevice077/isite",
+    demoUrl: "https://isite.vercel.app",
     accent: "#fbbf24",
     accentRgb: "251, 191, 36",
     visual: "questscribe",
     showN8nWorkflow: true,
     longDescription:
-      "Built in a hackathon sprint for the ISITE AI Hackathon (HexCorePH Labs) under the automation brief's learning track. QuestScribe turns study material into an interactive fantasy quest: an AI \"Dungeon Master\" narrates a story built around whatever concept you're learning, judges your answers in-character, and awards XP or HP penalties based on whether you actually understood the material. All of the AI logic — the narrative engine, answer evaluation, and world generation from source material — runs as orchestrated n8n workflows behind a Next.js front end, keeping the automation layer swappable independent of the UI.",
+      "Built in a hackathon sprint for the ISITE AI Hackathon (HexCorePH Labs) under the automation brief's learning track. QuestScribe turns study material into an interactive fantasy quest: an AI \"Dungeon Master\" narrates a story built around whatever concept you're learning, judges your answers in-character, and awards XP or HP penalties based on whether you actually understood the material. The hackathon build orchestrated that AI logic — narrative engine, answer evaluation, world generation — as n8n workflows behind the Next.js front end (see the workflow diagram below for that original architecture). For the live demo, the same three AI calls now run as direct Next.js API routes calling Gemini, so it stays reliably reachable without depending on a separately-hosted workflow instance.",
   },
   {
     slug: "aurum",
