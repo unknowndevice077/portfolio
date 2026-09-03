@@ -8,6 +8,44 @@ import ProjectBlock from "./components/ProjectBlock";
 import { techIcons } from "./components/TechIcon";
 import { projects } from "./data/projects";
 
+type Service = {
+  title: string;
+  description: string;
+  proof: string;
+  accent: string;
+};
+
+const services: Service[] = [
+  {
+    title: "Applied AI & Computer Vision",
+    description:
+      "Real-time detection pipelines, video/image classification, and LLM-powered features — from model selection through to a system that runs in production, not just a notebook.",
+    proof: "Proof: EcoVision's YOLOv11 + X3D-XS detection pipeline, QuestScribe's AI Dungeon Master.",
+    accent: "#8fd400",
+  },
+  {
+    title: "Full-Stack Web & Mobile Apps",
+    description:
+      "End-to-end product builds — Next.js/React on the front, FastAPI/Postgres or Firebase underneath, shipped to real users on web, iOS, Android, and desktop.",
+    proof: "Proof: Studia (6-platform Flutter app), Aurum's live trading dashboard.",
+    accent: "#5eead4",
+  },
+  {
+    title: "Desktop & Embedded Systems",
+    description:
+      "Cross-platform desktop apps (Electron, Tauri/Rust) and the hardware side when a project needs it — microcontrollers, sensors, and the firmware/backend link between them.",
+    proof: "Proof: EcoVision's Electron dashboard + ESP32-triggered siren, Notion AI Assistant's Rust/Tauri desktop shell.",
+    accent: "#a78bfa",
+  },
+  {
+    title: "Workflow & AI Automation",
+    description:
+      "Turning a manual process into an automated one — n8n workflows, AI agents wired into real tools (Notion, Slack, etc.), prompt-engineered from a working sketch to something reliable.",
+    proof: "Proof: QuestScribe's n8n-orchestrated hackathon build, Notion AI Assistant's client-built workflow tool.",
+    accent: "#fbbf24",
+  },
+];
+
 const skillGroups: [string, string[]][] = [
   ["AI / Computer Vision", ["YOLOv8/v11", "X3D video classification", "PyTorch transfer learning", "Ollama & LLM APIs", "N8n automation"]],
   ["Languages", ["Python", "TypeScript/JavaScript", "C/C++", "Java", "C#", "Rust", "Dart"]],
@@ -90,6 +128,15 @@ export default function Home() {
               </p>
               <div className="flex flex-wrap gap-3">
                 <a
+                  href="/resume/Fritz_Dela_Cruz_Resume.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm px-5 py-3 rounded-full font-semibold text-[#08090c]"
+                  style={{ background: "var(--accent)" }}
+                >
+                  Resume ↓
+                </a>
+                <a
                   href="https://github.com/unknowndevice077"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -119,6 +166,46 @@ export default function Home() {
             </div>
           </div>
         </header>
+
+        {/* Services — for anyone here to hire/contract, not just recruiters */}
+        <Reveal>
+          <section className="snap-section min-h-screen flex flex-col justify-center py-12 sm:py-16 border-t border-[var(--border)]">
+            <h2 className="font-display text-sm text-[var(--text-faint)] mb-3 uppercase tracking-[0.25em]">
+              Work with me
+            </h2>
+            <p className="text-lg text-[var(--text-dim)] mb-10 max-w-2xl">
+              Available for freelance and contract work. Here&apos;s what I build —
+              each backed by something already shipped, not a claim on a page.
+            </p>
+            <div className="grid sm:grid-cols-2 gap-5 mb-10">
+              {services.map((s) => (
+                <div
+                  key={s.title}
+                  className="glass rounded-2xl p-6 relative overflow-hidden"
+                >
+                  <div
+                    className="absolute top-0 left-0 right-0 h-1"
+                    style={{ background: s.accent }}
+                  />
+                  <h3 className="font-display text-lg font-700 mb-2.5">{s.title}</h3>
+                  <p className="text-sm text-[var(--text-dim)] leading-relaxed mb-3">
+                    {s.description}
+                  </p>
+                  <p className="text-xs text-[var(--text-faint)] leading-relaxed">
+                    {s.proof}
+                  </p>
+                </div>
+              ))}
+            </div>
+            <a
+              href="mailto:frjhay.delacruz@gmail.com?subject=Project inquiry"
+              className="text-sm px-5 py-3 rounded-full font-semibold self-start"
+              style={{ background: "var(--accent)", color: "#08090c" }}
+            >
+              Have a project in mind? Let&apos;s talk →
+            </a>
+          </section>
+        </Reveal>
 
         {/* Skills */}
         <Reveal>
@@ -258,6 +345,15 @@ export default function Home() {
               className="text-[var(--accent)] hover:underline"
             >
               github.com/unknowndevice077
+            </a>
+            <span className="text-[var(--text-faint)]">·</span>
+            <a
+              href="/resume/Fritz_Dela_Cruz_Resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[var(--accent)] hover:underline"
+            >
+              Resume ↓
             </a>
           </div>
         </footer>

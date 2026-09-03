@@ -13,6 +13,7 @@ export type Project = {
   demoUrl?: string; // live, embeddable deployment - shown as a real iframe instead of the static mockup
   showN8nWorkflow?: boolean; // renders the real n8n node graph powering this project
   languages?: { name: string; percent: number; color: string }[]; // real GitHub language breakdown, by bytes
+  caseStudy?: { heading: string; body: string }[]; // deeper technical write-up, rendered on the project detail page
 };
 
 // Standard GitHub linguist colors, for the language bar to look native.
@@ -41,12 +42,13 @@ export const projects: Project[] = [
   {
     slug: "ecovision",
     name: "EcoVision Security Sentinel",
-    tagline: "Real-time crime detection platform — live production deployment",
+    tagline: "Real-time crime detection platform — built for streetlight-pole deployment, validated on real CCTV footage",
     tech: ["YOLOv11", "X3D-XS", "FastAPI", "PostgreSQL", "Next.js", "Electron", "ESP32"],
     bullets: [
-      "Live pilot processing real CCTV feeds for weapon, violence, and multi-person activity detection with human-in-the-loop review.",
-      "YOLOv11 weapon detector: 94.1% mAP@50, 90.3% recall on a merged 24K-image dataset. X3D-XS violence classifier: 83.6% validation accuracy.",
-      "Full incident-management system: FastAPI/PostgreSQL backend, Next.js dashboard, Electron desktop app, role-based access per barangay, ESP32-triggered siren.",
+      "Full pipeline validated end-to-end against real captured CCTV footage and a live RTSP camera feed — not just benchmark clips — ahead of physical barangay/streetlight-pole installation.",
+      "YOLOv11 weapon detector: 94.1% mAP@50, 90.3% recall on a merged 24K-image dataset.",
+      "X3D-XS violence classifier: found and fixed a hidden double-softmax bug plus dataset leakage that had capped four prior retrains at ~70% held-out accuracy — corrected, honest test accuracy: 95.0%.",
+      "Pushed testing past the clean benchmark: real, continuously-running street footage surfaced a 44.3% false-positive rate on that source that curated clips never exposed — now the active focus. Full incident-management system built around it regardless: FastAPI/PostgreSQL backend, Next.js dashboard, Electron app, multi-tenant barangay/PNP access, ESP32-triggered siren.",
     ],
     href: "https://github.com/unknowndevice077/ecovision-crime-detection-ai",
     languages: [
@@ -60,7 +62,29 @@ export const projects: Project[] = [
     accentRgb: "143, 212, 0",
     visual: "ecovision",
     longDescription:
-      "A real-time crime-detection platform built and deployed as a live pilot for barangay-level security. It processes live CCTV feeds through a trained computer vision pipeline to flag weapons, violence, and unusual multi-person activity, routing every detection through a human-in-the-loop review step before any alert fires — because a false positive at 2am should never trigger a siren on its own. The YOLOv11 weapon detector was trained on a merged 24K-image dataset and tuned to 94.1% mAP@50 with 90.3% recall; the X3D-XS violence classifier was fine-tuned to 83.6% validation accuracy — both iterated against real footage, not just clean benchmark sets. Around the models sits a full incident-management system: a FastAPI/PostgreSQL backend, a Next.js review dashboard, an Electron desktop app for on-site operators, role-based access scoped per barangay, and an ESP32-triggered physical siren for confirmed alerts.",
+      "A real-time crime-detection platform engineered for a solar-powered smart streetlight pole — YOLO models handle per-frame person, weapon, and pose detection while an X3D-XS video classifier judges violence over a temporal window, the same two-architecture split used in modern video-anomaly research: cheap 2D convolutions for spatial work that has to run every frame, expensive 3D convolutions only where the temporal reasoning an action actually requires them. Four earlier retrains of the violence classifier had plateaued around 70% held-out accuracy with no identified cause. A systematic diagnostic pass — measure, don't assume — found and fixed five distinct defects, including a hidden double-softmax bug that put a hard mathematical floor under the training loss, and pushed honest, never-seen-in-training test accuracy to 95.0%. Rather than stop at a clean benchmark number, the corrected model was then validated against real, continuously-running Philippine street CCTV footage, which surfaced what no benchmark clip could: a false-positive problem invisible in curated data. That finding — 91.9% accuracy overall but a 44.3% false-positive rate on the one real-CCTV-only source — is reported honestly rather than smoothed over, and is the current focus of the work. Around the detection core sits a full incident-management system: a FastAPI/PostgreSQL backend, a Next.js review dashboard, an Electron desktop app for on-site operators, multi-tenant role-based access split between barangay and PNP-station hierarchies, and an ESP32-triggered physical siren with live telemetry (battery, solar voltage) for confirmed alerts. The system is built and field-validated against real footage; physical installation on a barangay streetlight pole is the next step, not yet complete.",
+    caseStudy: [
+      {
+        heading: "The plateau",
+        body: "The violence classifier had been retrained four separate times — varying unfreeze depth, augmentation, class oversampling, input representation — without breaking a held-out accuracy plateau of roughly 70%. No prior retrain had identified why accuracy was capped, only that it was. The rule for this pass was measure, don't assume: diagnose the actual cause through systematic testing rather than more blind hyperparameter search.",
+      },
+      {
+        heading: "Five defects, one root cause",
+        body: "An audit turned up detection silently coupled to tracking (17.2% of held-out clips never reached the classifier at all, inflating apparent accuracy by giving away easy true negatives for free), and dataset leakage — 485 byte-identical duplicate files, 12.1% of the held-out set with a byte-for-byte twin in training, from a random-shuffle split. Both were fixed structurally: a whole-frame classification path removed the tracking gate, and a SHA-256 content-hash split now makes that class of leakage impossible to reintroduce by accident. The deepest defect was a double-softmax bug: the model's classification head already ends in Softmax, but both the training loss and the live inference code applied softmax again to an already-softmaxed value. That put a hard floor under the training loss — measured at exactly 0.3133 across 390 logged batches, never lower — which collapsed the loss's dynamic range and starved the model of gradient signal on its hardest examples. It's the strongest candidate for the true cause of four retrains plateauing in the same place.",
+      },
+      {
+        heading: "95.0% — honestly earned",
+        body: "With the leakage and double-softmax fixed, and re-evaluated on a three-way manifest split (train/val/test assigned by content hash, so validation and final reporting are never the same data), held-out test accuracy went from a 78.4% baseline to 95.0% (97.4% recall, 92.9% precision) — measured through the actual deployed inference path, not a clean offline loader, against a test split never read during training or checkpoint selection.",
+      },
+      {
+        heading: "What the benchmark couldn't show",
+        body: "A clean number from curated clips (RWF-2000, SCVD — balanced classes, median person height 37% of frame) doesn't prove a model works on the system's real deployment target: a wide, elevated streetlight camera where people are 6–12% of frame height and violence is rare, not 50% of all footage. Validating against that directly surfaced two problems no benchmark exposed. First, a scale blind spot — the model wasn't less confident on small, distant people, it was blind: 0 of 40 clips detected at ~9% person height that it scored a perfect 1.000 on at close range — fixed via tiled scene inference and scale-augmented retraining. Second, validating against real, continuously-running footage (not just clips) surfaced a false-alarm-rate problem — 4 to 14 alerts/hour — that neither fix addressed, traced to the model never having seen ordinary real street footage, only curated benchmark clips.",
+      },
+      {
+        heading: "The honest current state",
+        body: "Fine-tuning on real CCTV footage (CCTV-Fights, plus self-captured Philippine street footage) closed part of that gap: the fine-tuned weights in scene mode measured 0.00 false alarms/hour on 5 of 6 real validation clips at night, at 92.5% recall — now deployed. But extending validation to an axis that had been held constant by accident, not design, overturned part of that result: all six clips were night footage, and the same configuration produces up to 75.20 false alarms/hour in daytime capture. A parallel audit of the train/test split then found 270 of 280 source videos had segments leaking across both sides — fixed with a group-aware split, which produced the most honest number this project has: 91.9% accuracy overall, but 67.0% accuracy and a 44.3% false-positive rate on the one real-CCTV-only source, with the aggregate carried by benchmark data. That's the actual state of the work — not a finished product, a rigorously measured one, with its remaining weak point identified instead of hidden. Closing that gap is the current focus, ahead of physical pole installation.",
+      },
+    ],
   },
   {
     slug: "studia",

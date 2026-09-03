@@ -108,10 +108,10 @@ export default function ProjectBlock({
             </h3>
             {project.flagship && (
               <span
-                className="mono text-[10px] px-2 py-0.5 rounded-full font-bold soft-pulse shrink-0"
+                className="mono text-[10px] px-2 py-0.5 rounded-full font-bold shrink-0"
                 style={{ background: project.accent, color: "#08090c" }}
               >
-                LIVE
+                FLAGSHIP
               </span>
             )}
           </div>

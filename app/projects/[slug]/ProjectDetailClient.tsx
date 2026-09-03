@@ -163,6 +163,29 @@ export default function ProjectDetailClient({
           ))}
         </ul>
 
+        {project.caseStudy && (
+          <div className="mb-16 max-w-3xl">
+            <h2 className="font-display text-sm text-[var(--text-faint)] mb-6 uppercase tracking-[0.25em]">
+              Case study — how it actually went
+            </h2>
+            <div className="space-y-8">
+              {project.caseStudy.map((section, i) => (
+                <div key={i}>
+                  <h3
+                    className="font-display text-lg font-700 mb-2.5"
+                    style={{ color: project.accent }}
+                  >
+                    {section.heading}
+                  </h3>
+                  <p className="text-base text-[var(--text-dim)] leading-relaxed">
+                    {section.body}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="flex flex-wrap gap-4 mb-24">
           <a
             href={project.href}
