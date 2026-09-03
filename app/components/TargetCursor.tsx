@@ -64,15 +64,49 @@ export default function TargetCursor() {
     const onLeave = () => setVisible(false);
     const onEnter = () => setVisible(true);
 
+    // An iframe is a separate document — once the pointer is actually over
+    // one, mousemove never reaches this listener again (cross-document
+    // events don't bubble out), so the reticle would freeze mid-frame and,
+    // worse, the iframe element itself still matches the global
+    // `cursor: none` rule, so the *real* cursor stays suppressed too:
+    // net result, no visible cursor at all over every demo. mouseover does
+    // fire once when the pointer crosses onto the iframe, so use that to
+    // hand control back to the native cursor for as long as it's there.
+    const onOverIframe = (e: MouseEvent) => {
+      const isIframe = (e.target as Element | null)?.tagName === "IFRAME";
+      setVisible(!isIframe);
+      document.documentElement.classList.toggle("target-cursor-active", !isIframe);
+    };
+    // Clicking into a demo (e.g. a text field) moves focus into the iframe,
+    // which can suppress further mouseover delivery on some engines —
+    // catch that case too so the native cursor doesn't get stuck hidden.
+    const onBlur = () => {
+      if (document.activeElement?.tagName === "IFRAME") {
+        setVisible(false);
+        document.documentElement.classList.remove("target-cursor-active");
+      }
+    };
+    const onFocus = () => {
+      if (document.activeElement?.tagName !== "IFRAME") {
+        document.documentElement.classList.add("target-cursor-active");
+      }
+    };
+
     window.addEventListener("mousemove", onMove, { passive: true });
     document.addEventListener("mouseleave", onLeave);
     document.addEventListener("mouseenter", onEnter);
+    document.addEventListener("mouseover", onOverIframe);
+    window.addEventListener("blur", onBlur);
+    window.addEventListener("focus", onFocus);
 
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("mousemove", onMove);
       document.removeEventListener("mouseleave", onLeave);
       document.removeEventListener("mouseenter", onEnter);
+      document.removeEventListener("mouseover", onOverIframe);
+      window.removeEventListener("blur", onBlur);
+      window.removeEventListener("focus", onFocus);
       document.documentElement.classList.remove("target-cursor-active");
     };
   }, [enabled]);
