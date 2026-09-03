@@ -176,7 +176,12 @@ export default function ProjectBlock({
             </a>
           </div>
         </div>
-        <DemoFrame project={project} />
+        <div
+          className="target-frame"
+          style={{ "--target-frame-accent": project.accent } as React.CSSProperties}
+        >
+          <DemoFrame project={project} />
+        </div>
       </div>
     </div>
   );

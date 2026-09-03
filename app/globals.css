@@ -1,5 +1,55 @@
 @import "tailwindcss";
 
+/* TargetCursor replaces the pointer with a scope reticle — only once JS has
+   confirmed a fine pointer is actually present (see TargetCursor.tsx), so
+   there's never a frame with no cursor at all. Scoped under the media query
+   too, as a second guard. */
+@media (hover: hover) and (pointer: fine) {
+  html.target-cursor-active,
+  html.target-cursor-active * {
+    cursor: none !important;
+  }
+}
+
+/* Bounding-box hover frame — corner brackets in the accent color, the same
+   visual language as a weapon/person detection box. Put .target-frame on a
+   relatively-positioned wrapper and give it group-hover partners, or just
+   hover it directly. Reads as "this project just got detected." */
+.target-frame {
+  position: relative;
+}
+.target-frame::before,
+.target-frame::after {
+  content: "";
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  opacity: 0;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  pointer-events: none;
+}
+.target-frame::before {
+  top: -12px;
+  left: -12px;
+  border-top: 2px solid var(--target-frame-accent, var(--accent));
+  border-left: 2px solid var(--target-frame-accent, var(--accent));
+  transform: translate(8px, 8px);
+}
+.target-frame::after {
+  bottom: -12px;
+  right: -12px;
+  border-bottom: 2px solid var(--target-frame-accent, var(--accent));
+  border-right: 2px solid var(--target-frame-accent, var(--accent));
+  transform: translate(-8px, -8px);
+}
+.target-frame:hover::before,
+.target-frame:hover::after,
+.target-frame:focus-within::before,
+.target-frame:focus-within::after {
+  opacity: 0.85;
+  transform: translate(0, 0);
+}
+
 :root {
   --bg: #000000;
   --bg-elev: #0f1116;
@@ -43,6 +93,11 @@ html {
      as intended: only snap once a scroll gesture actually comes to rest
      near a boundary. */
   scroll-snap-stop: normal;
+}
+
+@keyframes hud-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(2.2); opacity: 0; }
 }
 
 body {

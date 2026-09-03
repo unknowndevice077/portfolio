@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Manrope } from "next/font/google";
 import "./globals.css";
+import TargetCursor from "./components/TargetCursor";
+import SystemHud from "./components/SystemHud";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -47,7 +49,11 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${manrope.variable} ${jetbrainsMono.variable} ${inter.variable}`}>
-      <body>{children}</body>
+      <body>
+        {children}
+        <SystemHud />
+        <TargetCursor />
+      </body>
     </html>
   );
 }
