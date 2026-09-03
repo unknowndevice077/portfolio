@@ -34,7 +34,15 @@ html {
 
 .snap-section {
   scroll-snap-align: center;
-  scroll-snap-stop: always;
+  /* normal, not always: "always" forces the page to fully snap to this
+     section's boundary on ANY scroll that crosses it — including the
+     couple of overscroll px that bubble out of an iframe (e.g. QuestScribe's
+     demo) once its own internal content hits the top/bottom of its scroll
+     range. With proximity on the container that turned a stray wheel-tick
+     into a forced jump to the next section. normal lets proximity behave
+     as intended: only snap once a scroll gesture actually comes to rest
+     near a boundary. */
+  scroll-snap-stop: normal;
 }
 
 body {

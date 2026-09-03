@@ -11,6 +11,7 @@ export type Project = {
   visual: "ecovision" | "studia" | "questscribe" | "aurum" | "notion";
   longDescription: string;
   demoUrl?: string; // live, embeddable deployment - shown as a real iframe instead of the static mockup
+  demoScale?: number; // renders the iframe at 1/scale size then CSS-scales it down, so a demo that reads too zoomed-in shows more of its layout in the same box
   showN8nWorkflow?: boolean; // renders the real n8n node graph powering this project
   languages?: { name: string; percent: number; color: string }[]; // real GitHub language breakdown, by bytes
   caseStudy?: { heading: string; body: string }[]; // deeper technical write-up, rendered on the project detail page
@@ -120,6 +121,7 @@ export const projects: Project[] = [
     ],
     href: "https://github.com/unknowndevice077/isite",
     demoUrl: "https://isite.vercel.app",
+    demoScale: 0.8,
     languages: [
       { name: "TypeScript", percent: 90, color: LANGUAGE_COLORS.TypeScript },
       { name: "CSS", percent: 9, color: LANGUAGE_COLORS.CSS },

@@ -41,13 +41,31 @@ function DemoFrame({ project }: { project: Project }) {
             LIVE
           </span>
         </div>
-        <iframe
-          src={project.demoUrl}
-          loading="lazy"
-          sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"
-          className="w-full h-[520px] sm:h-[640px] bg-white"
-          title={`${project.name} live demo`}
-        />
+        {project.demoScale ? (
+          <div className="relative w-full h-[520px] sm:h-[640px] overflow-hidden bg-white">
+            <iframe
+              src={project.demoUrl}
+              loading="lazy"
+              sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"
+              className="absolute top-0 left-0 border-0"
+              style={{
+                width: `${100 / project.demoScale}%`,
+                height: `${100 / project.demoScale}%`,
+                transform: `scale(${project.demoScale})`,
+                transformOrigin: "0 0",
+              }}
+              title={`${project.name} live demo`}
+            />
+          </div>
+        ) : (
+          <iframe
+            src={project.demoUrl}
+            loading="lazy"
+            sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"
+            className="w-full h-[520px] sm:h-[640px] bg-white"
+            title={`${project.name} live demo`}
+          />
+        )}
       </div>
     );
   }
