@@ -16,7 +16,18 @@ const skillGroups: [string, string[]][] = [
   ["Embedded & Hardware", ["ESP32", "PIC16F84A (Assembly)", "AutoCAD", "Fusion 360", "Tinkercad"]],
 ];
 
-const competitions = [
+type Competition = {
+  title: string;
+  org: string;
+  result: string;
+  description: string;
+  accent: string;
+  certificateUrl: string;
+  certificateType: "image" | "pdf";
+  certificateDims?: { width: number; height: number }; // intrinsic size, for "image" certs only
+};
+
+const competitions: Competition[] = [
   {
     title: "ISITE AI Hackathon 2026",
     org: "HexCorePH Labs",
@@ -24,7 +35,9 @@ const competitions = [
     description:
       "An n8n-automated gamified learning platform with an AI chatbot tutor, built under the hackathon's automation brief across business, learning, and security tracks — chose the learning track.",
     accent: "#6ee7d8",
-    certificateUrl: "/certificates/isite-ai-hackathon-2026.png",
+    certificateUrl: "/certificates/isite-ai-hackathon-2026.jpg",
+    certificateType: "image",
+    certificateDims: { width: 2000, height: 1545 },
   },
   {
     title: "CodeChum National Programming Challenge 2024",
@@ -34,6 +47,7 @@ const competitions = [
       "Competed nationally in algorithmic problem-solving — trees, graphs, hash maps, dynamic programming, greedy algorithms.",
     accent: "#818cf8",
     certificateUrl: "/certificates/codechum-national-programming-challenge-2024.pdf",
+    certificateType: "pdf",
   },
 ];
 
@@ -154,39 +168,70 @@ export default function Home() {
             <h2 className="font-display text-sm text-[var(--text-faint)] mb-10 uppercase tracking-[0.25em]">
               Competitions
             </h2>
-            <div className="grid sm:grid-cols-2 gap-6">
+            <div className="space-y-10">
               {competitions.map((c) => (
-                <a
+                <div
                   key={c.title}
-                  href={c.certificateUrl}
-                  className="glass rounded-2xl p-6 sm:p-8 relative overflow-hidden block group"
+                  className="glass rounded-2xl p-6 sm:p-8 relative overflow-hidden"
                 >
                   <div
                     className="absolute top-0 left-0 right-0 h-1"
                     style={{ background: c.accent }}
                   />
-                  <div className="flex items-start justify-between gap-3 mb-4">
-                    <p
-                      className="mono text-xs uppercase tracking-[0.2em]"
-                      style={{ color: c.accent }}
-                    >
-                      {c.result}
-                    </p>
-                    <span
-                      className="mono text-[10px] uppercase tracking-[0.2em] shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                      style={{ color: c.accent }}
-                    >
-                      View certificate
-                    </span>
-                  </div>
+                  <p
+                    className="mono text-xs uppercase tracking-[0.2em] mb-4"
+                    style={{ color: c.accent }}
+                  >
+                    {c.result}
+                  </p>
                   <h3 className="font-display text-xl sm:text-2xl font-800 mb-2 leading-tight">
                     {c.title}
                   </h3>
                   <p className="text-sm text-[var(--text-faint)] mb-5">{c.org}</p>
-                  <p className="text-base text-[var(--text-dim)] leading-relaxed">
+                  <p className="text-base text-[var(--text-dim)] leading-relaxed mb-6">
                     {c.description}
                   </p>
-                </a>
+
+                  {/* Certificate, embedded inline — same fake-browser-chrome
+                      treatment as the project demo frames, so it reads as
+                      part of the portfolio instead of a link out to a bare
+                      file. */}
+                  <div className="rounded-lg overflow-hidden border border-[#23232f] bg-[#0a0a0f]">
+                    <div className="flex items-center gap-2 px-3 py-2 bg-[#0f0f16] border-b border-[#23232f]">
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f56]" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#27c93f]" />
+                      <span
+                        className="mono text-[10px] ml-3 px-2 py-0.5 rounded bg-[#050507] truncate flex-1"
+                        style={{ color: c.accent }}
+                      >
+                        {c.certificateUrl.split("/").pop()}
+                      </span>
+                      <span
+                        className="mono text-[10px] px-2 py-0.5 rounded-full font-bold shrink-0"
+                        style={{ background: c.accent, color: "#08090c" }}
+                      >
+                        CERTIFICATE
+                      </span>
+                    </div>
+                    {c.certificateType === "pdf" ? (
+                      <iframe
+                        src={c.certificateUrl}
+                        className="w-full h-[420px] sm:h-[560px] bg-white"
+                        title={`${c.title} certificate`}
+                      />
+                    ) : (
+                      <Image
+                        src={c.certificateUrl}
+                        alt={`${c.title} certificate`}
+                        width={c.certificateDims!.width}
+                        height={c.certificateDims!.height}
+                        sizes="(min-width: 1024px) 900px, 100vw"
+                        className="w-full h-auto"
+                      />
+                    )}
+                  </div>
+                </div>
               ))}
             </div>
           </section>
