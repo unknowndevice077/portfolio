@@ -89,6 +89,7 @@ export default function ProjectDetailClient({
             <iframe
               src={project.demoUrl}
               loading="lazy"
+              sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"
               className="w-full h-[520px] sm:h-[680px] bg-white"
               title={`${project.name} live demo`}
             />

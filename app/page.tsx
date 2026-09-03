@@ -84,8 +84,9 @@ const competitions: Competition[] = [
     description:
       "Competed nationally in algorithmic problem-solving — trees, graphs, hash maps, dynamic programming, greedy algorithms.",
     accent: "#818cf8",
-    certificateUrl: "/certificates/codechum-national-programming-challenge-2024.pdf",
-    certificateType: "pdf",
+    certificateUrl: "/certificates/codechum-national-programming-challenge-2024.jpg",
+    certificateType: "image",
+    certificateDims: { width: 2060, height: 1592 },
   },
 ];
 
