@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import SceneBackground from "./components/SceneBackground";
 import Reveal from "./components/Reveal";
 import ProjectBlock from "./components/ProjectBlock";
@@ -24,6 +24,7 @@ const competitions = [
     description:
       "An n8n-automated gamified learning platform with an AI chatbot tutor, built under the hackathon's automation brief across business, learning, and security tracks — chose the learning track.",
     accent: "#6ee7d8",
+    certificateUrl: "/certificates/isite-ai-hackathon-2026.png",
   },
   {
     title: "CodeChum National Programming Challenge 2024",
@@ -32,6 +33,7 @@ const competitions = [
     description:
       "Competed nationally in algorithmic problem-solving — trees, graphs, hash maps, dynamic programming, greedy algorithms.",
     accent: "#818cf8",
+    certificateUrl: "/certificates/codechum-national-programming-challenge-2024.pdf",
   },
 ];
 
@@ -51,19 +53,6 @@ export default function Home() {
   const handleActive = useCallback((accent: string) => {
     setAccent1(accent);
     setAccent2((prev) => (prev === accent ? "#818cf8" : prev));
-  }, []);
-
-  // Restore scroll position after coming back from a project detail page
-  // (see the onClick handoff in ProjectBlock) — Next.js's own scroll
-  // restoration doesn't reliably fire here, so we do it ourselves.
-  useEffect(() => {
-    const saved = sessionStorage.getItem("portfolio-scroll-y");
-    if (saved) {
-      sessionStorage.removeItem("portfolio-scroll-y");
-      requestAnimationFrame(() => {
-        window.scrollTo(0, Number(saved));
-      });
-    }
   }, []);
 
   return (
@@ -167,20 +156,31 @@ export default function Home() {
             </h2>
             <div className="grid sm:grid-cols-2 gap-6">
               {competitions.map((c) => (
-                <div
+                <a
                   key={c.title}
-                  className="glass rounded-2xl p-6 sm:p-8 relative overflow-hidden"
+                  href={c.certificateUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="glass rounded-2xl p-6 sm:p-8 relative overflow-hidden block group"
                 >
                   <div
                     className="absolute top-0 left-0 right-0 h-1"
                     style={{ background: c.accent }}
                   />
-                  <p
-                    className="mono text-xs uppercase tracking-[0.2em] mb-4"
-                    style={{ color: c.accent }}
-                  >
-                    {c.result}
-                  </p>
+                  <div className="flex items-start justify-between gap-3 mb-4">
+                    <p
+                      className="mono text-xs uppercase tracking-[0.2em]"
+                      style={{ color: c.accent }}
+                    >
+                      {c.result}
+                    </p>
+                    <span
+                      className="mono text-[10px] uppercase tracking-[0.2em] shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                      style={{ color: c.accent }}
+                    >
+                      View certificate ↗
+                    </span>
+                  </div>
                   <h3 className="font-display text-xl sm:text-2xl font-800 mb-2 leading-tight">
                     {c.title}
                   </h3>
@@ -188,7 +188,7 @@ export default function Home() {
                   <p className="text-base text-[var(--text-dim)] leading-relaxed">
                     {c.description}
                   </p>
-                </div>
+                </a>
               ))}
             </div>
           </section>

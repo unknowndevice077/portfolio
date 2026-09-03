@@ -41,9 +41,17 @@ export default function ProjectDetailClient({
             onClick={() => {
               if (window.history.length > 1) {
                 router.back();
-              } else {
-                router.push("/");
+                return;
               }
+              // Project links open in a new tab, so this page usually has no
+              // in-tab history to go back to — the homepage tab is still
+              // sitting right where the user left it. Close this tab to
+              // return to it instead of loading a fresh homepage at the top.
+              window.close();
+              // window.close() is a no-op if this tab wasn't opened by
+              // script (e.g. a bookmarked/direct link) — fall back to
+              // navigating home in that case.
+              setTimeout(() => router.push("/"), 100);
             }}
             className="text-sm text-[var(--text-faint)] hover:text-[var(--text)] transition-colors cursor-pointer"
           >
