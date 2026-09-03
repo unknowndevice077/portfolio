@@ -21,9 +21,15 @@
 
 html {
   scroll-behavior: smooth;
-  /* Mandatory: every scroll gesture lands centered on a block, so it
-     reads as deliberate auto-centering rather than an occasional nudge. */
-  scroll-snap-type: y mandatory;
+  /* mandatory fought programmatic navigation and blocked moderate scrolls
+     outright when tested against sections taller than one viewport (the
+     demo blocks, once they include a ~600px iframe, run well past 100vh).
+     Worse, it force-snapped on *any* scroll delta — including the few px
+     the browser nudges the page when an iframe inside a section gains
+     focus (e.g. clicking a quiz answer) — which could yank the whole page
+     to an adjacent section mid-interaction. proximity only snaps once a
+     scroll gesture naturally settles near a section. */
+  scroll-snap-type: y proximity;
 }
 
 .snap-section {

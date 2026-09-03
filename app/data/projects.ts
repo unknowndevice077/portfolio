@@ -86,7 +86,7 @@ export const projects: Project[] = [
   },
   {
     slug: "questscribe",
-    name: "QuestScribe (isite)",
+    name: "QuestScribe (HexCorePH n8n Hackathon)",
     tagline: "Gamified learning platform, born as an n8n workflow — ISITE AI Hackathon 2026",
     tech: ["Next.js", "AI SDK", "Gemini", "TypeScript", "n8n"],
     bullets: [
