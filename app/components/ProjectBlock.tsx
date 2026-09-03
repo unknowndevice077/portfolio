@@ -43,6 +43,7 @@ function DemoFrame({ project }: { project: Project }) {
         </div>
         <iframe
           src={project.demoUrl}
+          loading="lazy"
           className="w-full h-[520px] sm:h-[640px] bg-white"
           title={`${project.name} live demo`}
         />

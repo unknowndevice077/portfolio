@@ -20,10 +20,26 @@ const inter = Inter({
   weight: ["400", "500", "600"],
 });
 
+const title = "Jae — Applied AI & Full-Stack Engineer";
+const description =
+  "Final-year Computer Engineering student building production AI and full-stack systems — real-time crime detection, trading automation, and AI-powered tools, shipped end-to-end.";
+
 export const metadata: Metadata = {
-  title: "Jae — Applied AI & Full-Stack Engineer",
-  description:
-    "Final-year Computer Engineering student building production AI and full-stack systems — real-time crime detection, trading automation, and AI-powered tools, shipped end-to-end.",
+  metadataBase: new URL("https://portfolio-five-rho-21.vercel.app"),
+  title,
+  description,
+  openGraph: {
+    title,
+    description,
+    type: "website",
+    images: [{ url: "/images/avatar-placeholder.jpg", width: 512, height: 512 }],
+  },
+  twitter: {
+    card: "summary",
+    title,
+    description,
+    images: ["/images/avatar-placeholder.jpg"],
+  },
 };
 
 export default function RootLayout({

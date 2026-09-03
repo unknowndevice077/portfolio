@@ -217,6 +217,7 @@ export default function Home() {
                     {c.certificateType === "pdf" ? (
                       <iframe
                         src={c.certificateUrl}
+                        loading="lazy"
                         className="w-full h-[420px] sm:h-[560px] bg-white"
                         title={`${c.title} certificate`}
                       />

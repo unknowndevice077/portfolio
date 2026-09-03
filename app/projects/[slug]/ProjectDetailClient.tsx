@@ -88,6 +88,7 @@ export default function ProjectDetailClient({
             </div>
             <iframe
               src={project.demoUrl}
+              loading="lazy"
               className="w-full h-[520px] sm:h-[680px] bg-white"
               title={`${project.name} live demo`}
             />
