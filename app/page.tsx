@@ -159,8 +159,6 @@ export default function Home() {
                 <a
                   key={c.title}
                   href={c.certificateUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
                   className="glass rounded-2xl p-6 sm:p-8 relative overflow-hidden block group"
                 >
                   <div
@@ -178,7 +176,7 @@ export default function Home() {
                       className="mono text-[10px] uppercase tracking-[0.2em] shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
                       style={{ color: c.accent }}
                     >
-                      View certificate ↗
+                      View certificate
                     </span>
                   </div>
                   <h3 className="font-display text-xl sm:text-2xl font-800 mb-2 leading-tight">
