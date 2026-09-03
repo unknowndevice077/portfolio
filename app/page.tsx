@@ -146,6 +146,14 @@ export default function Home() {
                   GitHub ↗
                 </a>
                 <a
+                  href="https://www.linkedin.com/in/fritz-rjhay-dela-cruz-9b604737b/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm px-5 py-3 rounded-full glass font-semibold"
+                >
+                  LinkedIn ↗
+                </a>
+                <a
                   href="mailto:frjhay.delacruz@gmail.com"
                   className="text-sm px-5 py-3 rounded-full glass font-semibold"
                 >
@@ -346,6 +354,15 @@ export default function Home() {
               className="text-[var(--accent)] hover:underline"
             >
               github.com/unknowndevice077
+            </a>
+            <span className="text-[var(--text-faint)]">·</span>
+            <a
+              href="https://www.linkedin.com/in/fritz-rjhay-dela-cruz-9b604737b/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[var(--accent)] hover:underline"
+            >
+              LinkedIn
             </a>
             <span className="text-[var(--text-faint)]">·</span>
             <a
