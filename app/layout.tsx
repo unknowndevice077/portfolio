@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Manrope } from "next/font/google";
 import "./globals.css";
-import TargetCursor from "./components/TargetCursor";
 import SystemHud from "./components/SystemHud";
+import IframeScrollGuard from "./components/IframeScrollGuard";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -52,7 +52,7 @@ export default function RootLayout({
       <body>
         {children}
         <SystemHud />
-        <TargetCursor />
+        <IframeScrollGuard />
       </body>
     </html>
   );

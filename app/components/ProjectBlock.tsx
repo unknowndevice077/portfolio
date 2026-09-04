@@ -42,7 +42,20 @@ function DemoFrame({ project }: { project: Project }) {
           </span>
         </div>
         {project.demoScale ? (
-          <div className="relative w-full h-[520px] sm:h-[640px] overflow-hidden bg-white">
+          <div
+            className="relative w-full h-[520px] sm:h-[640px] overflow-hidden bg-white"
+            style={{
+              // Anchored here, not on the iframe below: that element is
+              // paint-time transformed (see its comment), which leaves its
+              // real layout/scroll box full size underneath the visual
+              // scale-down — overscroll-behavior set directly on it turned
+              // out unreliable, still chaining scroll into the outer page
+              // with zero wheel event ever reaching the parent document.
+              // This wrapper's own box is never transformed, so containment
+              // anchored here isn't subject to that ambiguity.
+              overscrollBehavior: "contain",
+            }}
+          >
             <iframe
               src={project.demoUrl}
               loading="lazy"
@@ -53,6 +66,11 @@ function DemoFrame({ project }: { project: Project }) {
                 height: `${100 / project.demoScale}%`,
                 transform: `scale(${project.demoScale})`,
                 transformOrigin: "0 0",
+                // Belt and suspenders with the wrapper's own rule above:
+                // unclear which one Chrome actually keys the cross-document
+                // chaining check off for a transformed iframe specifically,
+                // so both get it rather than betting on one.
+                overscrollBehavior: "contain",
               }}
               title={`${project.name} live demo`}
             />
@@ -63,6 +81,7 @@ function DemoFrame({ project }: { project: Project }) {
             loading="lazy"
             sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"
             className="w-full h-[520px] sm:h-[640px] bg-white"
+            style={{ overscrollBehavior: "contain" }}
             title={`${project.name} live demo`}
           />
         )}
@@ -106,7 +125,19 @@ export default function ProjectBlock({
   return (
     <div
       ref={ref}
-      className={`snap-section min-h-screen flex items-center py-16 border-t border-[var(--border)]`}
+      className={`${
+        // Sections with a live embedded demo run 1100-1300px tall against a
+        // ~960px viewport, well past what CSS scroll-snap handles nicely —
+        // three rounds of narrower fixes (scroll-snap-stop, overscroll-
+        // behavior, a focus guard) each closed one specific trigger, but
+        // proximity snap kept finding a new one to amplify (most recently:
+        // ordinary wheel-scrolling over the page margin beside the demo
+        // card, nowhere near the iframe itself, still got grabbed and
+        // glided into an adjacent section). Simplest reliable fix: an
+        // iframe-bearing block just isn't a snap target — it still scrolls
+        // completely normally, there's just nothing here to pull toward.
+        project.demoUrl ? "" : "snap-section"
+      } min-h-screen flex items-center py-16 border-t border-[var(--border)]`}
     >
       <div
         className={

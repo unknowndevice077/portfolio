@@ -1,16 +1,5 @@
 @import "tailwindcss";
 
-/* TargetCursor replaces the pointer with a scope reticle — only once JS has
-   confirmed a fine pointer is actually present (see TargetCursor.tsx), so
-   there's never a frame with no cursor at all. Scoped under the media query
-   too, as a second guard. */
-@media (hover: hover) and (pointer: fine) {
-  html.target-cursor-active,
-  html.target-cursor-active * {
-    cursor: none !important;
-  }
-}
-
 /* Bounding-box hover frame — corner brackets in the accent color, the same
    visual language as a weapon/person detection box. Put .target-frame on a
    relatively-positioned wrapper and give it group-hover partners, or just
@@ -81,6 +70,15 @@ html {
      scroll gesture naturally settles near a section. */
   scroll-snap-type: y proximity;
 }
+
+/* Sections with a live embedded demo (Studia/QuestScribe/Aurum) don't carry
+   .snap-section at all anymore — see ProjectBlock.tsx's DemoFrame comment.
+   A focus-driven auto-scroll into a too-tall section was getting grabbed by
+   proximity snap and amplified into a jump to an unrelated section; taking
+   those sections out of snap entirely removed the amplifier. What's left
+   after that (an occasional unrequested scroll with no snap involved at
+   all) is handled in JS by IframeScrollGuard.tsx instead — that one isn't a
+   CSS-expressible condition. */
 
 .snap-section {
   scroll-snap-align: center;

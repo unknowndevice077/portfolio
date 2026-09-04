@@ -87,7 +87,15 @@ export default function ProjectDetailClient({
               </span>
             </div>
             {project.demoScale ? (
-              <div className="relative w-full h-[520px] sm:h-[680px] overflow-hidden bg-white">
+              <div
+                className="relative w-full h-[520px] sm:h-[680px] overflow-hidden bg-white"
+                style={{
+                  // Anchored here, not on the transformed iframe below — see
+                  // ProjectBlock.tsx's DemoFrame for why: overscroll-behavior
+                  // on a paint-time-transformed element proved unreliable.
+                  overscrollBehavior: "contain",
+                }}
+              >
                 <iframe
                   src={project.demoUrl}
                   loading="lazy"
@@ -98,6 +106,7 @@ export default function ProjectDetailClient({
                     height: `${100 / project.demoScale}%`,
                     transform: `scale(${project.demoScale})`,
                     transformOrigin: "0 0",
+                    overscrollBehavior: "contain",
                   }}
                   title={`${project.name} live demo`}
                 />
@@ -108,6 +117,7 @@ export default function ProjectDetailClient({
                 loading="lazy"
                 sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"
                 className="w-full h-[520px] sm:h-[680px] bg-white"
+                style={{ overscrollBehavior: "contain" }}
                 title={`${project.name} live demo`}
               />
             )}
