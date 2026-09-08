@@ -52,7 +52,7 @@ const skillGroups: [string, string[]][] = [
   ["Languages", ["Python", "TypeScript/JavaScript", "C/C++", "Java", "C#", "Rust", "Dart"]],
   ["Web & Mobile", ["React", "Next.js", "React Native", "Flutter", "Tauri", "HTML/CSS"]],
   ["Backend & Data", ["FastAPI", "PostgreSQL", "SQLite", "Redis", "Firebase", "Supabase"]],
-  ["Embedded & Hardware", ["ESP32", "PIC16F84A (Assembly)", "AutoCAD", "Fusion 360", "Tinkercad"]],
+  ["Embedded & Hardware", ["Arduino Uno","ESP32", "PIC16F84A (Assembly)", "AutoCAD", "Fusion 360", "Tinkercad"]],
 ];
 
 type Competition = {
@@ -162,6 +162,14 @@ export default function Home() {
                 >
                   Get in touch
                 </a>
+                <a
+                  href="https://www.facebook.com/rjhay.l.delacruz/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm px-5 py-3 rounded-full glass font-semibold"
+                  >
+                    Facebook ↗
+                </a>
               </div>
             </div>
             <div className="flex justify-center lg:justify-end order-first lg:order-last">
@@ -212,7 +220,7 @@ export default function Home() {
             <a
               href="mailto:frjhay.delacruz@gmail.com?subject=Project inquiry"
               className="text-sm px-5 py-3 rounded-full font-semibold self-start"
-              style={{ background: "var(--accent)", color: "#08090c" }}
+              style={{ background: "var(--accent)", color: "#000102" }}
             >
               Have a project in mind? Let&apos;s talk →
             </a>
