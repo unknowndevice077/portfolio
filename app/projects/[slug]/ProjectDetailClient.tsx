@@ -12,6 +12,7 @@ import {
   QuestScribeVisual,
   AurumVisual,
   NotionAIVisual,
+  ClashGamesVisual,
 } from "../../components/ProjectVisual";
 
 const visualMap = {
@@ -20,6 +21,7 @@ const visualMap = {
   questscribe: QuestScribeVisual,
   aurum: AurumVisual,
   notion: NotionAIVisual,
+  clash: ClashGamesVisual,
 };
 
 export default function ProjectDetailClient({
@@ -71,17 +73,17 @@ export default function ProjectDetailClient({
         <p className="text-lg text-[var(--text-dim)] mb-10 max-w-2xl">{project.tagline}</p>
 
         {project.demoUrl ? (
-          <div className="mb-10 rounded-2xl overflow-hidden glass p-1">
-            <div className="flex items-center gap-2 px-3 py-2 bg-[#0f0f16] border-b border-[#23232f] rounded-t-xl">
+          <div className="mb-10 rounded-lg overflow-hidden glass p-1">
+            <div className="flex items-center gap-2 px-3 py-2 bg-[#151109] border-b border-[#241f16] rounded-t-lg">
               <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f56]" />
               <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
               <span className="w-2.5 h-2.5 rounded-full bg-[#27c93f]" />
-              <span className="mono text-[10px] ml-2 px-2 py-0.5 rounded bg-[#050507] truncate flex-1" style={{ color: project.accent }}>
+              <span className="mono text-[10px] ml-2 px-2 py-0.5 rounded bg-[#0a0806] truncate flex-1" style={{ color: project.accent }}>
                 {project.demoUrl.replace("https://", "")}
               </span>
               <span
-                className="mono text-[10px] px-2 py-0.5 rounded-full font-bold shrink-0"
-                style={{ background: project.accent, color: "#08090c" }}
+                className="mono text-[10px] px-2 py-0.5 rounded border font-bold shrink-0 tracking-wider"
+                style={{ borderColor: project.accent, color: project.accent }}
               >
                 LIVE DEMO
               </span>
@@ -121,7 +123,7 @@ export default function ProjectDetailClient({
                 title={`${project.name} live demo`}
               />
             )}
-            <div className="px-4 py-3 bg-[#0f0f16] rounded-b-xl">
+            <div className="px-4 py-3 bg-[#151109] rounded-b-lg">
               <a
                 href={project.demoUrl}
                 target="_blank"
@@ -134,7 +136,7 @@ export default function ProjectDetailClient({
             </div>
           </div>
         ) : (
-          <div className="mb-10 rounded-2xl overflow-hidden glass p-1">
+          <div className="mb-10 rounded-lg overflow-hidden glass p-1">
             {project.slug === "ecovision" ? <EcoVisionVisual animated /> : <Visual />}
           </div>
         )}
@@ -144,7 +146,7 @@ export default function ProjectDetailClient({
             <p className="mono text-xs mb-3 uppercase tracking-[0.25em]" style={{ color: project.accent }}>
               Behind the scenes — the real workflow
             </p>
-            <div className="rounded-2xl overflow-hidden glass p-1">
+            <div className="rounded-lg overflow-hidden glass p-1">
               <N8nWorkflowDiagram accent={project.accent} />
             </div>
             <p className="text-xs text-[var(--text-faint)] mt-3">
@@ -215,17 +217,48 @@ export default function ProjectDetailClient({
           </div>
         )}
 
+        {project.playLinks && (
+          <div className="mb-8">
+            <h2 className="font-display text-sm text-[var(--text-faint)] mb-4 uppercase tracking-[0.25em]">
+              Play the games
+            </h2>
+            <div className="flex flex-wrap gap-3">
+              {project.playLinks.map((p) => (
+                <a
+                  key={p.name}
+                  href={p.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm px-4 py-2.5 rounded-md glass font-semibold"
+                >
+                  Play {p.name} ↗
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="flex flex-wrap gap-4 mb-24">
           <a
-            href={project.href}
+            href={project.demoUrl ?? project.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm px-6 py-3.5 rounded-full font-semibold"
-            style={{ background: project.accent, color: "#08090c" }}
+            className="text-sm px-6 py-3 rounded-md font-semibold"
+            style={{ background: project.accent, color: "#140f0a" }}
           >
-            View source on GitHub ↗
+            {project.demoUrl ? "Open live demo ↗" : "View source on GitHub ↗"}
           </a>
-          <Link href="/" className="text-sm px-6 py-3.5 rounded-full glass font-semibold">
+          {project.demoUrl && (
+            <a
+              href={project.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm px-6 py-3 rounded-md glass font-semibold"
+            >
+              Source ↗
+            </a>
+          )}
+          <Link href="/" className="text-sm px-6 py-3 rounded-md glass font-semibold">
             All projects
           </Link>
         </div>

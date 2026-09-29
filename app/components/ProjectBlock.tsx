@@ -9,6 +9,7 @@ import {
   QuestScribeVisual,
   AurumVisual,
   NotionAIVisual,
+  ClashGamesVisual,
 } from "./ProjectVisual";
 import LanguageBar from "./LanguageBar";
 
@@ -18,25 +19,26 @@ const visualMap = {
   questscribe: QuestScribeVisual,
   aurum: AurumVisual,
   notion: NotionAIVisual,
+  clash: ClashGamesVisual,
 };
 
 function DemoFrame({ project }: { project: Project }) {
   if (project.demoUrl) {
     return (
-      <div className="rounded-lg overflow-hidden border border-[#23232f] bg-[#0a0a0f]">
-        <div className="flex items-center gap-2 px-3 py-2 bg-[#0f0f16] border-b border-[#23232f]">
+      <div className="rounded-lg overflow-hidden border border-[#241f16] bg-[#100e0a]">
+        <div className="flex items-center gap-2 px-3 py-2 bg-[#151109] border-b border-[#241f16]">
           <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f56]" />
           <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
           <span className="w-2.5 h-2.5 rounded-full bg-[#27c93f]" />
           <span
-            className="mono text-[10px] ml-3 px-2 py-0.5 rounded bg-[#050507] truncate flex-1"
+            className="mono text-[10px] ml-3 px-2 py-0.5 rounded bg-[#0a0806] truncate flex-1"
             style={{ color: project.accent }}
           >
             {project.demoUrl.replace("https://", "")}
           </span>
           <span
-            className="mono text-[10px] px-2 py-0.5 rounded-full font-bold shrink-0"
-            style={{ background: project.accent, color: "#08090c" }}
+            className="mono text-[10px] px-2 py-0.5 rounded border font-bold shrink-0 tracking-wider"
+            style={{ borderColor: project.accent, color: project.accent }}
           >
             LIVE
           </span>
@@ -158,8 +160,8 @@ export default function ProjectBlock({
             </h3>
             {project.flagship && (
               <span
-                className="mono text-[10px] px-2 py-0.5 rounded-full font-bold shrink-0"
-                style={{ background: project.accent, color: "#08090c" }}
+                className="mono text-[10px] px-2 py-0.5 rounded border font-bold shrink-0 tracking-wider"
+                style={{ borderColor: project.accent, color: project.accent }}
               >
                 FLAGSHIP
               </span>
@@ -192,8 +194,8 @@ export default function ProjectBlock({
               href={`/projects/${project.slug}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm px-5 py-3 rounded-full font-semibold"
-              style={{ background: project.accent, color: "#08090c" }}
+              className="text-sm px-5 py-2.5 rounded-md font-semibold"
+              style={{ background: project.accent, color: "#140f0a" }}
             >
               Project link →
             </Link>
@@ -201,10 +203,21 @@ export default function ProjectBlock({
               href={project.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm px-5 py-3 rounded-full glass font-semibold"
+              className="text-sm px-5 py-2.5 rounded-md glass font-semibold"
             >
               Source ↗
             </a>
+            {project.playLinks?.map((p) => (
+              <a
+                key={p.name}
+                href={p.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm px-5 py-2.5 rounded-md glass font-semibold"
+              >
+                Play {p.name} ↗
+              </a>
+            ))}
           </div>
         </div>
         <div

@@ -103,39 +103,51 @@ function Tag({ children, icon: Icon }: { children: React.ReactNode; icon?: React
 }
 
 export default function Home() {
-  const [accent1, setAccent1] = useState("#6ee7d8");
-  const [accent2, setAccent2] = useState("#818cf8");
+  // Both track the same active project's accent now — SceneBackground still
+  // takes two colors for its two shape groups, but they used to be a fixed
+  // teal/indigo pair, so two of its five wireframe shapes stayed indigo no
+  // matter which project was actually in view. One accent per project reads
+  // as intentional; a project's own color plus a leftover indigo doesn't.
+  const [accent1, setAccent1] = useState("#ff5a1f");
+  const [accent2, setAccent2] = useState("#ff5a1f");
 
   const handleActive = useCallback((accent: string) => {
     setAccent1(accent);
-    setAccent2((prev) => (prev === accent ? "#818cf8" : prev));
+    setAccent2(accent);
   }, []);
 
   return (
     <>
       <SceneBackground accent1={accent1} accent2={accent2} />
       <main className="relative z-10 max-w-7xl mx-auto px-6 sm:px-12">
-        {/* Hero */}
-        <header className="snap-section pt-20 pb-16 sm:pt-28 sm:pb-20 min-h-screen flex items-center">
-          <div className="grid lg:grid-cols-[1fr_auto] gap-12 lg:gap-20 items-center w-full">
+        {/* Hero — a spec sheet, not a greeting. No "Hi, I'm", no gradient
+            name, no circular avatar-in-a-blurred-ring — that combination is
+            the most recognizable AI-generated-portfolio opener there is. */}
+        <header className="snap-section pt-24 pb-16 sm:pt-32 sm:pb-20 min-h-screen flex items-center">
+          <div className="grid lg:grid-cols-[1fr_auto] gap-12 lg:gap-16 items-start w-full">
             <div>
-              <p className="mono text-sm text-[var(--accent)] mb-5 tracking-wide">
-                Hi, I&apos;m
-              </p>
-              <h1 className="font-display text-5xl sm:text-7xl font-800 tracking-tight mb-6 leading-[0.95] text-gradient">
-                Jae
+              <div className="flex items-center gap-3 mb-7 mono text-xs tracking-[0.2em] text-[var(--text-faint)] uppercase">
+                <span className="inline-block w-1.5 h-1.5 rounded-full" style={{ background: "var(--accent)" }} />
+                Computer Engineering · Leyte, Philippines
+              </div>
+              <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-800 tracking-tight mb-2 leading-[0.95]">
+                Fritz Rjhay Dela Cruz
               </h1>
-              <p className="text-lg sm:text-xl text-[var(--text-dim)] leading-relaxed max-w-xl mb-8 font-body">
-                Computer Engineering student specializing in applied AI
-                and full-stack/embedded development. I design and ship production
-                systems independently, end-to-end — from model to deployment.
+              <p className="font-display text-base sm:text-lg text-[var(--accent)] tracking-tight mb-7">
+                Applied AI &amp; Full-Stack Engineer
               </p>
-              <div className="flex flex-wrap gap-3">
+              <p className="text-lg text-[var(--text-dim)] leading-relaxed max-w-xl mb-9 font-body">
+                I design and ship production systems independently, end-to-end —
+                from model to deployment. Real-time detection pipelines, trading
+                automation, multiplayer game infrastructure, and the full-stack
+                and embedded work underneath all of it.
+              </p>
+              <div className="flex flex-wrap gap-2.5">
                 <a
                   href="/resume/Fritz_Dela_Cruz_Resume.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm px-5 py-3 rounded-full font-semibold text-[#08090c]"
+                  className="text-sm px-5 py-2.5 rounded-md font-semibold text-[#140f0a]"
                   style={{ background: "var(--accent)" }}
                 >
                   Resume ↓
@@ -144,7 +156,7 @@ export default function Home() {
                   href="https://github.com/unknowndevice077"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm px-5 py-3 rounded-full bg-[var(--text)] text-[#08090c] font-semibold hover:opacity-90 transition-opacity"
+                  className="text-sm px-5 py-2.5 rounded-md glass font-semibold"
                 >
                   GitHub ↗
                 </a>
@@ -152,13 +164,13 @@ export default function Home() {
                   href="https://www.linkedin.com/in/fritz-rjhay-dela-cruz-9b604737b/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm px-5 py-3 rounded-full glass font-semibold"
+                  className="text-sm px-5 py-2.5 rounded-md glass font-semibold"
                 >
                   LinkedIn ↗
                 </a>
                 <a
                   href="mailto:frjhay.delacruz@gmail.com"
-                  className="text-sm px-5 py-3 rounded-full glass font-semibold"
+                  className="text-sm px-5 py-2.5 rounded-md glass font-semibold"
                 >
                   Get in touch
                 </a>
@@ -166,20 +178,20 @@ export default function Home() {
                   href="https://www.facebook.com/rjhay.l.delacruz/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm px-5 py-3 rounded-full glass font-semibold"
+                  className="text-sm px-5 py-2.5 rounded-md glass font-semibold"
                   >
                     Facebook ↗
                 </a>
               </div>
             </div>
             <div className="flex justify-center lg:justify-end order-first lg:order-last">
-              <div className="relative w-40 h-40 sm:w-56 sm:h-56 lg:w-64 lg:h-64 rounded-full overflow-hidden glass shrink-0 ring-1 ring-[var(--glass-border)]">
+              <div className="target-frame relative w-36 h-36 sm:w-48 sm:h-48 rounded-lg overflow-hidden glass shrink-0">
                 <Image
                   src="/images/avatar-placeholder.jpg"
-                  alt="Jae"
+                  alt="Fritz Rjhay Dela Cruz"
                   fill
-                  sizes="(min-width: 1024px) 16rem, (min-width: 640px) 14rem, 10rem"
-                  className="object-cover"
+                  sizes="(min-width: 640px) 12rem, 9rem"
+                  className="object-cover grayscale-[35%] contrast-[1.05]"
                   priority
                 />
               </div>
@@ -201,10 +213,10 @@ export default function Home() {
               {services.map((s) => (
                 <div
                   key={s.title}
-                  className="glass rounded-2xl p-6 relative overflow-hidden"
+                  className="glass rounded-lg p-6 relative overflow-hidden"
                 >
                   <div
-                    className="absolute top-0 left-0 right-0 h-1"
+                    className="absolute top-0 left-0 right-0 h-[3px]"
                     style={{ background: s.accent }}
                   />
                   <h3 className="font-display text-lg font-700 mb-2.5">{s.title}</h3>
@@ -219,8 +231,8 @@ export default function Home() {
             </div>
             <a
               href="mailto:frjhay.delacruz@gmail.com?subject=Project inquiry"
-              className="text-sm px-5 py-3 rounded-full font-semibold self-start"
-              style={{ background: "var(--accent)", color: "#000102" }}
+              className="text-sm px-5 py-3 rounded-md font-semibold self-start"
+              style={{ background: "var(--accent)", color: "#140f0a" }}
             >
               Have a project in mind? Let&apos;s talk →
             </a>
@@ -262,9 +274,10 @@ export default function Home() {
           ))}
           <Reveal>
             <p className="text-sm text-[var(--text-faint)] py-8">
-              Plus 12+ additional repos: EcoVision Smartpole, a line-following
-              robot, LeadPilot (job-board matching), and embedded builds (fire
-              alarms, toll gates, energy harvesting).
+              Plus 12+ additional repos: EcoVision Smartpole, a wall-climbing
+              robot, VA Hub (client/invoicing workspace for virtual assistants),
+              LeadPilot (job-board matching), a motorshop inventory system, and
+              embedded builds (fire alarms, toll gates, energy harvesting).
             </p>
           </Reveal>
         </div>
@@ -278,7 +291,7 @@ export default function Home() {
             <div className="space-y-10">
               {competitions.map((c) => {
                 const thumb = (
-                  <div className="relative w-28 h-20 sm:w-36 sm:h-24 shrink-0 rounded-lg overflow-hidden border border-[#23232f] bg-[#0a0a0f] group-hover/cert:border-[var(--glass-border-hover)] transition-colors">
+                  <div className="relative w-28 h-20 sm:w-36 sm:h-24 shrink-0 rounded-lg overflow-hidden border border-[#241f16] bg-[#100e0a] group-hover/cert:border-[var(--glass-border-hover)] transition-colors">
                     <Image
                       src={c.certificateUrl}
                       alt={`${c.title} certificate`}
@@ -297,10 +310,10 @@ export default function Home() {
                 return (
                   <div
                     key={c.title}
-                    className="glass rounded-2xl p-6 sm:p-8 relative overflow-hidden"
+                    className="glass rounded-lg p-6 sm:p-8 relative overflow-hidden"
                   >
                     <div
-                      className="absolute top-0 left-0 right-0 h-1"
+                      className="absolute top-0 left-0 right-0 h-[3px]"
                       style={{ background: c.accent }}
                     />
                     <div className="flex items-start justify-between gap-5">

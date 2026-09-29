@@ -8,13 +8,18 @@ export type Project = {
   flagship?: boolean;
   accent: string;
   accentRgb: string; // "r, g, b" for use in rgba()
-  visual: "ecovision" | "studia" | "questscribe" | "aurum" | "notion";
+  visual: "ecovision" | "studia" | "questscribe" | "aurum" | "notion" | "clash";
   longDescription: string;
   demoUrl?: string; // live, embeddable deployment - shown as a real iframe instead of the static mockup
   demoScale?: number; // renders the iframe at 1/scale size then CSS-scales it down, so a demo that reads too zoomed-in shows more of its layout in the same box
   showN8nWorkflow?: boolean; // renders the real n8n node graph powering this project
   languages?: { name: string; percent: number; color: string }[]; // real GitHub language breakdown, by bytes
   caseStudy?: { heading: string; body: string }[]; // deeper technical write-up, rendered on the project detail page
+  // When one entry covers several separately-deployed live apps (a
+  // shared-stack trilogy of games, say) — rendered as "Play X" links on
+  // both the card and the detail page, instead of forcing near-identical
+  // full project entries for each one.
+  playLinks?: { name: string; url: string }[];
 };
 
 // Standard GitHub linguist colors, for the language bar to look native.
@@ -152,6 +157,47 @@ export const projects: Project[] = [
     visual: "aurum",
     longDescription:
       "An automated trading system for XAU/USD (gold), built around one shared signal engine driving three distinct modes: a persistent server-side bot that runs continuously, a browser-based simulator for manual experimentation, and a historical backtester — all producing directly comparable results since they share the same underlying logic. Signals combine EMA, RSI, MACD, and Bollinger Bands, sized using the Kelly criterion rather than fixed lot sizes. The backtest engine reconstructs true equity curves against real historical gold price data, making drawdown analysis meaningful instead of theoretical.",
+  },
+  {
+    slug: "clash-games",
+    name: "Clash Games",
+    tagline: "Three real-time multiplayer party games, one shared engine",
+    tech: ["TypeScript", "React", "Node.js", "Socket.IO", "Claude API"],
+    bullets: [
+      "Copy Cat Clash: teams recreate a reference photo on a shared canvas; an AI vision judge scores which team's drawing is closer, with an automatic local pixel-comparison judge as fallback.",
+      "Puzzle Clash: both players solve the identical jigsaw at once — drag-to-place, live opponent progress, phone-and-desktop touch/mouse support.",
+      "Bluff Sketch: 4–10 players draw the same secret word except one Faker with a similar-but-different word; server-authoritative roles, timers and scoring, reconnect-safe within 60s.",
+      "All three: custom stroke engine (pointer pressure, quadratic smoothing), room codes with QR invites for same-Wi-Fi play, ranked queues with Elo, and Docker-deployed servers.",
+    ],
+    href: "https://github.com/unknowndevice077/copycatclash",
+    // No demoUrl: all three set X-Frame-Options/frame-ancestors that block
+    // being embedded on another origin, so an iframe here would just be
+    // blocked by the browser. Real screenshots (ClashGamesVisual) plus
+    // direct play links do the job an embed can't anyway.
+    playLinks: [
+      { name: "Copy Cat Clash", url: "https://copy-cat-clash.onrender.com" },
+      { name: "Puzzle Clash", url: "https://puzzle-clash-fvov.onrender.com" },
+      { name: "Bluff Sketch", url: "https://bluffsketch.onrender.com" },
+    ],
+    languages: [
+      { name: "TypeScript", percent: 96, color: LANGUAGE_COLORS.TypeScript },
+      { name: "Other", percent: 4, color: LANGUAGE_COLORS.Other },
+    ],
+    accent: "#ff5a1f",
+    accentRgb: "255, 90, 31",
+    visual: "clash",
+    longDescription:
+      "Three separate real-time multiplayer games, each shipped as its own live app, sharing one architecture: Express + Socket.IO server, server-authoritative game state (roles, timers, scoring never trusted to the client), a typed shared package for socket events between client and server, and Docker deployment. Copy Cat Clash is a team drawing duel judged by Claude's vision model (with a deterministic pixel-comparison fallback when no API key is configured, so the game degrades gracefully rather than breaking) across seven modes and a 263-photo curated, attributed image library. Puzzle Clash is a head-to-head jigsaw race with a from-scratch puzzle-piece generator and touch-and-mouse dragging tuned for both phones and desktop. Bluff Sketch is a social-deduction drawing party game with a custom canvas stroke engine (pointer pressure, per-player layers, quadratic smoothing) and 60-second reconnect grace so a dropped connection doesn't end the round. All three support private rooms with a shareable code and QR invite for same-Wi-Fi play alongside online matchmaking.",
+    caseStudy: [
+      {
+        heading: "Why three games, one entry",
+        body: "Each game is a complete, independently deployed product — not a shared codebase split into modes — but they're presented together here because that's the honest shape of the work: the same real-time architecture (Socket.IO, server-authoritative state, a typed shared-events package, Docker) built three times, each time solving a different synchronization problem. Copy Cat Clash's hard problem was scoring something subjective (a drawing) fairly and fast. Puzzle Clash's was keeping two players' identical piece-sets and progress bars in lockstep with low latency. Bluff Sketch's was a shared canvas with per-player strokes that has to survive someone's Wi-Fi dropping mid-round without ending the game.",
+      },
+      {
+        heading: "The AI judge, honestly",
+        body: "Copy Cat Clash's headline feature is a Claude vision judge that scores which team's drawing is closer to the reference photo. Running that on every round of every public match isn't free, so the deployed instance falls back to a deterministic pixel-comparison judge when no API key is configured, and rounds scored that way are labeled \"estimated\" in the UI rather than silently presented as AI-graded. Built to degrade honestly, not to fake a feature that isn't actually running.",
+      },
+    ],
   },
   {
     slug: "notion-ai-assistant",

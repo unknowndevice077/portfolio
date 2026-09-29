@@ -323,3 +323,34 @@ export function NotionAIVisual() {
     </Frame>
   );
 }
+
+// Real screenshots, not an SVG mockup — these are three actually-shipped,
+// actually-playable games, and a real screenshot of a real UI says that
+// more honestly than a stylized illustration would.
+export function ClashGamesVisual() {
+  const shots: { src: string; label: string }[] = [
+    { src: "/screenshots/copycatclash.jpg", label: "Copy Cat Clash" },
+    { src: "/screenshots/puzzleclash.jpg", label: "Puzzle Clash" },
+    { src: "/screenshots/bluffsketch.jpg", label: "Bluff Sketch" },
+  ];
+  return (
+    <Frame url="clash-games (3 live apps)" accent="#ff5a1f">
+      <div className="grid grid-cols-3 gap-[2px] w-full h-full bg-[#241f16]">
+        {shots.map((s) => (
+          <div key={s.src} className="relative overflow-hidden group">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={s.src}
+              alt={`${s.label} screenshot`}
+              className="w-full h-full object-cover object-top"
+              loading="lazy"
+            />
+            <span className="absolute bottom-0 left-0 right-0 mono text-[8px] sm:text-[9px] text-white bg-black/60 px-1.5 py-1 truncate">
+              {s.label}
+            </span>
+          </div>
+        ))}
+      </div>
+    </Frame>
+  );
+}

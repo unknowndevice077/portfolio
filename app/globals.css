@@ -39,19 +39,27 @@
   transform: translate(0, 0);
 }
 
+/* Palette rework: the old one was dead-center "AI portfolio" — near-black
+   + a teal-to-indigo gradient is the single most repeated combination in
+   generated portfolio sites. This drops the gradient outright (one accent,
+   no pairing), swaps cool blue-grays for warm ones (a colder near-black
+   is the other half of that same generic look), and picks a signal-amber
+   accent that actually ties to the work — detection/alert systems, not a
+   generic "trustworthy tech" teal. Individual project accents (in
+   data/projects.ts) stay varied on purpose; this only changes the site's
+   own chrome — buttons, section labels, the one color used site-wide. */
 :root {
-  --bg: #000000;
-  --bg-elev: #0f1116;
-  --glass: rgba(255, 255, 255, 0.03);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-border-hover: rgba(255, 255, 255, 0.16);
-  --border: #1c1e26;
-  --text: #f2f3f5;
-  --text-dim: #9a9ca8;
-  --text-faint: #5c5e6b;
-  --accent: #6ee7d8;
-  --accent-2: #818cf8;
-  --accent-rgb: 110, 231, 216;
+  --bg: #0a0a08;
+  --bg-elev: #131210;
+  --glass: rgba(242, 239, 230, 0.035);
+  --glass-border: rgba(242, 239, 230, 0.1);
+  --glass-border-hover: rgba(242, 239, 230, 0.22);
+  --border: #201e17;
+  --text: #f2efe6;
+  --text-dim: #a39d8c;
+  --text-faint: #625d4e;
+  --accent: #ff5a1f;
+  --accent-rgb: 255, 90, 31;
 }
 
 * {
@@ -115,8 +123,13 @@ body {
   position: relative;
 }
 
+/* Routed to the mono face on purpose, not the display font actually loaded
+   in layout.tsx — a rounded geometric sans for every heading is the other
+   half of the generic-portfolio look. A mono voice for headings/labels
+   reads like technical documentation, which fits the actual work better
+   than a marketing-site typeface. */
 .font-display {
-  font-family: var(--font-display), ui-sans-serif, sans-serif;
+  font-family: var(--font-mono), ui-monospace, monospace;
 }
 
 .mono {
@@ -151,17 +164,20 @@ body::before {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
+/* Flat on purpose — frosted-glass blur over everything is the other
+   reliable tell of a generated site. Same class name (it's used all over
+   the component tree), completely different treatment: a solid, slightly
+   raised panel with a real hairline border instead of a blurred sheet of
+   translucency. */
 .glass {
-  background: var(--glass);
+  background: var(--bg-elev);
   border: 1px solid var(--glass-border);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   transition: border-color 0.35s ease, transform 0.35s ease, background 0.35s ease;
 }
 
 .glass:hover {
   border-color: var(--glass-border-hover);
-  background: rgba(255, 255, 255, 0.05);
+  background: #17150f;
 }
 
 @keyframes fade-up {
@@ -186,9 +202,10 @@ body::before {
   animation: soft-pulse 3s ease-in-out infinite;
 }
 
+/* Was a text-fill gradient (teal into indigo) — the single most
+   recognizable "AI portfolio" hero treatment there is. Same class name,
+   kept deliberately plain now: solid accent color, no gradient, no
+   transparency trick. */
 .text-gradient {
-  background: linear-gradient(120deg, var(--text) 30%, var(--accent) 70%, var(--accent-2) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--accent);
 }
