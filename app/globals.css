@@ -39,27 +39,25 @@
   transform: translate(0, 0);
 }
 
-/* Palette rework: the old one was dead-center "AI portfolio" — near-black
-   + a teal-to-indigo gradient is the single most repeated combination in
-   generated portfolio sites. This drops the gradient outright (one accent,
-   no pairing), swaps cool blue-grays for warm ones (a colder near-black
-   is the other half of that same generic look), and picks a signal-amber
-   accent that actually ties to the work — detection/alert systems, not a
-   generic "trustworthy tech" teal. Individual project accents (in
+/* Palette, take two: the first pass (single warm-amber accent, warm
+   near-black) fixed the gradient/glassmorphism problem but the color
+   itself didn't feel personal — swapped for a true near-black with a
+   single sky-blue accent instead. Still one accent, no pairing, still no
+   gradient — just a different hue. Individual project accents (in
    data/projects.ts) stay varied on purpose; this only changes the site's
    own chrome — buttons, section labels, the one color used site-wide. */
 :root {
-  --bg: #0a0a08;
-  --bg-elev: #131210;
-  --glass: rgba(242, 239, 230, 0.035);
-  --glass-border: rgba(242, 239, 230, 0.1);
-  --glass-border-hover: rgba(242, 239, 230, 0.22);
-  --border: #201e17;
-  --text: #f2efe6;
-  --text-dim: #a39d8c;
-  --text-faint: #625d4e;
-  --accent: #ff5a1f;
-  --accent-rgb: 255, 90, 31;
+  --bg: #06080b;
+  --bg-elev: #0d1117;
+  --glass: rgba(224, 236, 245, 0.035);
+  --glass-border: rgba(224, 236, 245, 0.1);
+  --glass-border-hover: rgba(224, 236, 245, 0.22);
+  --border: #1b212c;
+  --text: #eef3f8;
+  --text-dim: #94a3b8;
+  --text-faint: #57657a;
+  --accent: #38bdf8;
+  --accent-rgb: 56, 189, 248;
 }
 
 * {

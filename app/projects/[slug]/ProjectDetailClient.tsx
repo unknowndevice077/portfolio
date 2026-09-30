@@ -74,11 +74,11 @@ export default function ProjectDetailClient({
 
         {project.demoUrl ? (
           <div className="mb-10 rounded-lg overflow-hidden glass p-1">
-            <div className="flex items-center gap-2 px-3 py-2 bg-[#151109] border-b border-[#241f16] rounded-t-lg">
+            <div className="flex items-center gap-2 px-3 py-2 bg-[#0d1117] border-b border-[#1b212c] rounded-t-lg">
               <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f56]" />
               <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
               <span className="w-2.5 h-2.5 rounded-full bg-[#27c93f]" />
-              <span className="mono text-[10px] ml-2 px-2 py-0.5 rounded bg-[#0a0806] truncate flex-1" style={{ color: project.accent }}>
+              <span className="mono text-[10px] ml-2 px-2 py-0.5 rounded bg-[#060a10] truncate flex-1" style={{ color: project.accent }}>
                 {project.demoUrl.replace("https://", "")}
               </span>
               <span
@@ -123,7 +123,7 @@ export default function ProjectDetailClient({
                 title={`${project.name} live demo`}
               />
             )}
-            <div className="px-4 py-3 bg-[#151109] rounded-b-lg">
+            <div className="px-4 py-3 bg-[#0d1117] rounded-b-lg">
               <a
                 href={project.demoUrl}
                 target="_blank"
@@ -244,7 +244,7 @@ export default function ProjectDetailClient({
             target="_blank"
             rel="noopener noreferrer"
             className="text-sm px-6 py-3 rounded-md font-semibold"
-            style={{ background: project.accent, color: "#140f0a" }}
+            style={{ background: project.accent, color: "#071019" }}
           >
             {project.demoUrl ? "Open live demo ↗" : "View source on GitHub ↗"}
           </a>

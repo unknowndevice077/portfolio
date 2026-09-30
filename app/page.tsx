@@ -108,8 +108,8 @@ export default function Home() {
   // teal/indigo pair, so two of its five wireframe shapes stayed indigo no
   // matter which project was actually in view. One accent per project reads
   // as intentional; a project's own color plus a leftover indigo doesn't.
-  const [accent1, setAccent1] = useState("#ff5a1f");
-  const [accent2, setAccent2] = useState("#ff5a1f");
+  const [accent1, setAccent1] = useState("#38bdf8");
+  const [accent2, setAccent2] = useState("#38bdf8");
 
   const handleActive = useCallback((accent: string) => {
     setAccent1(accent);
@@ -147,7 +147,7 @@ export default function Home() {
                   href="/resume/Fritz_Dela_Cruz_Resume.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm px-5 py-2.5 rounded-md font-semibold text-[#140f0a]"
+                  className="text-sm px-5 py-2.5 rounded-md font-semibold text-[#071019]"
                   style={{ background: "var(--accent)" }}
                 >
                   Resume ↓
@@ -232,7 +232,7 @@ export default function Home() {
             <a
               href="mailto:frjhay.delacruz@gmail.com?subject=Project inquiry"
               className="text-sm px-5 py-3 rounded-md font-semibold self-start"
-              style={{ background: "var(--accent)", color: "#140f0a" }}
+              style={{ background: "var(--accent)", color: "#071019" }}
             >
               Have a project in mind? Let&apos;s talk →
             </a>
@@ -291,7 +291,7 @@ export default function Home() {
             <div className="space-y-10">
               {competitions.map((c) => {
                 const thumb = (
-                  <div className="relative w-28 h-20 sm:w-36 sm:h-24 shrink-0 rounded-lg overflow-hidden border border-[#241f16] bg-[#100e0a] group-hover/cert:border-[var(--glass-border-hover)] transition-colors">
+                  <div className="relative w-28 h-20 sm:w-36 sm:h-24 shrink-0 rounded-lg overflow-hidden border border-[#1b212c] bg-[#0a0e14] group-hover/cert:border-[var(--glass-border-hover)] transition-colors">
                     <Image
                       src={c.certificateUrl}
                       alt={`${c.title} certificate`}

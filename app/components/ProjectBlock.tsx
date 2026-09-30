@@ -25,13 +25,13 @@ const visualMap = {
 function DemoFrame({ project }: { project: Project }) {
   if (project.demoUrl) {
     return (
-      <div className="rounded-lg overflow-hidden border border-[#241f16] bg-[#100e0a]">
-        <div className="flex items-center gap-2 px-3 py-2 bg-[#151109] border-b border-[#241f16]">
+      <div className="rounded-lg overflow-hidden border border-[#1b212c] bg-[#0a0e14]">
+        <div className="flex items-center gap-2 px-3 py-2 bg-[#0d1117] border-b border-[#1b212c]">
           <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f56]" />
           <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
           <span className="w-2.5 h-2.5 rounded-full bg-[#27c93f]" />
           <span
-            className="mono text-[10px] ml-3 px-2 py-0.5 rounded bg-[#0a0806] truncate flex-1"
+            className="mono text-[10px] ml-3 px-2 py-0.5 rounded bg-[#060a10] truncate flex-1"
             style={{ color: project.accent }}
           >
             {project.demoUrl.replace("https://", "")}
@@ -195,7 +195,7 @@ export default function ProjectBlock({
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm px-5 py-2.5 rounded-md font-semibold"
-              style={{ background: project.accent, color: "#140f0a" }}
+              style={{ background: project.accent, color: "#071019" }}
             >
               Project link →
             </Link>
