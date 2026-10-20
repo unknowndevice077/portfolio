@@ -3,6 +3,7 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import SystemHud from "./components/SystemHud";
 import IframeScrollGuard from "./components/IframeScrollGuard";
+import { themeBootScript } from "./lib/accents";
 
 // Mono doubles as the display face now (see globals.css's .font-display) —
 // no separate rounded-sans display font, so the full weight range it needs
@@ -45,7 +46,10 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${jetbrainsMono.variable} ${inter.variable}`}>
+    <html lang="en" className={`${jetbrainsMono.variable} ${inter.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
+      </head>
       <body>
         {children}
         <SystemHud />

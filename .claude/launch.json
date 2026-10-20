@@ -7,6 +7,18 @@
       "runtimeArgs": ["run", "dev"],
       "port": 3000,
       "autoPort": true
+    },
+    {
+      "name": "silicon-dev",
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": ["/c", "cd /d D:\\projects\\portfolios\\portfolio-silicon && node_modules\\.bin\\vite.cmd --port 3030 --strictPort"],
+      "port": 3030
+    },
+    {
+      "name": "fieldnotes-dev",
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": ["/c", "cd /d D:\\projects\\portfolios\\portfolio-fieldnotes && node_modules\\.bin\\next.cmd dev --port 3040"],
+      "port": 3040
     }
   ]
 }

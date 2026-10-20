@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { QueueUpVisual, BantayBahaVisual, JaemboyVisual, LeadCatchVisual } from "../../components/ProjectVisualExtra";
 import SceneBackground from "../../components/SceneBackground";
 import N8nWorkflowDiagram from "../../components/N8nWorkflowDiagram";
 import LanguageBar from "../../components/LanguageBar";
@@ -22,6 +23,10 @@ const visualMap = {
   aurum: AurumVisual,
   notion: NotionAIVisual,
   clash: ClashGamesVisual,
+  queueup: QueueUpVisual,
+  bantay: BantayBahaVisual,
+  jaemboy: JaemboyVisual,
+  leadcatch: LeadCatchVisual,
 };
 
 export default function ProjectDetailClient({
@@ -53,7 +58,7 @@ export default function ProjectDetailClient({
               // window.close() is a no-op if this tab wasn't opened by
               // script (e.g. a bookmarked/direct link) — fall back to
               // navigating home in that case.
-              setTimeout(() => router.push("/"), 100);
+              setTimeout(() => router.push("/projects"), 100);
             }}
             className="text-sm text-[var(--text-faint)] hover:text-[var(--text)] transition-colors cursor-pointer"
           >
@@ -93,7 +98,7 @@ export default function ProjectDetailClient({
                 className="relative w-full h-[520px] sm:h-[680px] overflow-hidden bg-white"
                 style={{
                   // Anchored here, not on the transformed iframe below — see
-                  // ProjectBlock.tsx's DemoFrame for why: overscroll-behavior
+                  // the comment on the wrapper for why: overscroll-behavior
                   // on a paint-time-transformed element proved unreliable.
                   overscrollBehavior: "contain",
                 }}
@@ -239,6 +244,7 @@ export default function ProjectDetailClient({
         )}
 
         <div className="flex flex-wrap gap-4 mb-24">
+          {(project.demoUrl ?? project.href) && (
           <a
             href={project.demoUrl ?? project.href}
             target="_blank"
@@ -248,7 +254,8 @@ export default function ProjectDetailClient({
           >
             {project.demoUrl ? "Open live demo ↗" : "View source on GitHub ↗"}
           </a>
-          {project.demoUrl && (
+          )}
+          {project.demoUrl && project.href && (
             <a
               href={project.href}
               target="_blank"
@@ -258,7 +265,7 @@ export default function ProjectDetailClient({
               Source ↗
             </a>
           )}
-          <Link href="/" className="text-sm px-6 py-3 rounded-md glass font-semibold">
+          <Link href="/projects" className="text-sm px-6 py-3 rounded-md glass font-semibold">
             All projects
           </Link>
         </div>

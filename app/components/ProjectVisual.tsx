@@ -1,4 +1,4 @@
-function Frame({
+export function Frame({
   url,
   accent,
   children,
@@ -128,12 +128,12 @@ export function EcoVisionVisual({ animated = false }: { animated?: boolean }) {
           </text>
         )}
         <text x="16" y="160" fontSize="10" fill="#8fd400" fontFamily="monospace">
-          mAP@50: 94.1%  RECALL: 90.3%
+          FIGHTS CAUGHT 88.0%  ·  2.0 FALSE/HR
         </text>
         <rect x="16" y="175" width="200" height="6" fill="#1a0010" />
         <rect x="16" y="175" width="188" height="6" fill="#8fd400" />
         <text x="16" y="205" fontSize="9" fill="#7a7a8a" fontFamily="monospace">
-          YOLOv11 · X3D-XS · role-based alert review
+          YOLO11 · X3D-XS · human-in-the-loop review
         </text>
       </svg>
     </Frame>

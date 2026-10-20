@@ -58,6 +58,27 @@
   --text-faint: #57657a;
   --accent: #38bdf8;
   --accent-rgb: 56, 189, 248;
+  --grid-line: rgba(255, 255, 255, 0.035);
+  --vignette: rgba(0, 0, 0, 0.45);
+  --glass-hover-bg: #17150f;
+  --nav-bg: rgba(7, 10, 15, 0.7);
+}
+
+/* light theme, toggled from the nav / playground (see lib/theme.ts) */
+:root[data-theme="light"] {
+  --bg: #f4f6f9;
+  --bg-elev: #ffffff;
+  --glass: rgba(15, 23, 42, 0.03);
+  --glass-border: rgba(15, 23, 42, 0.12);
+  --glass-border-hover: rgba(15, 23, 42, 0.28);
+  --border: #dde3ea;
+  --text: #0b1220;
+  --text-dim: #475569;
+  --text-faint: #7a8699;
+  --grid-line: rgba(15, 23, 42, 0.05);
+  --vignette: rgba(15, 23, 42, 0.06);
+  --glass-hover-bg: #f8fafc;
+  --nav-bg: rgba(244, 246, 249, 0.8);
 }
 
 * {
@@ -66,15 +87,6 @@
 
 html {
   scroll-behavior: smooth;
-  /* mandatory fought programmatic navigation and blocked moderate scrolls
-     outright when tested against sections taller than one viewport (the
-     demo blocks, once they include a ~600px iframe, run well past 100vh).
-     Worse, it force-snapped on *any* scroll delta — including the few px
-     the browser nudges the page when an iframe inside a section gains
-     focus (e.g. clicking a quiz answer) — which could yank the whole page
-     to an adjacent section mid-interaction. proximity only snaps once a
-     scroll gesture naturally settles near a section. */
-  scroll-snap-type: y proximity;
 }
 
 /* Sections with a live embedded demo (Studia/QuestScribe/Aurum) don't carry
@@ -105,9 +117,10 @@ html {
 }
 
 body {
+  transition: background-color 0.3s ease, color 0.3s ease;
   background:
-    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
     var(--bg);
   background-size: 56px 56px, 56px 56px, auto;
   color: var(--text);
@@ -146,7 +159,7 @@ body::after {
   inset: 0;
   z-index: 5;
   pointer-events: none;
-  background: radial-gradient(ellipse at 50% 0%, transparent 45%, rgba(0, 0, 0, 0.45) 100%);
+  background: radial-gradient(ellipse at 50% 0%, transparent 45%, var(--vignette) 100%);
 }
 
 /* Fine grain texture — the tactile, premium touch most polished dark sites
@@ -175,7 +188,7 @@ body::before {
 
 .glass:hover {
   border-color: var(--glass-border-hover);
-  background: #17150f;
+  background: var(--glass-hover-bg);
 }
 
 @keyframes fade-up {
