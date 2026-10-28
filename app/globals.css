@@ -1,146 +1,49 @@
 @import "tailwindcss";
 
-/* Bounding-box hover frame — corner brackets in the accent color, the same
-   visual language as a weapon/person detection box. Put .target-frame on a
-   relatively-positioned wrapper and give it group-hover partners, or just
-   hover it directly. Reads as "this project just got detected." */
-.target-frame {
-  position: relative;
-}
-.target-frame::before,
-.target-frame::after {
-  content: "";
-  position: absolute;
-  width: 22px;
-  height: 22px;
-  opacity: 0;
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  pointer-events: none;
-}
-.target-frame::before {
-  top: -12px;
-  left: -12px;
-  border-top: 2px solid var(--target-frame-accent, var(--accent));
-  border-left: 2px solid var(--target-frame-accent, var(--accent));
-  transform: translate(8px, 8px);
-}
-.target-frame::after {
-  bottom: -12px;
-  right: -12px;
-  border-bottom: 2px solid var(--target-frame-accent, var(--accent));
-  border-right: 2px solid var(--target-frame-accent, var(--accent));
-  transform: translate(-8px, -8px);
-}
-.target-frame:hover::before,
-.target-frame:hover::after,
-.target-frame:focus-within::before,
-.target-frame:focus-within::after {
-  opacity: 0.85;
-  transform: translate(0, 0);
-}
-
-/* Palette, take two: the first pass (single warm-amber accent, warm
-   near-black) fixed the gradient/glassmorphism problem but the color
-   itself didn't feel personal — swapped for a true near-black with a
-   single sky-blue accent instead. Still one accent, no pairing, still no
-   gradient — just a different hue. Individual project accents (in
-   data/projects.ts) stay varied on purpose; this only changes the site's
-   own chrome — buttons, section labels, the one color used site-wide. */
 :root {
-  --bg: #06080b;
-  --bg-elev: #0d1117;
-  --glass: rgba(224, 236, 245, 0.035);
-  --glass-border: rgba(224, 236, 245, 0.1);
-  --glass-border-hover: rgba(224, 236, 245, 0.22);
-  --border: #1b212c;
-  --text: #eef3f8;
-  --text-dim: #94a3b8;
-  --text-faint: #57657a;
-  --accent: #38bdf8;
-  --accent-rgb: 56, 189, 248;
-  --grid-line: rgba(255, 255, 255, 0.035);
-  --vignette: rgba(0, 0, 0, 0.45);
-  --glass-hover-bg: #17150f;
-  --nav-bg: rgba(7, 10, 15, 0.7);
+  --bg: #e8e5dc;
+  --bg-elev: #f1efe8;
+  --border: #d3cfc3;
+  --text: #17161a;
+  --text-dim: #57544f;
+  --text-faint: #8f8b83;
+  --accent: #2f54d8;
+  --accent-rgb: 47, 84, 216;
+  --glass: rgba(23, 22, 26, 0.04);
+  --glass-border: #d3cfc3;
+  --hover: rgba(23, 22, 26, 0.045);
 }
 
-/* light theme, toggled from the nav / playground (see lib/theme.ts) */
-:root[data-theme="light"] {
-  --bg: #f4f6f9;
-  --bg-elev: #ffffff;
-  --glass: rgba(15, 23, 42, 0.03);
-  --glass-border: rgba(15, 23, 42, 0.12);
-  --glass-border-hover: rgba(15, 23, 42, 0.28);
-  --border: #dde3ea;
-  --text: #0b1220;
-  --text-dim: #475569;
-  --text-faint: #7a8699;
-  --grid-line: rgba(15, 23, 42, 0.05);
-  --vignette: rgba(15, 23, 42, 0.06);
-  --glass-hover-bg: #f8fafc;
-  --nav-bg: rgba(244, 246, 249, 0.8);
+:root[data-theme="dark"] {
+  --bg: #121214;
+  --bg-elev: #19191c;
+  --border: #2a2a2e;
+  --text: #ecebe6;
+  --text-dim: #a3a19b;
+  --text-faint: #6c6a66;
+  --accent: #8ea6ff;
+  --accent-rgb: 142, 166, 255;
+  --glass: rgba(236, 235, 230, 0.05);
+  --glass-border: #2a2a2e;
+  --hover: rgba(236, 235, 230, 0.04);
 }
 
 * {
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
-/* Sections with a live embedded demo (Studia/QuestScribe/Aurum) don't carry
-   .snap-section at all anymore — see ProjectBlock.tsx's DemoFrame comment.
-   A focus-driven auto-scroll into a too-tall section was getting grabbed by
-   proximity snap and amplified into a jump to an unrelated section; taking
-   those sections out of snap entirely removed the amplifier. What's left
-   after that (an occasional unrequested scroll with no snap involved at
-   all) is handled in JS by IframeScrollGuard.tsx instead — that one isn't a
-   CSS-expressible condition. */
-
-.snap-section {
-  scroll-snap-align: center;
-  /* normal, not always: "always" forces the page to fully snap to this
-     section's boundary on ANY scroll that crosses it — including the
-     couple of overscroll px that bubble out of an iframe (e.g. QuestScribe's
-     demo) once its own internal content hits the top/bottom of its scroll
-     range. With proximity on the container that turned a stray wheel-tick
-     into a forced jump to the next section. normal lets proximity behave
-     as intended: only snap once a scroll gesture actually comes to rest
-     near a boundary. */
-  scroll-snap-stop: normal;
-}
-
-@keyframes hud-pulse {
-  0%, 100% { transform: scale(1); opacity: 0.6; }
-  50% { transform: scale(2.2); opacity: 0; }
-}
-
 body {
-  transition: background-color 0.3s ease, color 0.3s ease;
-  background:
-    linear-gradient(var(--grid-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
-    var(--bg);
-  background-size: 56px 56px, 56px 56px, auto;
+  background: var(--bg);
   color: var(--text);
   font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
-  /* clip, not hidden: "overflow-x: hidden" with no overflow-y set forces
-     overflow-y's computed value to 'auto' per spec, which can turn body
-     into its own scroll container and break window scrolling. clip
-     avoids that entirely. */
   overflow-x: clip;
-  position: relative;
 }
 
-/* Routed to the mono face on purpose, not the display font actually loaded
-   in layout.tsx — a rounded geometric sans for every heading is the other
-   half of the generic-portfolio look. A mono voice for headings/labels
-   reads like technical documentation, which fits the actual work better
-   than a marketing-site typeface. */
 .font-display {
-  font-family: var(--font-mono), ui-monospace, monospace;
+  font-family: var(--font-serif), Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.01em;
 }
 
 .mono {
@@ -149,74 +52,80 @@ body {
 
 ::selection {
   background: var(--accent);
-  color: #06070a;
+  color: #fff;
 }
 
-/* Subtle vignette */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 5;
-  pointer-events: none;
-  background: radial-gradient(ellipse at 50% 0%, transparent 45%, var(--vignette) 100%);
+/* small-caps style label used for section names */
+.label {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  font-weight: 500;
 }
 
-/* Fine grain texture — the tactile, premium touch most polished dark sites
-   use so a blurred gradient doesn't read as flat/plasticky. Pure CSS,
-   no image asset. */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 4;
-  pointer-events: none;
-  opacity: 0.05;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+.link {
+  color: var(--text);
+  text-decoration: underline;
+  text-decoration-color: var(--border);
+  text-underline-offset: 4px;
+  transition: text-decoration-color 0.2s;
+}
+.link:hover {
+  text-decoration-color: var(--text);
 }
 
-/* Flat on purpose — frosted-glass blur over everything is the other
-   reliable tell of a generated site. Same class name (it's used all over
-   the component tree), completely different treatment: a solid, slightly
-   raised panel with a real hairline border instead of a blurred sheet of
-   translucency. */
+/* old class name still used by the project mockups and games */
 .glass {
   background: var(--bg-elev);
-  border: 1px solid var(--glass-border);
-  transition: border-color 0.35s ease, transform 0.35s ease, background 0.35s ease;
+  border: 1px solid var(--border);
 }
 
-.glass:hover {
-  border-color: var(--glass-border-hover);
-  background: var(--glass-hover-bg);
+@keyframes enter {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+.enter {
+  animation: enter 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
 
-@keyframes fade-up {
-  from { opacity: 0; transform: translateY(28px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes tile-pop {
+  from { transform: scale(0.6); opacity: 0.4; }
+  to { transform: scale(1); opacity: 1; }
+}
+.tile-pop {
+  animation: tile-pop 0.14s ease-out;
 }
 
-.reveal {
-  opacity: 0;
+@media (prefers-reduced-motion: reduce) {
+  .enter, .tile-pop { animation: none; }
 }
 
-.reveal.in-view {
-  animation: fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
+/* sprites */
+@keyframes hop { 0%, 60%, 100% { transform: translateY(0) scale(1, 1); } 70% { transform: translateY(0) scale(1.15, 0.85); } 80% { transform: translateY(-14px) scale(0.92, 1.08); } 90% { transform: translateY(-4px); } }
+@keyframes big-hop { 0% { transform: translateY(0) scale(1.25, 0.75); } 40% { transform: translateY(-48px) rotate(180deg); } 75% { transform: translateY(0) rotate(360deg) scale(1.2, 0.8); } 100% { transform: none; } }
+.slime-hop { animation: hop 1.6s ease-in-out infinite; }
+.slime-big { animation: big-hop 0.7s ease-out, hop 1.6s 0.7s ease-in-out infinite; }
+@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+@keyframes walk { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-2px) rotate(3deg); } }
+.pirate-bob { animation: bob 0.9s ease-in-out infinite; }
+.pirate-walk { animation: walk 0.3s linear infinite; }
+@keyframes reach { from { transform: scaleX(0.1); } 60% { transform: scaleX(1.05); } to { transform: scaleX(1); } }
+.fx-reach { transform-origin: left center; animation: reach 0.18s ease-out; }
+@keyframes dark { from { transform: scale(0.2); opacity: 0.95; } to { transform: scale(1.4); opacity: 0; } }
+.fx-dark { background: radial-gradient(circle, #1a0f24 0%, #3b1f52 45%, transparent 70%); animation: dark 0.5s ease-out forwards; }
+@keyframes fly { from { transform: translateX(0) rotate(0); } to { transform: translateX(var(--to)) rotate(720deg); } }
+.fx-fly { animation: fly 0.3s ease-in forwards; }
+@keyframes slash { from { transform: rotate(-80deg); opacity: 1; } to { transform: rotate(60deg); opacity: 0; } }
+.fx-slash { animation: slash 0.3s ease-out forwards; }
+@keyframes fxpop { from { transform: scale(0.4); opacity: 1; } to { transform: scale(1.4); opacity: 0; } }
+.fx-pop { animation: fxpop 0.4s ease-out forwards; }
+@keyframes dmg-pop { from { transform: translate(-50%, 0); opacity: 1; } to { transform: translate(-50%, -26px); opacity: 0; } }
+.dmg-pop { animation: dmg-pop 0.9s ease-out forwards; }
+@media (prefers-reduced-motion: reduce) { .slime-hop, .pirate-bob, .pirate-walk { animation: none; } }
 
-@keyframes soft-pulse {
-  0%, 100% { opacity: 0.7; }
-  50% { opacity: 1; }
-}
-
-.soft-pulse {
-  animation: soft-pulse 3s ease-in-out infinite;
-}
-
-/* Was a text-fill gradient (teal into indigo) — the single most
-   recognizable "AI portfolio" hero treatment there is. Same class name,
-   kept deliberately plain now: solid accent color, no gradient, no
-   transparency trick. */
-.text-gradient {
-  color: var(--accent);
-}
+@keyframes sprite-play { from { background-position-x: 0; } to { background-position-x: var(--end); } }
+@keyframes speech { from { transform: translate(-50%, 4px) scale(0.8); opacity: 0; } to { transform: translate(-50%, 0) scale(1); opacity: 1; } }
+.speech { animation: speech 0.18s ease-out; }
+@keyframes anger { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.35); } }
+.anger-pop { animation: anger 0.5s ease-in-out infinite; }

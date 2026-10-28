@@ -1,28 +1,16 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono, Newsreader } from "next/font/google";
 import "./globals.css";
-import SystemHud from "./components/SystemHud";
 import IframeScrollGuard from "./components/IframeScrollGuard";
 import { themeBootScript } from "./lib/accents";
 
-// Mono doubles as the display face now (see globals.css's .font-display) —
-// no separate rounded-sans display font, so the full weight range it needs
-// for headings lives here instead of a second Google Fonts family.
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-  weight: ["400", "500", "600", "700", "800"],
-});
+const serif = Newsreader({ subsets: ["latin"], variable: "--font-serif", weight: ["400", "500"], style: ["normal", "italic"] });
+const inter = Inter({ subsets: ["latin"], variable: "--font-body", weight: ["400", "500", "600"] });
+const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", weight: ["400", "500"] });
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-body",
-  weight: ["400", "500", "600"],
-});
-
-const title = "Jae — Applied AI & Full-Stack Engineer";
+const title = "Fritz Dela Cruz — Full-Stack, AI & Embedded Engineer";
 const description =
-  "Final-year Computer Engineering student building production AI and full-stack systems — real-time crime detection, trading automation, and AI-powered tools, shipped end-to-end.";
+  "Computer Engineering student and full-stack intern building SaaS products, real-time AI for CCTV, and ESP32 IoT devices.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://portfolio-five-rho-21.vercel.app"),
@@ -46,13 +34,12 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${jetbrainsMono.variable} ${inter.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${serif.variable} ${inter.variable} ${mono.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
       </head>
       <body>
         {children}
-        <SystemHud />
         <IframeScrollGuard />
       </body>
     </html>

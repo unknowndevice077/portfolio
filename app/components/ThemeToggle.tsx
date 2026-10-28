@@ -1,5 +1,6 @@
 "use client";
 
+import { FiMoon, FiSun } from "react-icons/fi";
 import { setTheme, useTheme } from "../lib/theme";
 
 export default function ThemeToggle() {
@@ -10,18 +11,10 @@ export default function ThemeToggle() {
       onClick={() => setTheme({ mode: next })}
       aria-label={"Switch to " + next + " mode"}
       title={"Switch to " + next + " mode"}
-      className="w-9 h-9 rounded-md glass flex items-center justify-center cursor-pointer"
+      className="relative w-9 h-9 rounded-full flex items-center justify-center text-[var(--text-dim)] hover:text-[var(--text)] hover:bg-[var(--hover)] cursor-pointer overflow-hidden"
     >
-      {mode === "dark" ? (
-        <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2">
-          <circle cx="12" cy="12" r="4" />
-          <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
-        </svg>
-      ) : (
-        <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
-        </svg>
-      )}
+      <FiSun className="absolute w-[18px] h-[18px] transition-all duration-500" style={{ transform: mode === "dark" ? "translateY(0) rotate(0)" : "translateY(28px) rotate(90deg)", opacity: mode === "dark" ? 1 : 0 }} />
+      <FiMoon className="absolute w-[18px] h-[18px] transition-all duration-500" style={{ transform: mode === "light" ? "translateY(0) rotate(0)" : "translateY(-28px) rotate(-90deg)", opacity: mode === "light" ? 1 : 0 }} />
     </button>
   );
 }

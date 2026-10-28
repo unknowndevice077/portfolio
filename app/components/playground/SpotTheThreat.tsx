@@ -21,13 +21,22 @@ function spawn(armed: boolean): Person {
   };
 }
 
-export default function SpotTheThreat() {
+export default function SpotTheThreat({ onEnd }: { onEnd: (score: number) => void }) {
   const [people, setPeople] = useState<Person[]>([]);
   const [score, setScore] = useState(0);
   const [time, setTime] = useState(ROUND_S);
   const [state, setState] = useState<"idle" | "playing" | "done">("idle");
   const [flash, setFlash] = useState<{ x: number; y: number; ok: boolean } | null>(null);
   const lastT = useRef(0);
+  const scoreRef = useRef(0);
+
+  useEffect(() => {
+    scoreRef.current = score;
+  }, [score]);
+
+  useEffect(() => {
+    if (state === "done") onEnd(scoreRef.current);
+  }, [state, onEnd]);
 
   const start = () => {
     setPeople([...Array.from({ length: 9 }, () => spawn(false)), spawn(true), spawn(true)]);
@@ -125,7 +134,7 @@ export default function SpotTheThreat() {
         )}
         {state !== "playing" && (
           <button onClick={start} className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-black/60 text-white cursor-pointer">
-            <span className="font-display text-xl font-800">{state === "done" ? "Shift over · " + score + " pts" : "Spot the Threat"}</span>
+            <span className="font-display text-2xl">{state === "done" ? "Shift over · " + score + " pts" : "Spot the Threat"}</span>
             <span className="text-sm px-6 text-center">
               {state === "done" ? "Click to go again" : "You're the operator. Click people holding something. Don't tag bystanders."}
             </span>

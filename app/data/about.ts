@@ -39,12 +39,12 @@ export const services: Service[] = [
 ];
 
 export const skillGroups: [string, string[]][] = [
-  ["AI / Computer Vision", ["YOLOv8/v11", "X3D video classification", "PyTorch transfer learning", "Ollama & LLM APIs", "scikit-learn"]],
-  ["Automation", ["N8n automation", "Webhooks", "Google Sheets & Gmail APIs", "Telegram Bot API", "Twilio"]],
-  ["Languages", ["Python", "TypeScript/JavaScript", "C/C++", "Java", "C#", "Rust", "Dart"]],
-  ["Web & Mobile", ["React", "Next.js", "Socket.IO", "Three.js", "React Native", "Flutter", "Tauri", "HTML/CSS"]],
-  ["Backend & Data", ["Spring Boot", "FastAPI", "Node.js", "PostgreSQL", "SQLite", "Redis", "Firebase", "Supabase", "Docker"]],
-  ["Embedded & Hardware", ["Arduino Uno","ESP32", "FreeRTOS", "PIC16F84A (Assembly)", "AutoCAD", "Fusion 360", "Tinkercad"]],
+  ["Languages", ["TypeScript/JavaScript", "Python", "Java", "C/C++", "SQL"]],
+  ["Frontend & mobile", ["React", "Next.js", "Tailwind CSS", "Three.js", "Electron", "Capacitor", "Flutter"]],
+  ["Backend & data", ["Node.js/Express", "Spring Boot", "Django REST", "FastAPI", "PostgreSQL", "MongoDB", "Redis", "Elasticsearch", "Supabase"]],
+  ["DevOps & testing", ["Docker", "GitHub Actions", "Playwright", "JUnit/Testcontainers", "pytest", "Sentry", "AWS S3", "Stripe"]],
+  ["AI & automation", ["PyTorch", "YOLO", "OpenCV", "scikit-learn", "LLM APIs (Claude, Ollama)", "n8n"]],
+  ["Embedded", ["ESP32", "FreeRTOS", "PlatformIO", "I2C", "sensors"]],
 ];
 
 export type Competition = {
@@ -68,7 +68,7 @@ export const experience: Role[] = [
     title: "Full-Stack Development Intern (Remote)",
     org: "Nexvia Technologies · Hyderabad, India",
     dates: "Oct 2026 – Present",
-    description: "Remote internship on real-world product engineering projects within a professional engineering team.",
+    description: "Building two production-style SaaS apps: a multi-tenant project tracker (Django REST, React/TypeScript, PostgreSQL, Celery, Stripe) and a multi-vendor marketplace (Express, MongoDB, Elasticsearch, Redis, Stripe Connect), both with automated tests running in CI.",
     accent: "#38bdf8",
   },
   {

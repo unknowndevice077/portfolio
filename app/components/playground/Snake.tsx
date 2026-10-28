@@ -22,13 +22,12 @@ function randomFood(snake: P[]): P {
   }
 }
 
-export default function Snake() {
+export default function Snake({ onEnd }: { onEnd: (score: number) => void }) {
   const start = () => [{ x: 8, y: 10 }, { x: 7, y: 10 }, { x: 6, y: 10 }];
   const [snake, setSnake] = useState<P[]>(start);
   const [food, setFood] = useState<P>({ x: 14, y: 10 });
   const [running, setRunning] = useState(false);
   const [dead, setDead] = useState(false);
-  const [best, setBest] = useState(0);
   const dir = useRef<P>({ x: 1, y: 0 });
   const queued = useRef<P[]>([]); // buffer turns so two quick taps in one tick both count
   const boardRef = useRef<HTMLDivElement>(null);
@@ -62,7 +61,7 @@ export default function Snake() {
         if (hitWall || s.some((p) => p.x === head.x && p.y === head.y)) {
           setRunning(false);
           setDead(true);
-          setBest((b) => Math.max(b, s.length - 3));
+          onEnd(s.length - 3);
           return s;
         }
         const ate = head.x === food.x && head.y === food.y;
@@ -73,13 +72,12 @@ export default function Snake() {
       });
     }, Math.max(70, 140 - score * 3));
     return () => clearInterval(id);
-  }, [running, food, score]);
+  }, [running, food, score, onEnd]);
 
   return (
     <div className="flex flex-col items-center gap-3">
       <div className="flex gap-6 mono text-sm text-[var(--text-dim)]">
         <span>score {score}</span>
-        <span>best {Math.max(best, dead ? score : 0)}</span>
       </div>
       <div
         ref={boardRef}
@@ -117,7 +115,7 @@ export default function Snake() {
             onClick={restart}
             className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-black/55 rounded-lg text-white cursor-pointer"
           >
-            <span className="font-display text-xl font-800">{dead ? "Game over · " + score : "Snake"}</span>
+            <span className="font-display text-2xl">{dead ? "Game over · " + score : "Snake"}</span>
             <span className="text-sm">{dead ? "Click to try again" : "Click to start · arrows / WASD"}</span>
           </button>
         )}

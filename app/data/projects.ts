@@ -8,7 +8,7 @@ export type Project = {
   flagship?: boolean;
   accent: string;
   accentRgb: string; // "r, g, b" for use in rgba()
-  visual: "ecovision" | "studia" | "questscribe" | "aurum" | "notion" | "clash" | "queueup" | "bantay" | "jaemboy" | "leadcatch";
+  visual?: "ecovision" | "studia" | "questscribe" | "aurum" | "notion" | "clash" | "queueup" | "bantay" | "jaemboy" | "leadcatch";
   longDescription: string;
   demoUrl?: string; // live, embeddable deployment - shown as a real iframe instead of the static mockup
   demoScale?: number; // renders the iframe at 1/scale size then CSS-scales it down, so a demo that reads too zoomed-in shows more of its layout in the same box
@@ -141,6 +141,32 @@ export const projects: Project[] = [
         body: "A single ultrasonic sensor can freeze, glitch or drift, and a warning system that trusts it blindly fails silently. A camera reads the painted staff gauge as a second sensor. Frozen, erratic or drifting readings raise a SENSOR FAULT, and when the two disagree the system settles toward the higher, safer reading. A built-in \"simulate sensor failure\" control lets you trigger each failure mode and watch it get caught.",
       },
     ],
+  },
+  {
+    slug: "mednotes",
+    categories: ["Full-Stack"],
+    highlight: "Client project · 11 releases · web + Android",
+    name: "MedNotes E-Library",
+    tagline: "A paid e-library for medical study files, built for a client, on the web and Android",
+    tech: ["React", "TypeScript", "Supabase", "PostgreSQL", "Edge Functions", "Capacitor", "GitHub Actions"],
+    bullets: [
+      "Buyers pay by GCash, Maya or bank transfer and upload proof; the publisher confirms, which issues a numbered receipt and unlocks the file.",
+      "Each purchase works on 1 computer + 1 phone, enforced in Postgres with row-level security and device RPCs instead of trusting the app.",
+      "Files never sit in public storage: an edge function streams them in encrypted chunks, with a visible watermark and a hidden per-buyer mark that traces a leaked copy back to the account.",
+      "The Android APK is built and published by GitHub Actions on every tag; 11 releases so far, with unit, backend, end-to-end and click-everything UI tests.",
+    ],
+    href: "https://github.com/unknowndevice077/MedNotes-E-Library",
+    languages: [
+      { name: "TypeScript", percent: 46, color: LANGUAGE_COLORS.TypeScript },
+      { name: "JavaScript", percent: 18, color: LANGUAGE_COLORS.JavaScript },
+      { name: "HTML", percent: 17, color: LANGUAGE_COLORS.HTML },
+      { name: "PLpgSQL", percent: 10, color: "#336790" },
+      { name: "CSS", percent: 9, color: LANGUAGE_COLORS.CSS },
+    ],
+    accent: "#14b8a6",
+    accentRgb: "20, 184, 166",
+    longDescription:
+      "A client sells medical notes, e-books, lectures and slides, and was doing it by hand over chat. MedNotes turns that into a store: buyers preview a cover for free, pay through the local channels people actually use, and get the file on their devices once the publisher confirms the payment. The hard part is keeping paid files from spreading, so all of the rules live in the database and an edge function rather than in the client: device limits, receipt numbering, encrypted delivery, and tracing marks stamped into every page. The publisher gets an admin side with payment review, an audit log they can revert from, monthly stats, help tickets, and a site editor for wording and colors.",
   },
   {
     slug: "queueup",
