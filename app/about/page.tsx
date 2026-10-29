@@ -21,14 +21,17 @@ export default function AboutPage() {
       <PageHeading title="About" />
       <div className="text-[18px] leading-[1.75] text-[var(--text-dim)] max-w-[62ch] space-y-4 mb-12">
         <p>
-          I&apos;m Fritz, a Computer Engineering student in Leyte, Philippines, and right now a remote full-stack intern at Nexvia
-          Technologies. I like building the whole thing: the database rules, the API, the screen people actually use, and
-          sometimes the circuit board too.
+          I&apos;m Fritz Rjhay L. Dela Cruz, but most people call me Rjhay or Jae. I&apos;m a Computer Engineering student from Leyte, Philippines, currently working as a
+          remote full-stack intern at Nexvia Technologies.
         </p>
         <p>
-          Most of what I make starts from a real problem close to home: barangays that need to spot a crime or a flood early,
-          small clinics running on paper logbooks, a seller sharing files over chat. I&apos;m looking for a full-stack or
-          applied-AI role where I can keep shipping things like that.
+          I build software end to end: I design the database and its rules, write the API, and make the screens people
+          actually use, on the web, on Android, and sometimes on a microcontroller. I like turning a messy manual process
+          into something simple and reliable, and I care about the parts nobody sees, like tests, security and what happens
+          when things go wrong.
+        </p>
+        <p>
+          I&apos;m looking for a full-stack or applied-AI role where I can keep learning and shipping things people use.
         </p>
       </div>
 

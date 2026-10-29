@@ -56,10 +56,11 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
       {/* desktop sidebar */}
       <aside className="hidden lg:flex flex-col sticky top-0 h-screen px-10 py-12 border-r border-[var(--border)]">
         <Link href="/" className="font-display text-[30px] leading-[1.1]">
-          Fritz Rjhay
+          Fritz Rjhay L.
           <br />
           Dela Cruz
         </Link>
+        <p className="text-sm text-[var(--text-faint)] mt-1">Rjhay / Jae</p>
         <p className="text-[15px] text-[var(--text-dim)] leading-relaxed mt-4">
           Computer engineer building full-stack, AI and embedded systems. Full-stack intern at Nexvia.
         </p>
