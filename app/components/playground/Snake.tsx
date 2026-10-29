@@ -90,7 +90,7 @@ export default function Snake({ onEnd }: { onEnd: (score: number) => void }) {
             turn(DIRS[k]);
           }
         }}
-        className="relative grid w-full max-w-[360px] aspect-square rounded-lg border border-[var(--border)] outline-none focus:border-[var(--accent)] bg-[var(--bg-elev)]"
+        className="relative grid w-full max-w-[min(640px,calc(100vh_-_420px))] aspect-square rounded-lg border border-[var(--border)] outline-none focus:border-[var(--accent)] bg-[var(--bg-elev)]"
         style={{ gridTemplateColumns: "repeat(" + N + ", 1fr)" }}
         aria-label="Snake game. Use arrow keys or WASD."
       >

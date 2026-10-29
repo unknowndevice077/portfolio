@@ -103,7 +103,7 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
 
       <div className="min-w-0 flex flex-col">
         <div className="flex flex-1">
-        <main key={path} className="enter flex-1 min-w-0 w-full max-w-[880px] px-5 sm:px-10 lg:px-16 pt-10 lg:pt-16 pb-16">
+        <main key={path} className={"enter flex-1 min-w-0 w-full " + (path === "/playground" ? "max-w-[1500px]" : "max-w-[880px]") + " px-5 sm:px-10 lg:px-16 pt-10 lg:pt-16 pb-16"}>
           {children}
         </main>
         {path === "/" && <RightRail />}

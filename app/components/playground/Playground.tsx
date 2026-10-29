@@ -61,7 +61,7 @@ export default function Playground() {
         ))}
       </div>
 
-      <div className="grid xl:grid-cols-[1fr_250px] gap-10 items-start">
+      <div className="grid xl:grid-cols-[1fr_280px] 2xl:grid-cols-[1fr_320px] gap-10 items-start">
         <div>
           <p className="text-[var(--text-dim)]">{g.blurb}</p>
           <p className="text-sm text-[var(--text-faint)] mt-1 mb-6">{g.how}</p>

@@ -69,7 +69,7 @@ export default function WhackABug({ onEnd }: { onEnd: (score: number) => void })
         <span>squashed {score}</span>
         <span>⏱ {left}s</span>
       </div>
-      <div className="relative grid grid-cols-3 gap-3 p-3 w-full max-w-[360px] aspect-square rounded-lg border border-[var(--border)] bg-[var(--bg-elev)] select-none">
+      <div className="relative grid grid-cols-3 gap-3 p-3 w-full max-w-[min(640px,calc(100vh_-_420px))] aspect-square rounded-lg border border-[var(--border)] bg-[var(--bg-elev)] select-none">
         {holes.map((h, i) => (
           <button
             key={i}

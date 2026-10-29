@@ -124,7 +124,7 @@ export default function Minesweeper({ onEnd }: { onEnd: (score: number) => void 
         </button>
       </div>
       <div
-        className="relative grid gap-1 p-2 w-full max-w-[360px] aspect-square rounded-lg border border-[var(--border)] bg-[var(--bg-elev)] select-none"
+        className="relative grid gap-1 p-2 w-full max-w-[min(640px,calc(100vh_-_420px))] aspect-square rounded-lg border border-[var(--border)] bg-[var(--bg-elev)] select-none"
         style={{ gridTemplateColumns: `repeat(${N}, 1fr)` }}
       >
         {cells.map((c, i) => (

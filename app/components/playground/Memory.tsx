@@ -66,7 +66,7 @@ export default function Memory({ onEnd }: { onEnd: (score: number) => void }) {
   return (
     <div className="flex flex-col items-center gap-3 w-full">
       <div className="mono text-sm text-[var(--text-dim)]">moves {moves}</div>
-      <div className="relative grid grid-cols-4 gap-2 p-2 w-full max-w-[380px] aspect-square rounded-lg border border-[var(--border)] bg-[var(--bg-elev)] select-none">
+      <div className="relative grid grid-cols-4 gap-2 p-2 w-full max-w-[min(640px,calc(100vh_-_420px))] aspect-square rounded-lg border border-[var(--border)] bg-[var(--bg-elev)] select-none">
         {cards.map((c, i) => {
           const s = STACK[c.k];
           const shown = c.open || c.done;

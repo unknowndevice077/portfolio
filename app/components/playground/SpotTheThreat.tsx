@@ -94,7 +94,7 @@ export default function SpotTheThreat({ onEnd }: { onEnd: (score: number) => voi
         <span>score {score}</span>
         <span>time {Math.ceil(time)}s</span>
       </div>
-      <div className="relative w-full max-w-[640px] aspect-video rounded-lg overflow-hidden border border-[var(--border)] bg-[#05080c] select-none">
+      <div className="relative w-full max-w-[min(960px,calc((100vh_-_420px)*16/9))] aspect-video rounded-lg overflow-hidden border border-[var(--border)] bg-[#05080c] select-none">
         <div className="absolute inset-0 opacity-30" style={{ backgroundImage: "linear-gradient(rgba(132,204,22,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(132,204,22,0.15) 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
         <div className="absolute top-2 left-3 mono text-[10px] text-[#84cc16] flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" /> CAM 2 · LIVE

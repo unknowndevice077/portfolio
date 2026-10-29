@@ -136,7 +136,7 @@ export default function Flappy({ onEnd }: { onEnd: (score: number) => void }) {
   return (
     <div className="flex flex-col items-center gap-3 w-full">
       <div className="mono text-sm text-[var(--text-dim)]">pipes {score}</div>
-      <div className="relative w-full max-w-[560px]">
+      <div className="relative w-full max-w-[min(900px,calc((100vh_-_420px)*4/3))]">
         <canvas
           ref={ref}
           width={W}

@@ -156,7 +156,7 @@ export default function Breakout({ onEnd }: { onEnd: (score: number) => void }) 
         <span>score {hud.score}</span>
         <span>lives {"●".repeat(Math.max(0, hud.lives))}</span>
       </div>
-      <div className="relative w-full max-w-[560px]">
+      <div className="relative w-full max-w-[min(900px,calc((100vh_-_420px)*4/3))]">
         <canvas
           ref={ref}
           width={W}

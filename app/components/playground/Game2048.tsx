@@ -110,7 +110,7 @@ export default function Game2048({ onEnd }: { onEnd: (score: number) => void }) 
           if (Math.max(Math.abs(dx), Math.abs(dy)) < 24) return;
           go(Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? "right" : "left") : dy > 0 ? "down" : "up");
         }}
-        className="relative grid grid-cols-4 gap-2 p-2 w-full max-w-[360px] aspect-square rounded-lg border border-[var(--border)] bg-[var(--bg-elev)] outline-none focus:border-[var(--accent)] touch-none select-none"
+        className="relative grid grid-cols-4 gap-2 p-2 w-full max-w-[min(640px,calc(100vh_-_420px))] aspect-square rounded-lg border border-[var(--border)] bg-[var(--bg-elev)] outline-none focus:border-[var(--accent)] touch-none select-none"
         aria-label="2048 board. Use arrow keys, WASD or swipe."
       >
         {grid.map((v, i) => {
