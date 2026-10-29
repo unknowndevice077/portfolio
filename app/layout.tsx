@@ -13,7 +13,7 @@ const description =
   "Computer Engineering student and full-stack intern building SaaS products, real-time AI for CCTV, and ESP32 IoT devices.";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://portfolio-five-rho-21.vercel.app"),
+  metadataBase: new URL("https://jae-portfoliooo.vercel.app"),
   title,
   description,
   openGraph: {
