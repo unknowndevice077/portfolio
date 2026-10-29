@@ -1,12 +1,13 @@
 "use client";
 
+import MedNotesVisual from "./MedNotesVisual";
 import Link from "next/link";
 import { useState } from "react";
 import { CATEGORIES, projects, type Category } from "../data/projects";
 import { AurumVisual, ClashGamesVisual, EcoVisionVisual, NotionAIVisual, QuestScribeVisual, StudiaVisual } from "./ProjectVisual";
 import { BantayBahaVisual, JaemboyVisual, LeadCatchVisual, QueueUpVisual } from "./ProjectVisualExtra";
 
-const THUMB = { ecovision: EcoVisionVisual, studia: StudiaVisual, questscribe: QuestScribeVisual, aurum: AurumVisual, notion: NotionAIVisual, clash: ClashGamesVisual, queueup: QueueUpVisual, bantay: BantayBahaVisual, jaemboy: JaemboyVisual, leadcatch: LeadCatchVisual };
+const THUMB = { ecovision: EcoVisionVisual, studia: StudiaVisual, questscribe: QuestScribeVisual, aurum: AurumVisual, notion: NotionAIVisual, clash: ClashGamesVisual, queueup: QueueUpVisual, bantay: BantayBahaVisual, jaemboy: JaemboyVisual, leadcatch: LeadCatchVisual, mednotes: MedNotesVisual };
 
 // the full-size mockups, shrunk into a thumbnail
 function Thumb({ visual, accent }: { visual?: keyof typeof THUMB; accent: string }) {

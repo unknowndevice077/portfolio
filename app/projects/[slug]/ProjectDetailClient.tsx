@@ -1,5 +1,6 @@
 "use client";
 
+import MedNotesVisual from "../../components/MedNotesVisual";
 import Link from "next/link";
 import LanguageBar from "../../components/LanguageBar";
 import N8nWorkflowDiagram from "../../components/N8nWorkflowDiagram";
@@ -19,6 +20,7 @@ const visualMap = {
   bantay: BantayBahaVisual,
   jaemboy: JaemboyVisual,
   leadcatch: LeadCatchVisual,
+  mednotes: MedNotesVisual,
 };
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
@@ -71,6 +73,11 @@ export default function ProjectDetailClient({ project, next }: { project: Projec
         {project.demoUrl && (
           <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" className="link">
             Live demo ↗
+          </a>
+        )}
+        {project.siteUrl && (
+          <a href={project.siteUrl} target="_blank" rel="noopener noreferrer" className="link">
+            Live site ↗
           </a>
         )}
         {project.href && (

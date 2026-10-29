@@ -10,6 +10,7 @@ export type GameInfo = {
 };
 
 export const GAMES: GameInfo[] = [
+  { id: "starraid", name: "Star Raid", blurb: "Dodge the bullets, blast the waves. It gets a spread shot after wave 3.", how: "Move the mouse or your finger to steer · it fires on its own", unit: "pts", max: 200000 },
   { id: "breakout", name: "Breakout", blurb: "Smash every brick. The ball speeds up as you go.", how: "Mouse / touch or ← → · click or space to launch", unit: "pts", max: 2000 },
   { id: "flappy", name: "Flappy Chip", blurb: "Keep a tiny ESP32 airborne through the circuit board.", how: "Click, tap or space to flap", unit: "pipes", max: 999 },
   { id: "2048", name: "2048", blurb: "Slide and merge tiles. Reach 2048, then keep going.", how: "Arrow keys / WASD or swipe", unit: "pts", max: 500000 },

@@ -10,11 +10,13 @@ import Memory from "./Memory";
 import Minesweeper from "./Minesweeper";
 import Snake from "./Snake";
 import SpotTheThreat from "./SpotTheThreat";
+import StarRaid from "./StarRaid";
 import WhackABug from "./WhackABug";
 import { useBest } from "./scores";
 
 type End = (score: number) => void;
 const PLAY: Record<string, (p: { onEnd: End }) => React.ReactNode> = {
+  starraid: StarRaid,
   breakout: Breakout,
   flappy: Flappy,
   "2048": Game2048,
@@ -26,7 +28,7 @@ const PLAY: Record<string, (p: { onEnd: End }) => React.ReactNode> = {
 };
 
 export default function Playground() {
-  const [game, setGame] = useState("breakout");
+  const [game, setGame] = useState("starraid");
   const [last, setLast] = useState(0);
   const g = GAMES.find((x) => x.id === game)!;
   const [, saveBest] = useBest(g.id, g.lower);

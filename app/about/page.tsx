@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import EmailLink from "../components/EmailLink";
 import SiteShell, { PageHeading } from "../components/SiteShell";
 import { competitions, experience, skillGroups } from "../data/about";
 
@@ -92,9 +93,7 @@ export default function AboutPage() {
       <Block title="Contact">
         <p className="text-[15px] text-[var(--text-dim)] leading-relaxed">
           Open to remote full-time, internship or contract work. The fastest way to reach me is{" "}
-          <a href="mailto:frjhay.delacruz@gmail.com" className="link">
-            frjhay.delacruz@gmail.com
-          </a>
+          <EmailLink className="link" />
           .
         </p>
       </Block>

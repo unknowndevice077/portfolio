@@ -3,7 +3,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FiBriefcase, FiFileText, FiGithub, FiLinkedin, FiMail, FiPlay, FiUser } from "react-icons/fi";
+import EmailLink from "./EmailLink";
 import Arena from "./fun/Arena";
+import RightRail from "./RightRail";
 import Slimes from "./fun/Slimes";
 import ThemeToggle from "./ThemeToggle";
 
@@ -67,7 +69,11 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
         <div className="mt-auto space-y-5">
           <Slimes />
           <div className="flex flex-col gap-1.5 text-sm">
-            {CONTACT.map((c) => (
+            <EmailLink className="flex items-center gap-2 text-[var(--text-dim)] hover:text-[var(--text)] w-fit">
+              <FiMail className="w-4 h-4" />
+              Email
+            </EmailLink>
+            {CONTACT.filter((c) => c.label !== "Email").map((c) => (
               <a key={c.label} href={c.href} target={c.href.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer" className="flex items-center gap-2 text-[var(--text-dim)] hover:text-[var(--text)] w-fit">
                 <c.icon className="w-4 h-4" />
                 {c.label}
@@ -95,12 +101,18 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
       </header>
 
       <div className="min-w-0 flex flex-col">
-        <main key={path} className="enter flex-1 w-full max-w-[880px] px-5 sm:px-10 lg:px-16 pt-10 lg:pt-16 pb-16">
+        <div className="flex flex-1">
+        <main key={path} className="enter flex-1 min-w-0 w-full max-w-[880px] px-5 sm:px-10 lg:px-16 pt-10 lg:pt-16 pb-16">
           {children}
         </main>
+        {path === "/" && <RightRail />}
+        </div>
         <Arena />
         <footer className="lg:hidden px-5 py-8 border-t border-[var(--border)] flex gap-5 text-sm">
-          {CONTACT.map((c) => (
+          <EmailLink className="text-[var(--text-dim)]">
+            <FiMail className="w-5 h-5" aria-label="Email" />
+          </EmailLink>
+          {CONTACT.filter((c) => c.label !== "Email").map((c) => (
             <a key={c.label} href={c.href} aria-label={c.label} className="text-[var(--text-dim)]">
               <c.icon className="w-5 h-5" />
             </a>

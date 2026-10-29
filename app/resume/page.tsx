@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import EmailLink from "../components/EmailLink";
 import SiteShell from "../components/SiteShell";
 
 export const metadata: Metadata = { title: "Resume — Fritz Dela Cruz" };
@@ -11,9 +12,7 @@ export default function ResumePage() {
     <SiteShell>
       <div className="flex flex-wrap items-baseline justify-between gap-4 mb-8">
         <h1 className="font-display text-[40px] sm:text-[48px] leading-[1.05]">Resume</h1>
-        <a href="mailto:frjhay.delacruz@gmail.com" className="link text-[15px]">
-          frjhay.delacruz@gmail.com
-        </a>
+        <EmailLink className="link text-[15px]" />
       </div>
       <div className="rounded-sm overflow-hidden border border-[var(--border)] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04),0_8px_30px_rgba(0,0,0,0.06)]">
         <Image
