@@ -9,12 +9,26 @@ import { BantayBahaVisual, JaemboyVisual, LeadCatchVisual, QueueUpVisual } from 
 
 const THUMB = { ecovision: EcoVisionVisual, studia: StudiaVisual, questscribe: QuestScribeVisual, aurum: AurumVisual, notion: NotionAIVisual, clash: ClashGamesVisual, queueup: QueueUpVisual, bantay: BantayBahaVisual, jaemboy: JaemboyVisual, leadcatch: LeadCatchVisual, mednotes: MedNotesVisual };
 
-// the full-size mockups, shrunk into a thumbnail
-function Thumb({ visual, accent }: { visual?: keyof typeof THUMB; accent: string }) {
+// real screenshots where we have them, otherwise the old mockup shrunk down
+export const PREVIEW: Partial<Record<keyof typeof THUMB, string>> = {
+  ecovision: "/previews/ecovision.jpg",
+  mednotes: "/previews/mednotes.jpg",
+  queueup: "/previews/queueup.jpg",
+  bantay: "/previews/bantay.jpg",
+  studia: "/previews/studia.jpg",
+  questscribe: "/previews/questscribe.jpg",
+  clash: "/screenshots/copycatclash.jpg",
+};
+
+function Thumb({ visual, accent, name }: { visual?: keyof typeof THUMB; accent: string; name: string }) {
   const V = visual ? THUMB[visual] : null;
+  const shot = visual ? PREVIEW[visual] : undefined;
   return (
     <div className="relative w-[150px] sm:w-[200px] aspect-[16/10] rounded-md overflow-hidden border border-[var(--border)] shrink-0" style={{ background: accent + "22" }}>
-      {V ? (
+      {shot ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={shot} alt={name + " screenshot"} loading="lazy" className="absolute inset-0 w-full h-full object-cover object-top" />
+      ) : V ? (
         <div className="absolute top-0 left-0 w-[640px] origin-top-left pointer-events-none" style={{ transform: "scale(var(--s))" }}>
           <V />
         </div>
@@ -59,7 +73,7 @@ export default function WorkIndex() {
                 <p className="text-[15px] text-[var(--text-dim)] mt-1.5 leading-relaxed">{p.highlight}</p>
               </div>
               <div className="transition-transform duration-300 group-hover:-translate-y-0.5">
-                <Thumb visual={p.visual} accent={p.accent} />
+                <Thumb visual={p.visual} accent={p.accent} name={p.name} />
               </div>
             </Link>
           </li>

@@ -1,6 +1,7 @@
 "use client";
 
 import MedNotesVisual from "../../components/MedNotesVisual";
+import { PREVIEW } from "../../components/WorkIndex";
 import Link from "next/link";
 import LanguageBar from "../../components/LanguageBar";
 import N8nWorkflowDiagram from "../../components/N8nWorkflowDiagram";
@@ -114,7 +115,12 @@ export default function ProjectDetailClient({ project, next }: { project: Projec
           ) : (
             Visual && (
               <div className="rounded-md overflow-hidden border border-[var(--border)]">
-                <Visual />
+                {project.visual && PREVIEW[project.visual] && project.visual !== "clash" ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={PREVIEW[project.visual]} alt={project.name + " screenshot"} className="w-full h-auto block" />
+                ) : (
+                  <Visual />
+                )}
               </div>
             )
           )}
