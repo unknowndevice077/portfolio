@@ -45,6 +45,11 @@ export default function AboutPage() {
               </div>
               <p className="text-sm text-[var(--text-faint)]">{r.org}</p>
               <p className="text-[15px] text-[var(--text-dim)] leading-relaxed mt-2">{r.description}</p>
+              {r.certificateUrl && (
+                <a href={r.certificateUrl} target="_blank" rel="noopener noreferrer" className="link inline-block mt-2 text-sm">
+                  Certificate ↗
+                </a>
+              )}
             </div>
           ))}
         </div>

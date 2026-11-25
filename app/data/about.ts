@@ -61,15 +61,16 @@ export type Competition = {
   storyHref?: string;
 };
 
-export type Role = { title: string; org: string; dates: string; description: string; accent: string };
+export type Role = { title: string; org: string; dates: string; description: string; accent: string; certificateUrl?: string };
 
 export const experience: Role[] = [
   {
     title: "Full-Stack Development Intern (Remote)",
     org: "Nexvia Technologies · Hyderabad, India",
-    dates: "Oct 2026 – Present",
-    description: "Building two production-style SaaS apps: a multi-tenant project tracker (Django REST, React/TypeScript, PostgreSQL, Celery, Stripe) and a multi-vendor marketplace (Express, MongoDB, Elasticsearch, Redis, Stripe Connect), both with automated tests running in CI.",
+    dates: "Oct 2026 – Nov 2026",
+    description: "Built two production-style SaaS apps: a multi-tenant project tracker (Django REST, React/TypeScript, PostgreSQL, Celery, Stripe) and a multi-vendor marketplace (Express, MongoDB, Elasticsearch, Redis, Stripe Connect), both with automated tests running in CI.",
     accent: "#38bdf8",
+    certificateUrl: "/certificates/nexvia-internship-2026.jpg",
   },
   {
     title: "IT & Marketing Assistant (OJT)",
